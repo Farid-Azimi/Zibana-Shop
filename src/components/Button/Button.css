@@ -1,0 +1,17 @@
+.Button {
+  border-radius: 4px;
+  font-size: var(--bodyFontSize);
+  font-weight: bold;
+  color: white;
+  border: none;
+  padding: 17px 34px;
+  cursor: pointer;
+}
+.Button.Button--primary  {
+  background-color: var(--primary);
+  transition-duration: 400ms;
+}
+.Button.Button--primary:hover  {
+  background-color: var(--secondary);
+  color: var(--lightGrey);
+}
