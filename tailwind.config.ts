@@ -12,6 +12,7 @@ const config: Config = {
       "purple--secondary": "#f368e0",
       gray: "#666666",
       lightGray: "#999999",
+      veryLightGray: "#F1F1F1",
       white: "#FFFFFF",
       black: "#000000",
     },
