@@ -8,8 +8,8 @@ import { VscAccount } from "react-icons/vsc";
 export default function Header() {
   return (
     <header>
-      <div className="flex justify-between mx-8 my-2">
-        <div className="flex gap-6">
+      <div className="flex justify-between w-4/5 mx-auto">
+        <div className="flex gap-14">
           <Image src={zibanaLogo.src} width={200} height={200} />
           <SearchBox />
         </div>
@@ -28,7 +28,7 @@ export default function Header() {
               <p className=" text-[10px] text-gray">سبد خرید</p>
               <p className=" text-xs mt-1 font-bold">خالی است</p>
             </div>
-            <span className="absolute bg-purple--secondary p-1 rounded-lg bottom-[60%] left-[20%] h-5 w-5 text-white text-center">
+            <span className="absolute bg-purple--secondary p-1 rounded-lg bottom-[60%] left-[28%] h-5 w-5 text-white text-center">
               ۰
             </span>
             <IoBagHandleOutline className="w-8 h-8" />

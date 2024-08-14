@@ -2,12 +2,12 @@ import Link from "next/link";
 import { IconType } from "react-icons";
 import { motion } from "framer-motion";
 
-
 interface NavbarItemProps {
   title: string;
   icon: IconType;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
+  frontIcon: IconType | undefined;
 }
 
 export default function NavbarItem({
@@ -15,6 +15,7 @@ export default function NavbarItem({
   icon: Icon,
   onMouseEnter,
   onMouseLeave,
+  frontIcon: FrontIcon,
 }: NavbarItemProps) {
   const variants = {
     initial: { backgroundColor: "#fff" },
@@ -23,7 +24,7 @@ export default function NavbarItem({
 
   return (
     <motion.li
-      className="flex gap-3 p-2 rounded-xl"
+      className="flex gap-3 p-2 rounded-xl cursor-pointer"
       whileHover={variants.hover}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
@@ -32,6 +33,7 @@ export default function NavbarItem({
       <Link href="#" className="text-sm">
         {title}
       </Link>
+      {FrontIcon && <FrontIcon />}
     </motion.li>
   );
 }
