@@ -43,24 +43,29 @@ import NavbarItem from "../NavbarItem/NavbarItem";
 export default function Navbar() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const dropDownRef = useRef<HTMLDivElement | null>(null);
-  const menuRef = useRef<HTMLDivElement | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
-    setIsDropDownOpen(true);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      setIsDropDownOpen(true);
+    }, 100); 
   };
 
-  const handleMouseLeave = () => {
-  
-    setTimeout(() => {
-      if (
-        dropDownRef.current &&
-        !dropDownRef.current.contains(document.activeElement) &&
-        menuRef.current &&
-        !menuRef.current.contains(document.activeElement)
-      ) {
+  const handleMouseLeave = (event: React.MouseEvent) => {
+    const relatedTarget = event.relatedTarget as Node;
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
+    timeoutRef.current = setTimeout(() => {
+      if (dropDownRef.current && !dropDownRef.current.contains(relatedTarget)) {
         setIsDropDownOpen(false);
       }
-    }, 100);
+    }, 500);
   };
 
   return (
@@ -122,3 +127,6 @@ export default function Navbar() {
     </nav>
   );
 }
+
+
+

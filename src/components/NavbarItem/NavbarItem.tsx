@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 interface NavbarItemProps {
   title: string;
   icon: IconType;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
 }
 
 export default function NavbarItem({
