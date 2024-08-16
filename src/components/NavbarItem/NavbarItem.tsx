@@ -24,7 +24,7 @@ export default function NavbarItem({
 
   return (
     <motion.li
-      className="flex gap-3 p-2 rounded-xl cursor-pointer"
+      className="flex gap-3 p-2 rounded-xl cursor-pointer text-textGray"
       whileHover={variants.hover}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

@@ -8,14 +8,16 @@ const config: Config = {
   ],
   theme: {
     colors: {
-      "purple--dark": "#BE7FD2",
-      "purple--primary": "#ff9ff3",
+      "purple--dark": "#BF749F",
+      "purple--primary": "#C174D5",
       "purple--secondary": "#f368e0",
       gray: "#666666",
       lightGray: "#999999",
       veryLightGray: "#F1F1F1",
       white: "#FFFFFF",
       black: "#000000",
+      textGray: "#717171",
+      textLightGray: "#AFAFAF",
     },
     extend: {
       backgroundImage: {

@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 
+.fade-transition {
+  transition: opacity 0.5s ease;
+}
+
 @font-face {
   font-family: IRANSansWeb;
   src: url("../../public/fonts/teqh_iransansweb.ttf");
@@ -24,8 +28,8 @@
   --lightGrey: #999999;
   --black: #222222;
   --containerSize: 1200px;
-  --lightBox:#E3E3E3;
-  --greyBox:#B5B5B5;
+  --lightBox: #e3e3e3;
+  --greyBox: #b5b5b5;
 }
 
 html,
