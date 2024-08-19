@@ -19,91 +19,17 @@ import NavbarItem from "../NavbarItem/NavbarItem";
 import { IoIosArrowDown } from "react-icons/io";
 import NavbarDropdownItem from "../NavbarDropdownItem/NavbarDropdownItem";
 import NavbarDropdownInnerItem from "../NavbarDropdownInnerItem/NavbarDropDownInnerItem";
+import dropDownItems from "../../data/navbarItems";
+import NavbarDropdownInnerTitle from "../NavbarDropdownInnerTitle/NavbarDropdownInnerTitle";
 
-const dropDownData = {
-  perfume: ["ادکلن", "ادکلن", "ادکلن", "ادکلن", "ادکلن"],
-  sanitary: [
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-    "بهداشتی",
-  ],
-  makeup: [
-    "آرایشی",
-    "آرایشی",
-    "آرایشی",
-    "آرایشی",
-    "آرایشی",
-    "آرایشی",
-    "آرایشی",
-  ],
-  hair: [
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-    "مو",
-  ],
-  electric: [
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-    "الکتریک",
-  ],
-  mod: [
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-    "مد",
-  ],
-};
+interface Category {
+  title: string;
+  items: string[];
+}
 
 export default function Navbar() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const [dropDownItem, setDropDownItem] = useState<string[]>([]);
+  const [dropDownItem, setDropDownItem] = useState<Category[]>([]);
 
   const handleMouseEnter = () => {
     setIsDropDownOpen(true);
@@ -162,7 +88,7 @@ export default function Navbar() {
                     link="#"
                     handleDropDownItem={setDropDownItem}
                     data={"perfume"}
-                    dropDownData={dropDownData}
+                    dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
                     icon={FaPumpSoap}
@@ -170,7 +96,7 @@ export default function Navbar() {
                     link="#"
                     data={"sanitary"}
                     handleDropDownItem={setDropDownItem}
-                    dropDownData={dropDownData}
+                    dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
                     icon={GiLips}
@@ -178,7 +104,7 @@ export default function Navbar() {
                     link="#"
                     data={"makeup"}
                     handleDropDownItem={setDropDownItem}
-                    dropDownData={dropDownData}
+                    dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
                     icon={FaMortarPestle}
@@ -186,7 +112,7 @@ export default function Navbar() {
                     link="#"
                     data={"hair"}
                     handleDropDownItem={setDropDownItem}
-                    dropDownData={dropDownData}
+                    dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
                     icon={FaPlug}
@@ -194,7 +120,7 @@ export default function Navbar() {
                     link="#"
                     data={"electric"}
                     handleDropDownItem={setDropDownItem}
-                    dropDownData={dropDownData}
+                    dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
                     icon={FaStar}
@@ -202,16 +128,26 @@ export default function Navbar() {
                     link="#"
                     data={"mod"}
                     handleDropDownItem={setDropDownItem}
-                    dropDownData={dropDownData}
+                    dropDownData={dropDownItems}
                   />
                 </ul>
               </div>
               <div className="bg-veryLightGray w-full rounded-bl-2xl h-full flex flex-col justify-center">
-                <div className="mx-7 h-[15rem]">
-                  <ul className="flex flex-col w-[5rem] h-full flex-wrap gap-4 text-sm text-textLightGray">
-                    {dropDownItem.map((item) => {
-                      return <NavbarDropdownInnerItem title={item} />;
-                    })}
+                <div className="w-full h-[15rem]">
+                  <ul className="h-full">
+                    <li className="h-full w-[15rem] text-sm text-textLightGray mx-10 flex flex-col flex-wrap">
+                      {dropDownItem.map((item) => (
+                        <>
+                          <NavbarDropdownInnerTitle title={item.title} />
+                          {item.items.map((subItem, index) => (
+                            <NavbarDropdownInnerItem
+                              key={index}
+                              title={subItem}
+                            />
+                          ))}
+                        </>
+                      ))}
+                    </li>
                   </ul>
                 </div>
               </div>

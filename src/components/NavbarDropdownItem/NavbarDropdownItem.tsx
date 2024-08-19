@@ -5,14 +5,19 @@ import { useState } from "react";
 import { IconType } from "react-icons";
 import { FaCaretLeft } from "react-icons/fa";
 
-interface DropDownData {
-  perfume: string[];
-  sanitary: string[];
-  makeup: string[];
-  hair: string[];
-  electric: string[];
-  mod: string[];
+interface CategoryItem {
+  title: string;
+  items: string[];
 }
+
+type DropDownData = {
+  perfume: CategoryItem[];
+  sanitary: CategoryItem[];
+  makeup: CategoryItem[];
+  hair: CategoryItem[];
+  electric: CategoryItem[];
+  mod: CategoryItem[];
+};
 
 export default function NavbarDropdownItem({
   icon: Icon,
@@ -25,11 +30,12 @@ export default function NavbarDropdownItem({
   icon: IconType;
   title: string;
   link: string;
-  handleDropDownItem: React.Dispatch<React.SetStateAction<string[]>>;
+  handleDropDownItem: React.Dispatch<React.SetStateAction<CategoryItem[]>>;
   dropDownData: DropDownData;
   data: keyof DropDownData;
 }) {
   const [isHovered, setIsHover] = useState(false);
+
   return (
     <div className="relative flex">
       <li
