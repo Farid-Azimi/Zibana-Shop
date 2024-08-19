@@ -10,7 +10,7 @@ export default function Header() {
     <header>
       <div className="flex justify-between">
         <div className="flex gap-14">
-          <Image src={zibanaLogo.src} width={200} height={200} />
+          <Image src={zibanaLogo.src} width={200} height={200} alt="Logo"/>
           <SearchBox />
         </div>
         <div className="flex justify-end  my-auto relative gap-2">

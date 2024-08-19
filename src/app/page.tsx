@@ -1,11 +1,11 @@
 import Header from "../components/Header/Header";
-import Slideshow from "../components/Slideshow/Slideshow";
+import HomeContent from "../components/HomeContent/HomeContent";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <Slideshow />
+      <HomeContent />
     </>
   );
 }
