@@ -8,8 +8,6 @@ import mouthWash from "../../images/categories/mouthwash.png";
 import perfume from "../../images/categories/perfume.png";
 import skinCare from "../../images/categories/skin-care.png";
 
-
-
 const categories = [
   {
     id: 1,
@@ -48,36 +46,32 @@ const categories = [
   },
 ];
 
-
-
 export default function CategoryList() {
-    return(
-        <>
-        <div className="bg-white p-4">
-          <h2 className="text-center text-2xl font-semibold mb-8">
-            دسته‌بندی ها
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6 justify-items-center">
-            {categories.map((category) => (
-              <div key={category.id} className="flex flex-col items-center">
-                <Link href="#">
-                  <div className="w-20 h-20 md:w-24 md:h-24 relative mb-2">
-                    <Image
-                      src={category.imageSrc}
-                      alt={category.name}
-                      layout="fill"
-                      objectFit="contain"
-                      className="rounded-full"
-                    />
-                  </div>
-                  <span className="text-center text-sm md:text-base">
-                    {category.name}
-                  </span>
-                </Link>
-              </div>
-            ))}
-          </div>
+  return (
+    <>
+      <div className="bg-white p-4">
+        <h2 className="text-center text-2xl font-semibold mb-8">
+          دسته‌بندی ها
+        </h2>
+        <div className="flex justify-evenly">
+          {categories.map((category) => (
+            <Link
+              key={category.id}
+              href="#"
+              className="flex flex-col items-center gap-3"
+            >
+              <Image
+                src={category.imageSrc}
+                alt={category.name}
+                objectFit="contain"
+                width={130}
+                height={130}
+              />
+              <span className="text-lg">{category.name}</span>
+            </Link>
+          ))}
         </div>
-        </>
-    )
+      </div>
+    </>
+  );
 }
