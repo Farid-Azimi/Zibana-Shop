@@ -10,7 +10,7 @@ export default function SearchBox() {
 
   return (
     <div className="relative flex items-center transition-all duration-300 ">
-      <Button>
+      <Button className="bg-purple--primary mr-1 rounded-lg transition-all hover:bg-purple--secondary absolute" onClick={() => alert('Search Button clicked!')}>
         <CiSearch className="h-8 w-8 text-white" />
       </Button>
       <motion.input

@@ -1,8 +1,7 @@
-import React from 'react'
+import React from 'react';
 import FaceBook from "./IconSVGs/FaceBook";
 import Twitter from "./IconSVGs/Twitter";
 import Quote from "./IconSVGs/Quote";
-import "./Icons.css";
 
 const list = {
   FaceBook: FaceBook,
@@ -10,15 +9,19 @@ const list = {
   Quote: Quote,
 };
 
+type IconName = keyof typeof list; 
 
-const Icons = ({ name = "FaceBook" }) => {
-  const Icon = list[name];
+interface IconProps {
+  name?: IconName; 
+  className?: string;
+}
+
+export default function Icon({ name = "FaceBook", className }: IconProps) {
+  const IconComponent = list[name];
 
   return (
-    <span className="Icons">
-      <Icon />
+    <span className={className}>
+      <IconComponent />
     </span>
   );
-};
-
-export default Icons
+}
