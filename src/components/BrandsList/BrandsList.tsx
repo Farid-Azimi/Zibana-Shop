@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import Image from "next/image";
 import Button from "../Button/Button";
@@ -13,7 +12,7 @@ import { MdArrowForwardIos } from "react-icons/md";
 export default function BrandsList() {
   return (
     <>
-      <div className="mt-8 p-4 bg-[#cd84f1] rounded-lg flex justify-between items-center w-[85%] mx-auto">
+      <div className="my-8 p-4 bg-[#cd84f1] rounded-lg flex justify-between items-center w-[85%] mx-auto">
     
         <div className="w-20 h-20 md:w-24 md:h-24 relative mr-3">
           <Image

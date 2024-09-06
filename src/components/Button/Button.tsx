@@ -1,17 +1,18 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 interface ButtonProps {
   children: ReactNode;
   className?: string;
+  type?: "submit" | "reset" | "button" | undefined;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void; 
   disabled?: boolean;
 }
 
-export default function Button({ children, className, onMouseEnter, onMouseLeave, onClick, disabled }: ButtonProps) {
+export default function Button({ children, className, type, onMouseEnter, onMouseLeave, onClick, disabled }: ButtonProps) {
   return (
-    <button className={className} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} disabled={disabled}>
+    <button className={className} type={type} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

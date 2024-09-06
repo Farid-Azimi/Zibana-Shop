@@ -1,106 +1,12 @@
 "use client";
-
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Button from "../Button/Button";
+import Icon from "../Icon/Icon";
 import ProductItem from "../ProductItem/ProductItem";
 import promo from "../../images/promo.png";
-import product1 from "../../images/products/product1.jpg";
-import product2 from "../../images/products/product2.jpg";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { products } from "../../data/productData";
 
-const products = [
-  {
-    id: 1,
-    name: "اسنس حلزون کازرکس",
-    productBrand: "کازرکس",
-    originalPrice: "989,000",
-    hasDiscount: true,
-    discountedPrice: "900,000",
-    imageSrc: product1,
-  },
-  {
-    id: 2,
-    name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
-    productBrand: "کازرکس",
-    originalPrice: "1,490,000",
-    hasDiscount: true,
-    discountedPrice: "1,399,000",
-    imageSrc: product2,
-  },
-  {
-    id: 3,
-    name: "اسنس حلزون کازرکس",
-    productBrand: "کازرکس",
-    originalPrice: "989,000",
-    hasDiscount: true,
-    discountedPrice: "930,000",
-    imageSrc: product1,
-  },
-  {
-    id: 4,
-    name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
-    productBrand: "کازرکس",
-    originalPrice: "1,490,000",
-    hasDiscount: true,
-    discountedPrice: "1,399,000",
-    imageSrc: product2,
-  },
-  {
-    id: 5,
-    name: "اسنس حلزون کازرکس",
-    productBrand: "کازرکس",
-    originalPrice: "989,000",
-    hasDiscount: true,
-    discountedPrice: "930,000",
-    imageSrc: product1,
-  },
-  {
-    id: 6,
-    name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
-    productBrand: "کازرکس",
-    originalPrice: "1,490,000",
-    hasDiscount: false,
-    discountedPrice: "1,399,000",
-    imageSrc: product2,
-  },
-  {
-    id: 7,
-    name: "اسنس حلزون کازرکس",
-    productBrand: "کازرکس",
-    originalPrice: "989,000",
-    hasDiscount: false,
-    discountedPrice: "930,000",
-    imageSrc: product1,
-  },
-  {
-    id: 8,
-    name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
-    productBrand: "کازرکس",
-    originalPrice: "1,490,000",
-    hasDiscount: false,
-    discountedPrice: "1,399,000",
-    imageSrc: product2,
-  },
-  {
-    id: 9,
-    name: "احلزون س",
-    productBrand: "کازرکس",
-    originalPrice: "989,000",
-    hasDiscount: false,
-    discountedPrice: "930,000",
-    imageSrc: product1,
-  },
-  {
-    id: 10,
-    name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
-    productBrand: "کازرکس",
-    originalPrice: "1,490,000",
-    hasDiscount: false,
-    discountedPrice: "1,399,000",
-    imageSrc: product2,
-  },
-];
 
 export default function ProductList() {
   const [isListLeftEnd, setIsListLeftEnd] = useState(false);
@@ -167,25 +73,25 @@ export default function ProductList() {
         >
           <Button
             onClick={scrollLeft}
-            className={`absolute left-0 top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-lg ${
+            className={`absolute left-[-2px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl ${
               isListLeftEnd
                 ? "cursor-default"
                 : "bg-veryLightGray hover:bg-textLightGray"
             }`}
             disabled={isListLeftEnd}
           >
-            <IoIosArrowBack />
+            <Icon name={"IoIosArrowBack"} size={18} />
           </Button>
           <Button
             onClick={scrollRight}
-            className={`absolute right-[167px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-lg ${
+            className={`absolute right-[166px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl ${
               isListRightEnd
                 ? "cursor-default"
                 : "bg-veryLightGray hover:bg-textLightGray"
             }`}
             disabled={isListRightEnd}
           >
-            <IoIosArrowForward />
+            <Icon name={"IoIosArrowForward"} size={18}/>
           </Button>
           {products.map((product) => (
             <ProductItem key={product.id} product={product} />

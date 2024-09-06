@@ -1,18 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import Image, { StaticImageData } from "next/image";
-import Button from "../Button/Button";
+import Image from "next/image";
 import Icon from "../Icon/Icon";
+import { Product } from "../../types"
 
-interface Product {
-  id: number;
-  name: string;
-  productBrand: string;
-  originalPrice: string;
-  hasDiscount: boolean;
-  discountedPrice: string;
-  imageSrc: StaticImageData;
-}
 
 interface ProductItemProps {
   product: Product;
@@ -41,7 +32,6 @@ export default function ProductItem({
     }
   };
 
-
   return (
     <>
       <div className="bg-white min-w-[200px] rounded-xl shadow-md p-4 flex flex-col items-center group relative overflow-hidden">
@@ -53,7 +43,7 @@ export default function ProductItem({
           className="w-full h-auto mb-4"
         />
 
-        <Link href="#">
+        <Link key={product.id} href={`/product/${product.id}`} passHref>
           <h3 className="text-sm text-textGray mb-4 font-semibold hover:text-black text-center">
             {product.name}
           </h3>
