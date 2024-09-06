@@ -27,6 +27,55 @@ export default function CartDropdown() {
     0
   );
 
+  //  const totalPrice = cartItems.reduce((total, item) => {
+  //   const itemPrice = item.product.hasDiscount
+  //     ? parseInt(item.product.discountedPrice.replace(/,/g, ""), 10)
+  //     : parseInt(item.product.originalPrice.replace(/,/g, ""), 10);
+  //   return total + itemPrice * item.quantity;
+  // }, 0);
+
+  // const totalDiscount = cartItems.reduce((total, item) => {
+  //   if (item.product.hasDiscount) {
+  //     const originalPrice = parseInt(
+  //       item.product.originalPrice.replace(/,/g, ""),
+  //       10
+  //     );
+  //     const discountedPrice = parseInt(
+  //       item.product.discountedPrice.replace(/,/g, ""),
+  //       10
+  //     );
+  //     const discount = (originalPrice - discountedPrice) * item.quantity;
+  //     return total + discount;
+  //   }
+  //   return total;
+  // }, 0);
+
+  const calculateCartTotals = () => {
+    return cartItems.reduce(
+      (totals, item) => {
+        const originalPrice = parseInt(
+          item.product.originalPrice.replace(/,/g, ""),
+          10
+        );
+        const discountedPrice = item.product.hasDiscount
+          ? parseInt(item.product.discountedPrice.replace(/,/g, ""), 10)
+          : originalPrice;
+
+        totals.totalPrice += discountedPrice * item.quantity;
+
+        if (item.product.hasDiscount) {
+          totals.totalDiscount += (originalPrice - discountedPrice) * item.quantity;
+        }
+
+        return totals;
+      },
+      { totalPrice: 0, totalDiscount: 0 } 
+    );
+  };
+
+  const { totalPrice, totalDiscount } = calculateCartTotals();
+
+
   return (
     <>
       <Button
@@ -35,11 +84,13 @@ export default function CartDropdown() {
       >
         <div>
           <p className="text-[10px] text-gray">سبد خرید</p>
-          {cartItems.length === 0 && (
-            <p className=" text-xs mt-1 font-bold">خالی است</p>
+          {cartItems.length === 0 ? (
+            <p className="text-xs mt-1 font-bold">خالی است</p>
+          ) : (
+            <p className="text-xs mt-1 font-bold">{totalPrice} تومان</p>
           )}
         </div>
-        <span className="absolute text-xs font-semibold bg-purple--primary p-1 rounded-full bottom-[60%] left-[28%] h-auto w-auto text-white text-center">
+        <span className="absolute text-xs font-semibold bg-purple--primary p-1 rounded-lg bottom-6 left-9 text-white text-center">
           {totalQuantity}
         </span>
         <Icon name={"IoBagHandleOutline"} className={"w-8 h-8"} />
@@ -149,11 +200,11 @@ export default function CartDropdown() {
                 <p className="text-sm text-gray m-2">
                   مبلغ قابل پرداخت:{" "}
                   <span className="font-bold text-black text-lg">
-                    ۲۹۹,۶۰۰ تومان
+                  {totalPrice} تومان
                   </span>
                 </p>
                 <p className="text-xs text-[#4cd137] font-semibold m-2">
-                  میزان سود شما از این خرید ۵۰,۴۰۰ تومان می‌باشد.
+                  میزان سود شما از این خرید {totalDiscount} تومان می‌باشد.
                 </p>
                 <Button className="bg-[#f8a5c2] text-white text-semibold p-3 rounded m-4 hover:shadow-md hover:text-textGray">
                   مشاهده و تکمیل سفارش

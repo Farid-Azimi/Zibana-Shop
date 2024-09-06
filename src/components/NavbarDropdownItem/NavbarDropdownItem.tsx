@@ -4,11 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { IconType } from "react-icons";
 import { FaCaretLeft } from "react-icons/fa";
-
-interface CategoryItem {
-  title: string;
-  items: string[];
-}
+import { Category as CategoryItem } from "../../types"
 
 type DropDownData = {
   perfume: CategoryItem[];
