@@ -7,7 +7,6 @@ import ProductItem from "../ProductItem/ProductItem";
 import promo from "../../images/promo.png";
 import { products } from "../../data/productData";
 
-
 export default function ProductList() {
   const [isListLeftEnd, setIsListLeftEnd] = useState(false);
   const [isListRightEnd, setIsListRightEnd] = useState(true);
@@ -66,7 +65,6 @@ export default function ProductList() {
           height={500}
           className="w-32 h-32 m-5"
         />
-
         <div
           className="flex overflow-scroll gap-4 scrollbar-hide"
           ref={scrollRef}
@@ -91,7 +89,7 @@ export default function ProductList() {
             }`}
             disabled={isListRightEnd}
           >
-            <Icon name={"IoIosArrowForward"} size={18}/>
+            <Icon name={"IoIosArrowForward"} size={18} />
           </Button>
           {products.map((product) => (
             <ProductItem key={product.id} product={product} />
