@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import { Product } from "../../types";
+import { Product } from "../../types/productType";
 import Button from "../Button/Button";
 import Icon from "../Icon/Icon";
 import { useCartStore } from "../../stores/useCartStore";
@@ -31,8 +31,13 @@ export default function SingleProduct({
 
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center">
-        <div className="w-1/4 p-4">
+      <div className=" flex flex-col md:flex-row items-center">
+        <div className="w-1/4 p-4 relative">
+          {product.hasDiscount && (
+            <div className="absolute top-4 left-4 bg-[#f62b72] text-white text-sm px-3 py-2 rounded-br-lg">
+              {product.discountPercentage}٪
+            </div>
+          )}
           <Image
             src={product.imageSrc}
             alt={product.name}

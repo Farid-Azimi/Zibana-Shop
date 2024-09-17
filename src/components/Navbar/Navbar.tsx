@@ -21,8 +21,7 @@ import NavbarDropdownItem from "../NavbarDropdownItem/NavbarDropdownItem";
 import NavbarDropdownInnerItem from "../NavbarDropdownInnerItem/NavbarDropDownInnerItem";
 import dropDownItems from "../../data/navbarItems";
 import NavbarDropdownInnerTitle from "../NavbarDropdownInnerTitle/NavbarDropdownInnerTitle";
-import { Category } from "../../types"
-
+import { Category } from "../../types/categoryType";
 
 export default function Navbar() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);

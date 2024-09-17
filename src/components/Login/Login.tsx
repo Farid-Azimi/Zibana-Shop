@@ -5,7 +5,7 @@ import Link from "next/link";
 import Button from "../Button/Button";
 import Icon from "../Icon/Icon";
 import zibanaLogo from "../../images/Zibana-logo.png";
-import { validateEmail, validatePassword } from "../../utils/validation";
+import { validateEmail, validatePassword } from "../../utils/loginValidation";
 
 interface Errors {
   email?: string | null;

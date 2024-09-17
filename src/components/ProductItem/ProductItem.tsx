@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Icon from "../Icon/Icon";
-import { Product } from "../../types";
+import { Product } from "../../types/productType";
 import { useCartStore } from "../../stores/useCartStore";
 
 interface ProductItemProps {
@@ -12,18 +12,9 @@ interface ProductItemProps {
 export default function ProductItem({
   product,
 }: ProductItemProps): JSX.Element {
-  const discountPercentage = product.hasDiscount
-    ? Math.round(
-        ((parseInt(product.originalPrice.replace(/,/g, "")) -
-          parseInt(product.discountedPrice.replace(/,/g, ""))) /
-          parseInt(product.originalPrice.replace(/,/g, ""))) *
-          100
-      )
-    : null;
-
-  const { cartItems, addToCart, removeFromCart, decreaseQuantity } =
-    useCartStore();
-
+  // const { cartItems, addToCart, removeFromCart, decreaseQuantity } =
+  //   useCartStore();
+  const { addToCart } = useCartStore();
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [clickedIcon, setClickedIcon] = useState<string | null>(null);
 
@@ -40,7 +31,7 @@ export default function ProductItem({
       <div className="bg-white min-w-[200px] rounded-xl shadow-md p-4 flex flex-col items-center group relative overflow-hidden">
         {product.hasDiscount && (
           <div className="absolute top-0 left-0 bg-[#f62b72] text-white text-sm px-3 py-2 rounded-br-lg">
-            {discountPercentage}٪
+            {product.discountPercentage}٪
           </div>
         )}
         <Image
@@ -73,7 +64,6 @@ export default function ProductItem({
             </>
           )}
         </div>
-
         <div className="absolute bottom-0 left-0 right-0 bg-lightGray text-black p-1 flex justify-around items-center transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           <Icon
             name={
@@ -101,16 +91,18 @@ export default function ProductItem({
             onMouseLeave={() => setHoveredIcon(null)}
             onClick={() => handleIconClick("IoMdHeart")}
           />
-          <Icon
-            name={hoveredIcon === "AiFillEye" ? "AiFillEye" : "AiOutlineEye"}
-            className={
-              hoveredIcon === "AiFillEye"
-                ? "hover:cursor-pointer"
-                : "hover:cursor-default"
-            }
-            onMouseEnter={() => setHoveredIcon("AiFillEye")}
-            onMouseLeave={() => setHoveredIcon(null)}
-          />
+          <Link key={product.id} href={`/product/${product.id}`} passHref>
+            <Icon
+              name={hoveredIcon === "AiFillEye" ? "AiFillEye" : "AiOutlineEye"}
+              className={
+                hoveredIcon === "AiFillEye"
+                  ? "hover:cursor-pointer"
+                  : "hover:cursor-default"
+              }
+              onMouseEnter={() => setHoveredIcon("AiFillEye")}
+              onMouseLeave={() => setHoveredIcon(null)}
+            />
+          </Link>
         </div>
       </div>
     </>
