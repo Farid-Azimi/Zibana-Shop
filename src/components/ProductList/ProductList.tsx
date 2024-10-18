@@ -27,13 +27,13 @@ export default function ProductList() {
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: -440, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: 443, behavior: "smooth" });
     }
   };
 
@@ -57,7 +57,7 @@ export default function ProductList() {
 
   return (
     <>
-      <div className="bg-[#f8a5c2] rounded-xl m-4 p-4 flex items-center w-[85%] mx-auto relative">
+      <div className="bg-[#f8a5c2] rounded-xl m-4 p-4 flex items-center w-[86%] mx-auto relative">
         <Image
           src={promo.src}
           alt="promo"
@@ -66,7 +66,7 @@ export default function ProductList() {
           className="w-32 h-32 m-5"
         />
         <div
-          className="flex overflow-scroll gap-4 scrollbar-hide"
+          className="flex mx-2 px-2 overflow-scroll gap-5 scrollbar-hide"
           ref={scrollRef}
         >
           <Button
@@ -82,7 +82,7 @@ export default function ProductList() {
           </Button>
           <Button
             onClick={scrollRight}
-            className={`absolute right-[166px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl ${
+            className={`absolute right-[170px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl ${
               isListRightEnd
                 ? "cursor-default"
                 : "bg-veryLightGray hover:bg-textLightGray"

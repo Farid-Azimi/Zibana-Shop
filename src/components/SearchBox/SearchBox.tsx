@@ -28,6 +28,13 @@ export default function SearchBox() {
     }
   };
 
+  // const handleBlur = () => {
+  //   if (query.trim() != "") {
+  //     setQuery("");
+  //   } 
+  //   setIsFocused(false);
+  // };
+
   return (
     <div className="relative flex items-center transition-all duration-300">
       <Button
@@ -41,7 +48,7 @@ export default function SearchBox() {
         type="text"
         placeholder="جستجو برای محصول..."
         onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        // onBlur={handleBlur}
         onChange={handleInputChange}
         animate={{ width: isFocused ? "32rem" : "15rem" }}
         initial={{ width: "15rem" }}
@@ -78,13 +85,13 @@ export default function SearchBox() {
                 </ul>
                 {filteredProducts.length > 5 && (
                   <>
-                  <div className="flex justify-center items-center mt-2">
-                  <Link href={`/search?query=${query}`} passHref>
-                      <Button className="text-[#2d98da] hover:text-[#48dbfb]">
-                        مشاهده تمامی محصولات...({filteredProducts.length})
-                      </Button>
-                    </Link>
-                  </div>
+                    <div className="flex justify-center items-center mt-2">
+                      <Link href={`/search?query=${query}`} passHref>
+                        <Button className="text-[#2d98da] hover:text-[#48dbfb]">
+                          مشاهده تمامی محصولات...({filteredProducts.length})
+                        </Button>
+                      </Link>
+                    </div>
                   </>
                 )}
               </>

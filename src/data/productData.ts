@@ -136,46 +136,43 @@ export const products: Product[] = [
     discountedPrice: "930,000",
     imageSrc: product1,
   }),
+  setProductDiscounts({
+    id: "8",
+    name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
+    brand: "بالانس",
+    category: "عطر",
+    description:
+      "Cillum sint adipisicing aliqua et incididunt deserunt adipisicing quis nostrud Lorem. Aute consequat voluptate consequat laborum quis elit cillum ipsum do anim sit adipisicing esse. Ut adipisicing amet occaecat minim voluptate consequat velit eiusmod mollit fugiat ea proident laboris enim. Aute sunt nisi ex mollit in reprehenderit labore elit eiusmod mollit commodo. Veniam voluptate tempor excepteur id ex proident ut voluptate nostrud duis consequat reprehenderit.",
+    originalPrice: "1,490,000",
+    hasDiscount: false,
+    discountedPrice: "1,399,000",
+    discountPercentage: null,
+    imageSrc: product2,
+  }),
+  setProductDiscounts({
+    id: "9",
+    name: "احلزون س",
+    brand: "پیورست",
+    category: "لوازم برقی",
+    description:
+      "Cupidatat duis laborum reprehenderit pariatur ad veniam labore Lorem occaecat. Voluptate cillum eiusmod elit ipsum nostrud qui culpa incididunt. Veniam nulla ipsum sunt duis adipisicing amet consectetur voluptate incididunt ipsum do exercitation ipsum amet. Elit et ad ea ea labore. Do dolor irure consectetur proident mollit labore Lorem sit magna consequat. Sunt anim velit veniam pariatur tempor eu cillum est voluptate labore qui velit qui proident.",
+    originalPrice: "989,000",
+    hasDiscount: false,
+    discountedPrice: "930,000",
+    discountPercentage: null,
+    imageSrc: product1,
+  }),
+  setProductDiscounts({
+    id: "10",
+    name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
+    brand: "پیورست",
+    category: "مو",
+    description:
+      "Et tempor duis esse eiusmod minim. Sunt enim sint nisi tempor. Reprehenderit labore elit nulla consectetur.",
+    originalPrice: "1,490,000",
+    hasDiscount: false,
+    discountedPrice: "1,399,000",
+    discountPercentage: null,
+    imageSrc: product2,
+  }),
 ];
-
-// export const products: Product[] = [
-//   {
-//     id: "8",
-//     name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
-//     brand: "بالانس",
-//     category: "عطر",
-//     description:
-//       "Cillum sint adipisicing aliqua et incididunt deserunt adipisicing quis nostrud Lorem. Aute consequat voluptate consequat laborum quis elit cillum ipsum do anim sit adipisicing esse. Ut adipisicing amet occaecat minim voluptate consequat velit eiusmod mollit fugiat ea proident laboris enim. Aute sunt nisi ex mollit in reprehenderit labore elit eiusmod mollit commodo. Veniam voluptate tempor excepteur id ex proident ut voluptate nostrud duis consequat reprehenderit.",
-//     originalPrice: "1,490,000",
-//     hasDiscount: false,
-//     discountedPrice: "1,399,000",
-//     discountPercentage: null,
-//     imageSrc: product2,
-//   },
-//   {
-//     id: "9",
-//     name: "احلزون س",
-//     brand: "پیورست",
-//     category: "لوازم برقی",
-//     description:
-//       "Cupidatat duis laborum reprehenderit pariatur ad veniam labore Lorem occaecat. Voluptate cillum eiusmod elit ipsum nostrud qui culpa incididunt. Veniam nulla ipsum sunt duis adipisicing amet consectetur voluptate incididunt ipsum do exercitation ipsum amet. Elit et ad ea ea labore. Do dolor irure consectetur proident mollit labore Lorem sit magna consequat. Sunt anim velit veniam pariatur tempor eu cillum est voluptate labore qui velit qui proident.",
-//     originalPrice: "989,000",
-//     hasDiscount: false,
-//     discountedPrice: "930,000",
-//     discountPercentage: null,
-//     imageSrc: product1,
-//   },
-//   {
-//     id: "10",
-//     name: "ضد آفتاب فیوژن واتر مجیک ایزدین",
-//     brand: "پیورست",
-//     category: "مو",
-//     description:
-//       "Et tempor duis esse eiusmod minim. Sunt enim sint nisi tempor. Reprehenderit labore elit nulla consectetur.",
-//     originalPrice: "1,490,000",
-//     hasDiscount: false,
-//     discountedPrice: "1,399,000",
-//     discountPercentage: null,
-//     imageSrc: product2,
-//   },
-// ];
