@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavbarItem from "../NavbarItem/NavbarItem";
-import Dropdown from "../Dropdown/Dropdown";
+import Dropdown from "../MenuDropdown/MenuDropdown";
 import { IconType } from "react-icons";
 
 interface DropdownTriggerProps {

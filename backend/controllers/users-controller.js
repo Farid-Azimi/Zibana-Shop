@@ -26,28 +26,35 @@ const signup = async (req, res, next) => {
     );
   }
 
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password, phoneNumber } = req.body;
 
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
-    const error = new HttpError("Signing up failed, please try again later", 500);
+    const error = new HttpError(
+      "Signing up failed, please try again later",
+      500
+    );
     return next(error);
   }
 
   if (existingUser) {
-    const error = new HttpError("User exists already, please login instead", 422);
+    const error = new HttpError(
+      "User exists already, please login instead",
+      422
+    );
     return next(error);
   }
 
   const createdUser = new User({
-    name,
+    firstName,
+    lastName,
     email,
-    image:
-      "https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?size=338&ext=jpg&ga=GA1.1.1369675164.1728864000&semt=ais_hybrid-rr-similar",
     password,
-    products: [],
+    phoneNumber,
+    address: null,
+    likedProducts: [],
   });
 
   try {
@@ -67,7 +74,10 @@ const login = async (req, res, next) => {
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
-    const error = new HttpError("Logging in failed, please try again later", 500);
+    const error = new HttpError(
+      "Logging in failed, please try again later",
+      500
+    );
     return next(error);
   }
 
@@ -79,7 +89,11 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ message: "Logged in!" });
+  res.json({
+    firstName: existingUser.firstName,
+    lastName: existingUser.lastName,
+    email: email,
+  });
 };
 
 const checkExistence = async (req, res, next) => {

@@ -21,6 +21,7 @@ export default function Login() {
         <div className="flex gap-3">
           <div>
             <p className="text-[10px] text-gray text-left">کاربری</p>
+            
             <p className="text-xs mt-1 font-bold">ورود / ثبت نام</p>
           </div>
           <Icon name={"VscAccount"} className={"w-8 h-8"} />

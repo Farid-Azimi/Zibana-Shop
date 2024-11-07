@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Icon from "../Icon/Icon";
 import { Product } from "../../types/productType";
-import { useCartStore } from "../../stores/useCartStore";
+import { useCartStore } from "../../stores/useCartOperationStore";
 
 interface ProductItemProps {
   product: Product;
