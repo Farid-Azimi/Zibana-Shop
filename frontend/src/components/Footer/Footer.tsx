@@ -6,12 +6,12 @@ import zibanaLogo from "../../images/Zibana-logo.png";
 export default function Footer() {
   return (
     <>
-      <footer className="bg-white py-8">
-        <div className="mr-16">
-        <Image src={zibanaLogo.src} width={200} height={200} alt="Logo" />
+      <footer className="py-4 mt-16 border-solid border-t border-veryLightGray relative">
+        <div className="absolute right-10 transform -translate-y-1/2 top-0">
+          <Image src={zibanaLogo.src} width={150} height={150} alt="Logo" />
         </div>
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 py-4">
+        <div className="max-w-6xl mr-10 mt-4 px-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 py-4">
             <div>
               <h4 className="text-lg mb-4">دسترسی سریع</h4>
               <ul className="space-y-3 text-sm text-gray">
@@ -115,7 +115,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="flex border-t text-center text-sm text-[#555454]">
+          <div className="flex text-center text-sm text-[#555454]">
             <Icon name="MdPhoneInTalk" size={25} />
             <p className="my-1">
               پشتیبانی زیبانا: 021-915053343 و 021-915553343 | شنبه تا چهارشنبه
