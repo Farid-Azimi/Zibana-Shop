@@ -1,54 +1,31 @@
-// import { create } from "zustand";
-// import { persist } from "zustand/middleware";
-// import { User } from "../types/userType";
-
-// interface UserStore {
-//   user: User | null;
-//   login: (userData: User) => void;
-//   logout: () => void;
-// }
-
-// export const useUserStore = create<UserStore>()(
-//   persist(
-//     (set) => ({
-//       user: null,
-
-//       login: (userData: User) =>
-//         set(() => ({
-//           user: userData,
-//         })),
-
-//       logout: () =>
-//         set(() => ({
-//           user: null,
-//         })),
-//     }),
-//     {
-//       name: "user-storage",
-//     }
-//   )
-// );
-
-import { create } from 'zustand';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type UserState = {
-  userId: string | null;
-  loggedIn: boolean;
-  setUser: (userId: string) => void;
-  clearUser: () => void;
+  firstName: string | null;
+  lastName: string | null;
+  email: string | null;
+  setUser: (email: string, firstName: string, lastName: string) => void;
+  resetUser: () => void;
 };
 
-export const useUserStore = create<UserState>((set) => ({
-  userId: null,
-  loggedIn: false,
-  setUser: (userId: string) =>
-    set({
-      userId,
-      loggedIn: true,
+export const useUserStore = create<UserState>()(
+  persist(
+    (set) => ({
+      firstName: null,
+      lastName: null,
+      email: null,
+      setUser: (email, firstName, lastName) =>
+        set({ email, firstName, lastName }),
+      resetUser: () => set({ firstName: null, lastName: null, email: null }),
     }),
-  clearUser: () =>
-    set({
-      userId: null,
-      loggedIn: false,
-    }),
-}));
+    {
+      name: "user-storage", 
+      // partialize: (state) => ({
+      //   email: state.email,
+      //   firstName: state.firstName,
+      //   lastName: state.lastName,
+      // }),
+    }
+  )
+);

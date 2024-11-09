@@ -3,6 +3,9 @@ import { Dispatch, SetStateAction, useState } from "react";
 interface Errors {
   email?: string | null;
   password?: string | null;
+  phoneNumber?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
 }
 
 export default function useChangeInput() {

@@ -1,17 +1,10 @@
 import Button from "../Button/Button";
 import zibanaLogo from "../../images/Zibana-logo.png";
-import { validateEmail, validatePassword } from "../../utils/loginValidation";
+import { validateEmail } from "../../utils/loginValidation";
 import Image from "next/image";
 import { EmailExistenceResponse } from "@/types/emailExistingType";
-import Spinner from "../LoadingSpinner/LoadingSpinner";
-import {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import Icon from "../Icon/Icon";
 import LoginSignupInput from "../LoginSignupInput/LoginSignupInput";
 import useChangeInput from "@/hooks/useChangeInput";
@@ -20,104 +13,87 @@ import Successful from "../Successful/Successful";
 import LoginStep from "../LoginStep/LoginStep";
 import LoginSignupError from "../LoginSignupError/LoginSignupError";
 import { useUserStore } from "../../stores/useUserStore";
-import { useHttpClient } from '../../hooks/http-hook';
+import { useHttpClient } from "../../hooks/http-hook";
 
 export default function LoginSignupModal({
-  isModalOpen,
   handleIsModalOpen,
 }: {
-  isModalOpen: boolean;
   handleIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [name, setName] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
+
   const [emailExists, setEmailExists] = useState<boolean | null>(null);
   const [signedUp, setSignedUp] = useState<boolean>(false);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [error, setError] = useState<boolean | null>(null);
   const { handleChangeInput, errors } = useChangeInput();
-  const emailInputRef = useRef<HTMLInputElement | null>(null);
   const { setUser } = useUserStore();
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const checkEmailExistence = async () => {
-    setIsLoading(true);
     try {
-      const response = await fetch(
+      const responseData = await sendRequest(
         `http://localhost:5000/api/users/existence?email=${encodeURIComponent(
           email
         )}`,
-        {
-          method: "GET",
-        }
+        "GET"
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to check user existence");
-      }
-
-      const data = (await response.json()) as EmailExistenceResponse;
+      const data = responseData as EmailExistenceResponse;
+      console.log("data");
       return data.exists;
     } catch (error) {
-      setError(true);
-    } finally {
-      setIsLoading(false);
+      console.error("Error checking email existence:", error);
     }
   };
 
   const signupUser = async () => {
-    setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/users/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/users/signup",
+        "POST",
+        JSON.stringify({
+          email,
+          password,
+          firstName,
+          lastName,
+          phoneNumber,
+        }),
+        { "Content-Type": "application/json" }
+      );
 
-      if (!response.ok) {
-        throw new Error("Failed to signup, please try again later");
-      }
-
-      const data = await response.json();
-
-      if (data) {
-        console.log("data", data.name);
-        setUser(data.userId);
-        console.log("userId", data.name);
+      if (responseData && responseData.user) {
+        const { email, firstName, lastName } = responseData.user;
+        setUser(email, firstName, lastName);
         setSignedUp(true);
       }
     } catch (error) {
-      setError(true);
     } finally {
-      setIsLoading(false);
+      closeModal();
     }
   };
 
   const loginUser = async () => {
-    setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to login, please try again later");
-      }
-
-      const data = await response.json();
-
-      if (data.message === "Logged in!") {
-        setUser(data.userId);
-        console.log("userId", data.userId);
+      const responseData = await sendRequest(
+        "http://localhost:5000/api/users/login",
+        "POST",
+        JSON.stringify({ email, password }),
+        { "Content-Type": "application/json" }
+      );
+      if (responseData) {
+        setUser(
+          responseData.email,
+          responseData.firstName,
+          responseData.lastName
+        );
         setLoggedIn(true);
       }
     } catch (error) {
-      setError(true);
     } finally {
-      setIsLoading(false);
+      closeModal();
     }
   };
 
@@ -142,12 +118,6 @@ export default function LoginSignupModal({
     handleIsModalOpen(false);
   };
 
-  useEffect(() => {
-    if (isModalOpen && emailInputRef.current) {
-      emailInputRef.current.focus();
-    }
-  }, [isModalOpen]);
-
   return (
     <>
       <div
@@ -155,7 +125,7 @@ export default function LoginSignupModal({
         onClick={closeModal}
       />
       <div className="fixed inset-0 flex items-center justify-center z-50">
-        <div className="bg-white w-[45%] h-[60%] rounded-lg shadow-lg relative flex">
+        <div className="bg-white min-w-[45%] min-h-[60%] w-auto h-auto rounded-lg shadow-lg relative flex">
           <Button
             onClick={closeModal}
             className="absolute top-4 left-4 hover:text-gray text-black"
@@ -175,7 +145,11 @@ export default function LoginSignupModal({
 
           <div className="w-2/3 flex flex-col bg-[#ffcccc] p-4">
             {isLoading ? (
-              <Spinner />
+              <>
+                <div className="flex items-center justify-center w-full h-full">
+                  <LoadingSpinner />
+                </div>
+              </>
             ) : (
               <form
                 onSubmit={handleSubmit}
@@ -224,7 +198,9 @@ export default function LoginSignupModal({
                   <SignupStep
                     handlePassword={setPassword}
                     password={password}
-                    handleName={setName}
+                    handleFirstName={setFirstName}
+                    handleLastName={setLastName}
+                    handlePhoneNumber={setPhoneNumber}
                   />
                 ) : (
                   <></>

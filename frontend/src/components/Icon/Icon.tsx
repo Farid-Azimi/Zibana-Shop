@@ -8,11 +8,19 @@ import {
   IoMdHeart,
   IoIosArrowBack,
   IoIosArrowForward,
+  IoIosArrowDown,
   IoIosCheckmarkCircle,
 } from "react-icons/io";
 import { CiSquareRemove } from "react-icons/ci";
 import { FaPlus, FaRegTrashCan, FaTrashCan, FaMinus } from "react-icons/fa6";
-import { MdErrorOutline } from "react-icons/md";
+import { MdErrorOutline,  MdPhoneInTalk } from "react-icons/md";
+import {
+  FaInstagram,
+  FaTwitter,
+  FaTelegram,
+  FaLinkedin,
+  FaWhatsapp,
+} from "react-icons/fa";
 
 const list = {
   IoBagHandleOutline: IoBagHandleOutline,
@@ -28,6 +36,7 @@ const list = {
   IoMdHeart: IoMdHeart,
   IoIosArrowBack: IoIosArrowBack,
   IoIosArrowForward: IoIosArrowForward,
+  IoIosArrowDown: IoIosArrowDown, 
   CiSquareRemove: CiSquareRemove,
   FaPlus: FaPlus,
   FaRegTrashCan: FaRegTrashCan,
@@ -35,6 +44,12 @@ const list = {
   FaMinus: FaMinus,
   IoIosCheckmarkCircle: IoIosCheckmarkCircle,
   MdErrorOutline: MdErrorOutline,
+  FaInstagram: FaInstagram,
+  FaTwitter: FaTwitter,
+  FaTelegram: FaTelegram,
+  FaLinkedin: FaLinkedin,
+  FaWhatsapp: FaWhatsapp,
+  MdPhoneInTalk:  MdPhoneInTalk,
 };
 
 type IconName = keyof typeof list;

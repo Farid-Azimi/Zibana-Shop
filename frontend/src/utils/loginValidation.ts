@@ -4,13 +4,18 @@ const validateEmail = (email: string): boolean => {
   return re.test(String(email).toLowerCase());
 };
 
-const validatePassword = (password: string): boolean => password.length >= 5;
+const validatePassword = (password: string): boolean => password.length >= 6;
 
 const validateConfirmPassword = (
   password: string,
   confirmPassword: string | undefined
 ): boolean => password === confirmPassword;
 
-const validateName = (name: string): boolean => name.length > 0;
+const validateName = (name: string): boolean => name.length > 1;
 
-export { validateEmail, validatePassword, validateConfirmPassword, validateName };
+const validatePhoneNumber = (phoneNumber: string): boolean => {
+  const re = /^(\+98|0)?9\d{9}$/;
+  return re.test(phoneNumber);
+};
+
+export { validateEmail, validatePassword, validateConfirmPassword, validateName, validatePhoneNumber };

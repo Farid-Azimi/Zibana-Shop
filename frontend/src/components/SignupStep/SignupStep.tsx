@@ -4,6 +4,7 @@ import {
   validateConfirmPassword,
   validatePassword,
   validateName,
+  validatePhoneNumber,
 } from "@/utils/loginValidation";
 import { Dispatch, SetStateAction, useState } from "react";
 import Button from "../Button/Button";
@@ -11,11 +12,15 @@ import Button from "../Button/Button";
 export default function SignupStep({
   password,
   handlePassword,
-  handleName,
+  handleFirstName,
+  handleLastName,
+  handlePhoneNumber,
 }: {
   password: string;
   handlePassword: Dispatch<SetStateAction<string>>;
-  handleName: Dispatch<SetStateAction<string>>;
+  handleFirstName: Dispatch<SetStateAction<string>>;
+  handleLastName: Dispatch<SetStateAction<string>>;
+  handlePhoneNumber: Dispatch<SetStateAction<string>>;
 }) {
   const [, setConfirmPassword] = useState<string>("");
 
@@ -29,14 +34,49 @@ export default function SignupStep({
           handleChangeInput(
             e,
             validateName,
-            "name",
-            handleName,
-            "نام نباید خالی باشد"
+            "firstName",
+            handleFirstName,
+            "نام باید حداقل دارای 2 کاراکتر باشد"
           )
         }
-        type={"name"}
+        type={"firstName"}
         placeholder={"نام"}
       />
+      {errors.firstName && (
+        <span className="text-[#EA2027] text-sm">{errors.firstName}</span>
+      )}
+      <LoginSignupInput
+        onChangeHandler={(e) =>
+          handleChangeInput(
+            e,
+            validateName,
+            "lastName",
+            handleLastName,
+            "نام خانوادگی باید حداقل دارای 2 کاراکتر باشد"
+          )
+        }
+        type={"lastName"}
+        placeholder={"نام خانوادگی"}
+      />
+      {errors.lastName && (
+        <span className="text-[#EA2027] text-sm">{errors.lastName}</span>
+      )}
+      <LoginSignupInput
+        onChangeHandler={(e) =>
+          handleChangeInput(
+            e,
+            validatePhoneNumber,
+            "phoneNumber",
+            handlePhoneNumber,
+            "شماره تلفن نامعتبر است"
+          )
+        }
+        type={"tel"}
+        placeholder={"شماره تلفن"}
+      />
+      {errors.phoneNumber && (
+        <span className="text-[#EA2027] text-sm">{errors.phoneNumber}</span>
+      )}
       <LoginSignupInput
         onChangeHandler={(e) =>
           handleChangeInput(
@@ -44,12 +84,15 @@ export default function SignupStep({
             validatePassword,
             "password",
             handlePassword,
-            "رمزعبور وارد شده باید حداقل دارای ۵ کاراکتر باشد"
+            "رمزعبور باید حداقل دارای 6 کاراکتر باشد"
           )
         }
         type={"password"}
         placeholder={"رمزعبور"}
       />
+      {errors.password && (
+        <span className="text-[#EA2027] text-sm">{errors.password}</span>
+      )}
       <LoginSignupInput
         onChangeHandler={(e) =>
           handleChangeInput(
@@ -64,6 +107,7 @@ export default function SignupStep({
         type={"password"}
         placeholder={"تایید رمزعبور"}
       />
+      
       <div className="flex justify-center">
         <Button
           type="submit"

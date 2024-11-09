@@ -14,6 +14,7 @@ export default function LoginStep({
   return (
     <>
       <h2 className="font-bold text-base">ورود</h2>
+      <span className="mb-2">رمز عبور خود را وارد کنید</span>
       <LoginSignupInput
         onChangeHandler={(e) =>
           handleChangeInput(
