@@ -27,7 +27,10 @@ const getProductById = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ product: product.toObject({ getters: true }) });
+  const productData = product.toObject({ getters: true });
+  delete productData.likedUsers;
+
+  res.json({ product: productData });
 };
 
 const getProductsByUserId = async (req, res, next) => {
@@ -36,7 +39,6 @@ const getProductsByUserId = async (req, res, next) => {
   let userWithProducts;
   try {
     userWithProducts = await User.findById(userId).populate("products");
-    console.log(userWithProducts);
   } catch (err) {
     const error = new HttpError(
       "Fetching products failed, please try again later",
@@ -63,47 +65,50 @@ const getProductsByUserId = async (req, res, next) => {
 const createProduct = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    throw new HttpError("Invalid inputs passes, please check your data.", 422);
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
 
-  const { title, description, creator } = req.body;
-
-  const createdProduct = new Product({
+  const {
+    name,
+    brand,
+    category,
+    subCategory,
     title,
     description,
-    image:
-      "https://i5.walmartimages.com/seo/Head-and-Shoulders-Dandruff-Shampoo-Classic-Clean-8-45-fl-oz_7eccea03-e44c-48e6-9de0-17b3063f2985.bdd7cd46308e9df02af07dfbce0c576b.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-    creator,
+    originalPrice,
+    discountedPrice,
+    discountPercentage,
+    imageSrc,
+  } = req.body;
+
+  let finalDiscountedPrice = discountedPrice;
+  let finalDiscountPercentage = discountPercentage;
+
+  if (originalPrice && discountedPrice) {
+    finalDiscountPercentage =
+      ((originalPrice - discountedPrice) / originalPrice) * 100;
+  } else if (originalPrice && discountPercentage) {
+    finalDiscountedPrice = originalPrice * (1 - discountPercentage / 100);
+  }
+
+  const createdProduct = new Product({
+    name,
+    brand,
+    category,
+    subCategory,
+    title,
+    description,
+    originalPrice,
+    discountedPrice: finalDiscountedPrice,
+    discountPercentage: finalDiscountPercentage,
+    imageSrc,
+    likedUsers: [],
   });
 
-  let user;
   try {
-    user = await User.findById(creator);
+    await createdProduct.save();
   } catch (err) {
-    const error = new HttpError(
-      "Creating product failed, please try again",
-      500
-    );
-    return next(error);
-  }
-
-  if (!user) {
-    const error = new HttpError("Could not find user for provided id", 404);
-    return next(error);
-  }
-
-  try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
-    await createdProduct.save({ session: sess });
-    user.products.push(createdProduct);
-    await user.save({ session: sess });
-    await sess.commitTransaction();
-  } catch (err) {
-    const error = new HttpError(
-      "Creating product failed, please try again",
-      500
-    );
+    const error = new HttpError(err, 500);
     return next(error);
   }
 
@@ -186,8 +191,105 @@ const deleteProduct = async (req, res, next) => {
   res.status(200).json({ message: "Deleted product" });
 };
 
+const getProductsByCategory = async (req, res, next) => {
+  const categoryName = req.params.category;
+
+  const limit = parseInt(req.query.limit) || 10;
+
+  let products;
+  try {
+    products = await Product.find({ category: { $in: [categoryName] } }).limit(limit);
+    if (!products || products.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No products found for the specified category." });
+    }
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching products failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  res.json({
+    products: products.map((product) => product.toObject({ getters: true })),
+  });
+};
+
+const getLatestProducts = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+
+    const latestProducts = await Product.find()
+      .sort({ createdAt: -1 })
+      .limit(limit);
+
+    res.status(200).json({
+      data: latestProducts,
+    });
+  } catch (error) {
+    console.error("Error fetching latest products:", error);
+    res.status(500).json({
+      message: "Failed to fetch latest products",
+    });
+  }
+};
+
+const getMostSoldProducts = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+
+    const mostSoldProducts = await Product.find()
+      .sort({ soldCount: -1 })
+      .limit(limit);
+
+    res.status(200).json({
+      data: mostSoldProducts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch most sold products",
+    });
+  }
+};
+
 exports.getProductById = getProductById;
 exports.getProductsByUserId = getProductsByUserId;
 exports.createProduct = createProduct;
 exports.updateProduct = updateProduct;
 exports.deleteProduct = deleteProduct;
+exports.getProductsByCategory = getProductsByCategory;
+exports.getLatestProducts = getLatestProducts;
+exports.getMostSoldProducts = getMostSoldProducts;
+
+// let user;
+// try {
+//   user = await User.findById(creator);
+// } catch (err) {
+//   const error = new HttpError(
+//     "Creating product failed, please try again",
+//     500
+//   );
+//   return next(error);
+// }
+
+// if (!user) {
+//   const error = new HttpError("Could not find user for provided id", 404);
+//   return next(error);
+// }
+
+// try {
+//   const sess = await mongoose.startSession();
+//   sess.startTransaction();
+//   await createdProduct.save({ session: sess });
+//   user.products.push(createdProduct);
+//   await user.save({ session: sess });
+//   await sess.commitTransaction();
+// } catch (err) {
+//   const error = new HttpError(
+//     "Creating product failed, please try again",
+//     500
+//   );
+//   return next(error);
+// }
