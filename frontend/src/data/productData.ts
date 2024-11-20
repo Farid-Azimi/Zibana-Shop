@@ -170,9 +170,9 @@ export const products: Product[] = [
     description:
       "Et tempor duis esse eiusmod minim. Sunt enim sint nisi tempor. Reprehenderit labore elit nulla consectetur.",
     originalPrice: "1,490,000",
-    hasDiscount: false,
-    discountedPrice: "1,399,000",
-    discountPercentage: null,
+    hasDiscount: true,
+    discountedPrice: null,
+    discountPercentage: 15,
     imageSrc: product2,
   }),
 ];

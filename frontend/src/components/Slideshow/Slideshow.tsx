@@ -6,10 +6,14 @@ import Link from "next/link";
 import { Pagination, A11y, Autoplay, EffectFade } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
-import makeup from "../../images/slider/makeup.jpg";
-import skinCare from "../../images/slider/skin-care.jpg";
-import muothWash from "../../images/slider/mouth&teeth.jpeg";
-import perfume from "../../images/slider/perfume.jpg";
+// import makeup from "../../images/slider/makeup.jpg";
+// import skinCare from "../../images/slider/skin-care.jpg";
+// import muothWash from "../../images/slider/mouth&teeth.jpeg";
+// import perfume from "../../images/slider/perfume.jpg";
+import makeup from "../../images/slider/UUs2BCyXpOiByLxbzV0HNiwVitWGcnfCNxzUF8DV.jpg";
+import skinCare from "../../images/slider/VfLo1H9k0ukagNXcGNYxNy6NKAKVPo8WLUkCxzhV.gif";
+import muothWash from "../../images/slider/ZiBTmRShLlHuDbwVjfFEVvn05IqSHwAQscW3N7ea.jpg";
+import perfume from "../../images/slider/IMG_20240622_120008_221-min.jpg";
 
 export default function Slideshow() {
   return (

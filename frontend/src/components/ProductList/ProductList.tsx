@@ -4,13 +4,35 @@ import Image from "next/image";
 import Button from "../Button/Button";
 import Icon from "../Icon/Icon";
 import ProductItem from "../ProductItem/ProductItem";
-import promo from "../../images/promo.png";
 import { products } from "../../data/productData";
 
-export default function ProductList() {
+interface ProductListProps {
+  promoImageSrc: string;
+  bgColor?: string;
+  filter?: "discounted" | "newest" | "bestselling";
+}
+
+export default function ProductList({
+  promoImageSrc,
+  bgColor = "bg-[#f8a5c2]",
+  filter,
+}: ProductListProps) {
   const [isListLeftEnd, setIsListLeftEnd] = useState(false);
   const [isListRightEnd, setIsListRightEnd] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const filteredProducts = products.filter((product) => {
+    switch (filter) {
+      case "discounted":
+        return product.hasDiscount;
+      // case "newest":
+      //   return product.isNew;
+      // case "bestselling":
+      //   return product.isBestSelling;
+      default:
+        return true;
+    }
+  });
 
   const checkScrollPosition = useCallback(() => {
     if (scrollRef.current) {
@@ -43,24 +65,27 @@ export default function ProductList() {
     const handleScroll = () => {
       checkScrollPosition();
     };
-
-    if (scrollRef.current) {
-      scrollRef.current.addEventListener("scroll", handleScroll);
+    
+    const currentScrollRef = scrollRef.current;
+    if (currentScrollRef) {
+      currentScrollRef.addEventListener("scroll", handleScroll);
     }
 
-    // return () => {
-    //   if (scrollRef.current) {
-    //     scrollRef.current.removeEventListener("scroll", handleScroll);
-    //   }
-    // };
+    return () => {
+      if (currentScrollRef) {
+        currentScrollRef.removeEventListener("scroll", handleScroll);
+      }
+    };
   }, [checkScrollPosition]);
 
   return (
     <>
-      <div className="bg-[#f8a5c2] rounded-xl m-4 p-4 flex items-center w-[86%] mx-auto relative">
+      <div
+        className={`${bgColor} rounded-xl m-4 p-4 flex items-center w-[86%] mx-auto relative`}
+      >
         <Image
-          src={promo.src}
-          alt="promo"
+          src={promoImageSrc}
+          alt="icon"
           width={500}
           height={500}
           className="w-32 h-32 m-5"
@@ -91,7 +116,7 @@ export default function ProductList() {
           >
             <Icon name={"IoIosArrowForward"} size={18} />
           </Button>
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <ProductItem key={product.id} product={product} />
           ))}
         </div>

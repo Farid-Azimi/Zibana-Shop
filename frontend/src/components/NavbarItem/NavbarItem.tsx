@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 interface NavbarItemProps {
   title: string;
   icon: IconType;
+  href?: string;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
   frontIcon: IconType | undefined;
@@ -13,6 +14,7 @@ interface NavbarItemProps {
 export default function NavbarItem({
   title,
   icon: Icon,
+  href = "/",
   onMouseEnter,
   onMouseLeave,
   frontIcon: FrontIcon,
@@ -30,7 +32,7 @@ export default function NavbarItem({
       onMouseLeave={onMouseLeave}
     >
       <Icon />
-      <Link href="#" className="text-sm">
+      <Link href={href} passHref className="text-sm">
         {title}
       </Link>
       {FrontIcon && <FrontIcon />}
