@@ -13,7 +13,7 @@ router.post(
     check("firstName").not().isEmpty(),
     check("lastName").not().isEmpty(),
     check("phoneNumber").isLength({ min: 10 }).isNumeric(),
-    check("email").normalizeEmail().isEmail(),
+    check("email").isEmail(),
     check("password").isLength({ min: 6 }),
   ],
   usersController.signup

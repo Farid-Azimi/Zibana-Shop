@@ -96,6 +96,7 @@ const login = async (req, res, next) => {
     firstName: existingUser.firstName,
     lastName: existingUser.lastName,
     email: email,
+    id: existingUser.id,
   });
 };
 
@@ -124,12 +125,10 @@ const checkExistence = async (req, res, next) => {
 const toggleLikeProduct = async (req, res, next) => {
   const { userId, productId } = req.body;
 
-  // Start a session
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    // Fetch the user and product documents in the session
     const user = await User.findById(userId).session(session);
     const product = await Product.findById(productId).session(session);
 
@@ -139,29 +138,23 @@ const toggleLikeProduct = async (req, res, next) => {
       return res.status(404).json({ message: "User or Product not found." });
     }
 
-    // Check if the product is already liked by the user
     const isLiked = user.likedProducts.includes(productId);
 
     if (isLiked) {
-      // If already liked, remove the productId from user's likedProducts
       user.likedProducts = user.likedProducts.filter(
         (id) => id.toString() !== productId
       );
-      // Remove the userId from product's likedUsers
       product.likedUsers = product.likedUsers.filter(
         (id) => id.toString() !== userId
       );
     } else {
-      // If not liked, add productId to user's likedProducts and userId to product's likedUsers
       user.likedProducts.push(productId);
       product.likedUsers.push(userId);
     }
 
-    // Save both documents as part of the transaction
     await user.save({ session });
     await product.save({ session });
 
-    // Commit the transaction
     await session.commitTransaction();
     session.endSession();
 
@@ -171,7 +164,6 @@ const toggleLikeProduct = async (req, res, next) => {
         : "Product liked successfully.",
     });
   } catch (err) {
-    // Abort transaction on error
     await session.abortTransaction();
     session.endSession();
     res.status(500).json({ message: "Toggling like failed.", error: err });
