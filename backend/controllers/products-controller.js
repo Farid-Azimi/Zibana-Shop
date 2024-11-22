@@ -198,7 +198,9 @@ const getProductsByCategory = async (req, res, next) => {
 
   let products;
   try {
-    products = await Product.find({ category: { $in: [categoryName] } }).limit(limit);
+    products = await Product.find({ category: { $in: [categoryName] } }).limit(
+      limit
+    );
     if (!products || products.length === 0) {
       return res
         .status(404)
@@ -254,6 +256,24 @@ const getMostSoldProducts = async (req, res) => {
   }
 };
 
+const getMostLikedProducts = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 10;
+
+    const mostLikedProducts = await Product.find()
+      .sort({ likedUsers: -1 })
+      .limit(limit);
+
+    res.status(200).json({
+      data: mostLikedProducts,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch most liked products",
+    });
+  }
+};
+
 exports.getProductById = getProductById;
 exports.getProductsByUserId = getProductsByUserId;
 exports.createProduct = createProduct;
@@ -262,6 +282,7 @@ exports.deleteProduct = deleteProduct;
 exports.getProductsByCategory = getProductsByCategory;
 exports.getLatestProducts = getLatestProducts;
 exports.getMostSoldProducts = getMostSoldProducts;
+exports.getMostLikedProducts = getMostLikedProducts;
 
 // let user;
 // try {

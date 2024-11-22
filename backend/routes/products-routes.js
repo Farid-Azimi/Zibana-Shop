@@ -5,6 +5,8 @@ const productsControllers = require("../controllers/products-controller");
 
 const router = express.Router();
 
+router.get("/most-liked", productsControllers.getMostSoldProducts);
+
 router.get("/most-sold", productsControllers.getMostSoldProducts);
 
 router.get("/latest", productsControllers.getLatestProducts);
