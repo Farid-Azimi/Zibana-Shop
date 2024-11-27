@@ -58,7 +58,7 @@ export default function CategoryList() {
             <Link
               key={category.id}
               href="#"
-              className="flex flex-col items-center gap-3"
+              className="flex flex-col items-center gap-3 transition-transform duration-300 hover:scale-110"
             >
               <Image
                 src={category.imageSrc}

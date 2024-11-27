@@ -1,10 +1,10 @@
 const { validationResult } = require("express-validator");
 
 const mongoose = require("mongoose");
-
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const Product = require("../models/product");
+const bcrypt = require('bcrypt');
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -170,8 +170,67 @@ const toggleLikeProduct = async (req, res, next) => {
   }
 };
 
+const createUsers = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    throw new HttpError("Invalid inputs passed, please check your data.", 422);
+  }
+
+  const users = req.body.users;
+
+  if (!Array.isArray(users) || users.length === 0) {
+    throw new HttpError("No users provided or invalid format.", 400);
+  }
+
+  const createdUsers = [];
+
+  for (const user of users) {
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      phoneNumber,
+      address,
+      purchaseHistory,
+      ratings,
+      wishlist,
+      browsingHistory,
+    } = user;
+
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      phoneNumber,
+      address,
+      purchaseHistory: purchaseHistory || [],
+      ratings: ratings || [],
+      wishlist: wishlist || [],
+      browsingHistory: browsingHistory || [],
+    });
+
+    try {
+      const savedUser = await newUser.save();
+      createdUsers.push(savedUser);
+    } catch (err) {
+      const error = new HttpError(
+        `Failed to create user with email ${email}: ${err.message}`,
+        500
+      );
+      return next(error);
+    }
+  }
+
+  res.status(201).json({ users: createdUsers });
+};
+
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
 exports.checkExistence = checkExistence;
 exports.toggleLikeProduct = toggleLikeProduct;
+exports.createUsers = createUsers;

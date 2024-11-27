@@ -11,7 +11,7 @@ export default function BrandsList() {
     <>
       <div className="flex items-center justify-center w-full p-4 gap-4">
         <Link href="balance">
-          <div className="w-80 h-60 relative">
+          <div className="w-80 h-60 relative transition-transform duration-300 hover:scale-105">
             <Image
               src={balance}
               alt="balance"
@@ -21,7 +21,7 @@ export default function BrandsList() {
           </div>
         </Link>
         <Link href="purest">
-          <div className="w-80 h-60 relative">
+          <div className="w-80 h-60 relative transition-transform duration-300 hover:scale-105">
             <Image
               src={purest}
               alt="purest"
@@ -31,7 +31,7 @@ export default function BrandsList() {
           </div>
         </Link>
         <Link href="dermedic">
-          <div className="w-80 h-60 relative">
+          <div className="w-80 h-60 relative transition-transform duration-300 hover:scale-105">
             <Image
               src={dermedic}
               alt="dermedic"
@@ -41,7 +41,7 @@ export default function BrandsList() {
           </div>
         </Link>
         <Link href="neutrogena">
-          <div className="w-80 h-60 relative">
+          <div className="w-80 h-60 relative transition-transform duration-300 hover:scale-105">
             <Image
               src={neutrogena}
               alt="neutrogena"

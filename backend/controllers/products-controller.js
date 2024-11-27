@@ -62,57 +62,77 @@ const getProductsByUserId = async (req, res, next) => {
   });
 };
 
-const createProduct = async (req, res, next) => {
+const createProducts = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log(errors);
     throw new HttpError("Invalid inputs passed, please check your data.", 422);
   }
 
-  const {
-    name,
-    brand,
-    category,
-    subCategory,
-    title,
-    description,
-    originalPrice,
-    discountedPrice,
-    discountPercentage,
-    imageSrc,
-  } = req.body;
+  const products = req.body.products;
 
-  let finalDiscountedPrice = discountedPrice;
-  let finalDiscountPercentage = discountPercentage;
-
-  if (originalPrice && discountedPrice) {
-    finalDiscountPercentage =
-      ((originalPrice - discountedPrice) / originalPrice) * 100;
-  } else if (originalPrice && discountPercentage) {
-    finalDiscountedPrice = originalPrice * (1 - discountPercentage / 100);
+  if (!Array.isArray(products) || products.length === 0) {
+    throw new HttpError("No products provided or invalid format.", 400);
   }
 
-  const createdProduct = new Product({
-    name,
-    brand,
-    category,
-    subCategory,
-    title,
-    description,
-    originalPrice,
-    discountedPrice: finalDiscountedPrice,
-    discountPercentage: finalDiscountPercentage,
-    imageSrc,
-    likedUsers: [],
-  });
+  const createdProducts = [];
 
-  try {
-    await createdProduct.save();
-  } catch (err) {
-    const error = new HttpError(err, 500);
-    return next(error);
+  for (const product of products) {
+    const {
+      title,
+      brand,
+      category,
+      description,
+      originalPrice,
+      discountedPrice,
+      discountPercentage,
+      imageSrc,
+      inventory,
+      soldCount,
+      averageRating,
+      views,
+    } = product;
+
+    let finalDiscountedPrice = discountedPrice;
+    let finalDiscountPercentage = discountPercentage;
+
+    if (originalPrice && discountedPrice) {
+      finalDiscountPercentage = Math.round(
+        ((originalPrice - discountedPrice) / originalPrice) * 100
+      );
+    } else if (originalPrice && discountPercentage) {
+      finalDiscountedPrice = originalPrice * (1 - discountPercentage / 100);
+    }
+
+    const newProduct = new Product({
+      title,
+      brand,
+      category,
+      description,
+      originalPrice,
+      discountedPrice: finalDiscountedPrice,
+      discountPercentage: finalDiscountPercentage,
+      imageSrc,
+      inventory: inventory || 0,
+      soldCount: soldCount || 0,
+      averageRating: averageRating || 0,
+      views: views || 0,
+      likedUsers: [],
+    });
+
+    try {
+      const savedProduct = await newProduct.save();
+      createdProducts.push(savedProduct);
+    } catch (err) {
+      const error = new HttpError(
+        `Failed to create product: ${err.message}`,
+        500
+      );
+      return next(error);
+    }
   }
 
-  res.status(201).json({ product: createdProduct });
+  res.status(201).json({ products: createdProducts });
 };
 
 const updateProduct = async (req, res, next) => {
@@ -274,43 +294,47 @@ const getMostLikedProducts = async (req, res) => {
   }
 };
 
+const getAllProductIds = async (req, res, next) => {
+  try {
+    const products = await Product.find({}, "_id");
+    const productIds = products.map((product) => product._id);
+
+    res.status(200).json({ productIds });
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching product IDs failed, please try again.",
+      500
+    );
+    return next(error);
+  }
+};
+
+const getDiscountedProducts = async (req, res, next) => {
+  try {
+    const limit = parseInt(req.query.limit, 10) || 10;
+
+    const discountedProducts = await Product.find({
+      discountedPrice: { $gt: 0 },
+    }).limit(limit);
+
+    res.status(200).json({ discountedProducts });
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching discounted products failed, please try again.",
+      500
+    );
+    return next(error);
+  }
+};
+
 exports.getProductById = getProductById;
 exports.getProductsByUserId = getProductsByUserId;
-exports.createProduct = createProduct;
+exports.createProducts = createProducts;
 exports.updateProduct = updateProduct;
 exports.deleteProduct = deleteProduct;
 exports.getProductsByCategory = getProductsByCategory;
 exports.getLatestProducts = getLatestProducts;
 exports.getMostSoldProducts = getMostSoldProducts;
 exports.getMostLikedProducts = getMostLikedProducts;
-
-// let user;
-// try {
-//   user = await User.findById(creator);
-// } catch (err) {
-//   const error = new HttpError(
-//     "Creating product failed, please try again",
-//     500
-//   );
-//   return next(error);
-// }
-
-// if (!user) {
-//   const error = new HttpError("Could not find user for provided id", 404);
-//   return next(error);
-// }
-
-// try {
-//   const sess = await mongoose.startSession();
-//   sess.startTransaction();
-//   await createdProduct.save({ session: sess });
-//   user.products.push(createdProduct);
-//   await user.save({ session: sess });
-//   await sess.commitTransaction();
-// } catch (err) {
-//   const error = new HttpError(
-//     "Creating product failed, please try again",
-//     500
-//   );
-//   return next(error);
-// }
+exports.getAllProductIds = getAllProductIds;
+exports.getDiscountedProducts = getDiscountedProducts;

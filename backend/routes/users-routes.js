@@ -25,4 +25,6 @@ router.get("/existence", usersController.checkExistence);
 
 router.post("/like", usersController.toggleLikeProduct);
 
+router.post("/create", usersController.createUsers);
+
 module.exports = router;

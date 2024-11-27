@@ -10,11 +10,42 @@ const userSchema = new Schema({
   password: { type: String, required: true, minLength: 6 },
   phoneNumber: { type: String, required: true },
   address: { type: String, required: false },
-  likedProducts: [
-    { type: mongoose.Types.ObjectId, required: true, ref: "Product" },
+  purchaseHistory: [
+    {
+      productId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+      purchasedAt: { type: Date, required: true },
+      quantity: { type: Number, required: true, default: 1 },
+    },
+  ],
+  ratings: [
+    {
+      productId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Product",
+        required: true,
+        unique: true,
+      },
+      rating: { type: Number, required: true, min: 1, max: 5 },
+    },
+  ],
+  wishlist: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
+  browsingHistory: [
+    {
+      productId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Product",
+        required: true,
+      },
+      viewedAt: { type: Date, default: Date.now },
+    },
   ],
 });
 
 userSchema.plugin(uniqueValidator);
+userSchema.index({ email: 1 });
 
 module.exports = mongoose.model("User", userSchema);

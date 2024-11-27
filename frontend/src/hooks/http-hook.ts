@@ -47,6 +47,10 @@ export const useHttpClient = () => {
         setIsLoading(false);
         return responseData;
       } catch (err: any) {
+        activeHttpRequests.current = activeHttpRequests.current.filter(
+          (reqCtrl) => reqCtrl !== httpAbortCtrl
+        );
+
         setError(err.message || "An error occurred!");
         setIsLoading(false);
         throw err;
@@ -61,7 +65,15 @@ export const useHttpClient = () => {
 
   useEffect(() => {
     return () => {
-      activeHttpRequests.current.forEach((abortCtrl) => abortCtrl.abort());
+      activeHttpRequests.current.forEach((abortCtrl) => {
+        try {
+          if (!abortCtrl.signal.aborted) {
+            abortCtrl.abort();
+          }
+        } catch (error) {
+          console.error("Error aborting request:", error);
+        }
+      });
     };
   }, []);
 

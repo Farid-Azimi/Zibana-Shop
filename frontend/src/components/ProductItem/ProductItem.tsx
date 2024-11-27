@@ -12,8 +12,7 @@ interface ProductItemProps {
 export default function ProductItem({
   product,
 }: ProductItemProps): JSX.Element {
-  // const { cartItems, addToCart, removeFromCart, decreaseQuantity } =
-  //   useCartStore();
+
   const { addToCart } = useCartStore();
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const [clickedIcon, setClickedIcon] = useState<string | null>(null);
@@ -28,35 +27,35 @@ export default function ProductItem({
 
   return (
     <>
-      <div className="bg-white min-w-[200px] rounded-xl shadow-md p-4 flex flex-col items-center group relative overflow-hidden">
-        {product.hasDiscount && (
+      <div className="bg-white min-w-[200px] rounded-xl shadow-md p-4 flex flex-col items-center group relative overflow-hidden transition-transform duration-300 hover:scale-95">
+        {product.discountedPrice && (
           <div className="absolute top-0 left-0 bg-[#f62b72] text-white text-sm px-3 py-2 rounded-br-lg">
             {product.discountPercentage}٪
           </div>
         )}
         <Image
           src={product.imageSrc}
-          alt={product.name}
+          alt={product.title}
           width={500}
           height={500}
           className="w-full h-auto mb-4"
         />
-        <Link key={product.id} href={`/product/${product.id}`} passHref>
+        <Link href={`/product/${product.title}`} passHref>
           <h3 className="text-sm text-textGray mb-2 font-semibold hover:text-black text-center">
-            {product.name}
+            {product.title}
           </h3>
         </Link>
         <div className="flex flex-col items-center text-center">
           <span
             className={`mt-2 ${
-              product.hasDiscount
+              product.discountedPrice
                 ? "text-gray line-through text-sm"
                 : "text-[#313131] text-base font-semibold"
             }`}
           >
             {product.originalPrice} تومان
           </span>
-          {product.hasDiscount && (
+          {product.discountedPrice && (
             <>
               <span className="text-[#313131] text-base font-semibold">
                 {product.discountedPrice} تومان
@@ -91,7 +90,7 @@ export default function ProductItem({
             onMouseLeave={() => setHoveredIcon(null)}
             onClick={() => handleIconClick("IoMdHeart")}
           />
-          <Link key={product.id} href={`/product/${product.id}`} passHref>
+          <Link href={`/product/${product.title}`} passHref>
             <Icon
               name={hoveredIcon === "AiFillEye" ? "AiFillEye" : "AiOutlineEye"}
               className={
