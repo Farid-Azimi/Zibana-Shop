@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <>
       <Layout>
-      <HomeContent />
+        <HomeContent />
       </Layout>
     </>
   );

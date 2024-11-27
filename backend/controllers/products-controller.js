@@ -317,7 +317,7 @@ const getDiscountedProducts = async (req, res, next) => {
       discountedPrice: { $gt: 0 },
     }).limit(limit);
 
-    res.status(200).json({ discountedProducts });
+    res.status(200).json({ data: discountedProducts });
   } catch (err) {
     const error = new HttpError(
       "Fetching discounted products failed, please try again.",
