@@ -327,6 +327,28 @@ const getDiscountedProducts = async (req, res, next) => {
   }
 };
 
+const search = async (req, res) => {
+  const { q } = req.query; // 'q' is the query parameter for the search term
+
+  if (!q) {
+    return res.status(400).json({ error: "Search query is required" });
+  }
+
+  try {
+    // // Using text index search (if you added the text index)
+    // const products = await Product.find({ $text: { $search: q } });
+
+    // If using regex (for partial matches)
+    const products = await Product.find({
+      title: { $regex: q, $options: "i" }, // 'i' for case-insensitive search
+    });
+
+    res.status(200).json({ data: products });
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred during the search" });
+  }
+};
+
 exports.getProductById = getProductById;
 exports.getProductsByUserId = getProductsByUserId;
 exports.createProducts = createProducts;
@@ -338,3 +360,4 @@ exports.getMostSoldProducts = getMostSoldProducts;
 exports.getMostLikedProducts = getMostLikedProducts;
 exports.getAllProductIds = getAllProductIds;
 exports.getDiscountedProducts = getDiscountedProducts;
+exports.search = search;

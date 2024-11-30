@@ -27,4 +27,6 @@ router.post("/like", usersController.toggleLikeProduct);
 
 router.post("/create", usersController.createUsers);
 
+router.get("/getUsersForTrain", usersController.getUsersForTrain);
+
 module.exports = router;

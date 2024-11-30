@@ -3,9 +3,14 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductItem from "../../components/ProductItem/ProductItem";
 import { Product } from "../../types/productType";
-import { products } from "../../data/productData";
+import { useProductData } from "@/data/productData";
+import { formatTitleForUrl } from "@/utils/formatTitleForUrl";
+
+// import { products } from "../../data/productData";
 
 export default function ProductCategoryPage() {
+
+
   const searchParams = useSearchParams(); 
   const query = searchParams.get('query'); 
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);

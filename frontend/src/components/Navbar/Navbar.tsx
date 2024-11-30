@@ -1,22 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  FaBars,
-  FaHome,
-  FaListUl,
-  FaBlog,
-  FaPhoneAlt,
-  FaSprayCan,
-  FaPumpSoap,
-  FaMortarPestle,
-  FaPlug,
-  FaStar,
-} from "react-icons/fa";
-import { GiLips } from "react-icons/gi";
-import { FaPercent } from "react-icons/fa6";
 import NavbarItem from "../NavbarItem/NavbarItem";
-import { IoIosArrowDown } from "react-icons/io";
 import NavbarDropdownItem from "../NavbarDropdownItem/NavbarDropdownItem";
 import NavbarDropdownInnerItem from "../NavbarDropdownInnerItem/NavbarDropDownInnerItem";
 import dropDownItems from "../../data/navbarItems";
@@ -43,27 +28,27 @@ export default function Navbar() {
           <div className="flex">
             <NavbarItem
               title="دسته بندی محصولات"
-              icon={FaBars}
+              icon="FaBars" 
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              frontIcon={IoIosArrowDown}
+              frontIcon="IoIosArrowDown"
             />
           </div>
-          <NavbarItem title="خانه" icon={FaHome} frontIcon={undefined} />
+          <NavbarItem title="خانه" icon="FaHome" href={"/"} frontIcon={undefined} />
           <NavbarItem
             title="لیست کالا ها"
-            icon={FaListUl}
+            icon="FaListUl" 
             frontIcon={undefined}
           />
-          <NavbarItem title="وبلاگ" icon={FaBlog} frontIcon={undefined} />
+          <NavbarItem title="وبلاگ" icon="FaBlog" frontIcon={undefined} />
           <NavbarItem
             title="تماس با ما"
-            icon={FaPhoneAlt}
+            icon="FaPhoneAlt"
             frontIcon={undefined}
           />
           <NavbarItem
             title="شگفت انگیز"
-            icon={FaPercent}
+            icon="FaPercent"
             frontIcon={undefined}
           />
         </ul>
@@ -79,7 +64,7 @@ export default function Navbar() {
               <div className="h-full w-[8rem] p-4">
                 <ul className="flex flex-col align-middle gap-6 text-sm">
                   <NavbarDropdownItem
-                    icon={FaSprayCan}
+                    icon="FaSprayCan"
                     title="عطر"
                     link="#"
                     handleDropDownItem={setDropDownItem}
@@ -87,7 +72,7 @@ export default function Navbar() {
                     dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
-                    icon={FaPumpSoap}
+                    icon="FaPumpSoap"
                     title="بهداشتی"
                     link="#"
                     data={"sanitary"}
@@ -95,7 +80,7 @@ export default function Navbar() {
                     dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
-                    icon={GiLips}
+                    icon="GiLips"
                     title="آرایشی"
                     link="#"
                     data={"makeup"}
@@ -103,7 +88,7 @@ export default function Navbar() {
                     dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
-                    icon={FaMortarPestle}
+                    icon="FaMortarPestle"
                     title="مو"
                     link="#"
                     data={"hair"}
@@ -111,7 +96,7 @@ export default function Navbar() {
                     dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
-                    icon={FaPlug}
+                    icon="FaPlug"
                     title="لوازم برقی"
                     link="#"
                     data={"electric"}
@@ -119,7 +104,7 @@ export default function Navbar() {
                     dropDownData={dropDownItems}
                   />
                   <NavbarDropdownItem
-                    icon={FaStar}
+                    icon="FaStar"
                     title="مد و فشن"
                     link="#"
                     data={"mod"}

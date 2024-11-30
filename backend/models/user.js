@@ -27,22 +27,10 @@ const userSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: "Product",
         required: true,
-        unique: true,
       },
-      rating: { type: Number, required: true, min: 1, max: 5 },
+      rating: { type: Number, required: true, min: 0, max: 5 },
     },
-  ],
-  wishlist: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
-  browsingHistory: [
-    {
-      productId: {
-        type: mongoose.Types.ObjectId,
-        ref: "Product",
-        required: true,
-      },
-      viewedAt: { type: Date, default: Date.now },
-    },
-  ],
+  ]
 });
 
 userSchema.plugin(uniqueValidator);

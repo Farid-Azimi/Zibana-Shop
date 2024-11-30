@@ -5,13 +5,18 @@ import { calculateCartTotals } from "../../stores/useCartTotalStore";
 import Icon from "../Icon/Icon";
 import Button from "../Button/Button";
 import Link from "next/link";
+import { formatTitleForUrl } from "../../utils/formatTitleForUrl";
+import { useProductData } from "@/data/productData";
 
 export default function CartPage() {
   const { cartItems, addToCart, removeFromCart, decreaseQuantity } =
     useCartStore();
   const { totalPrice, totalDiscount, totalQuantity } =
     calculateCartTotals(cartItems);
-
+  const { setSelectedProduct } = useProductData();
+  // const handleViewProduct = () => {
+  //   setSelectedProduct(item.product);
+  // };
   return (
     <>
       <div className="flex flex-col lg:flex-row lg:space-x-8 p-8">
@@ -20,32 +25,38 @@ export default function CartPage() {
           <h2 className="text-xl font-semibold mb-4 mr-2">سبد خرید شما</h2>
           {cartItems.map((item) => (
             <div
-              key={item.product.id}
+              key={item.product._id}
               className="flex justify-between items-center bg-white shadow p-4 rounded-lg"
             >
               <div className="flex items-center">
                 <div className="w-16 h-16 relative">
                   <Image
                     src={item.product.imageSrc}
-                    alt={item.product.name}
+                    alt={item.product.title}
                     layout="fill"
                     objectFit="contain"
                   />
                 </div>
                 <div className="ml-4">
-                  <Link href={`/product/${item.product.id}`} passHref>
-                    <h3 className="text-sm font-medium">{item.product.name}</h3>
+                  <Link
+                    href={`/product/${formatTitleForUrl(item.product.title)}`}
+                    passHref
+                    onClick={() => setSelectedProduct(item.product)}
+                  >
+                    <h3 className="text-sm font-medium">
+                      {item.product.title}
+                    </h3>
                   </Link>
                   <p
                     className={`text-xs ${
-                      item.product.hasDiscount
+                      item.product.discountedPrice
                         ? "line-through text-gray-500"
                         : "text-[#313131]"
                     }`}
                   >
                     {item.product.originalPrice} تومان
                   </p>
-                  {item.product.hasDiscount && (
+                  {item.product.discountedPrice && (
                     <p className="text-[#d5006a] font-semibold">
                       {item.product.discountedPrice} تومان
                     </p>
@@ -56,27 +67,27 @@ export default function CartPage() {
                 <Icon
                   name="FaPlus"
                   className="p-1 border rounded hover:cursor-pointer"
-                  onClick={() => addToCart(item.product.id)}
+                  onClick={() => addToCart(item.product)}
                 />
                 <span className="px-2">{item.quantity}</span>
                 {item.quantity > 1 ? (
                   <Icon
                     name="FaMinus"
                     className="p-1 border rounded hover:cursor-pointer"
-                    onClick={() => decreaseQuantity(item.product.id)}
+                    onClick={() => decreaseQuantity(item.product)}
                   />
                 ) : (
                   <Icon
                     name="FaTrashCan"
                     className="p-1 border rounded hover:cursor-pointer"
-                    onClick={() => removeFromCart(item.product.id)}
+                    onClick={() => removeFromCart(item.product)}
                   />
                 )}
               </div>
             </div>
           ))}
         </div>
-        {/* بخش جمع خرید و تخفیف */}
+
         <div className="lg:w-1/3 bg-gray-50 p-6 rounded-lg shadow">
           <h2 className="text-lg font-bold mb-4">مبلغ قابل پرداخت</h2>
           <p className="text-gray-700 text-sm">

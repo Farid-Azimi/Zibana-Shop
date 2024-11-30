@@ -5,6 +5,8 @@ const productsControllers = require("../controllers/products-controller");
 
 const router = express.Router();
 
+router.get('/search', productsControllers.search)
+
 router.get("/discounted", productsControllers.getDiscountedProducts);
 
 router.get("/ids", productsControllers.getAllProductIds);

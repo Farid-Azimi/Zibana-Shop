@@ -1,23 +1,23 @@
 import Link from "next/link";
-import { IconType } from "react-icons";
 import { motion } from "framer-motion";
+import Icon from "../Icon/Icon"; 
 
 interface NavbarItemProps {
   title: string;
-  icon: IconType;
+  icon: string; 
   href?: string;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
-  frontIcon: IconType | undefined;
+  frontIcon?: string;
 }
 
 export default function NavbarItem({
   title,
-  icon: Icon,
+  icon,
   href = "/",
   onMouseEnter,
   onMouseLeave,
-  frontIcon: FrontIcon,
+  frontIcon,
 }: NavbarItemProps) {
   const variants = {
     initial: { backgroundColor: "#fff" },
@@ -31,11 +31,11 @@ export default function NavbarItem({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <Icon />
+      <Icon name={icon} size={20}/>
       <Link href={href} passHref className="text-sm">
         {title}
       </Link>
-      {FrontIcon && <FrontIcon />}
+      {frontIcon && <Icon name={frontIcon} size={20}/>}
     </motion.li>
   );
 }

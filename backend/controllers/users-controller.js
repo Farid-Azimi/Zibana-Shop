@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const Product = require("../models/product");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -228,9 +228,34 @@ const createUsers = async (req, res, next) => {
   res.status(201).json({ users: createdUsers });
 };
 
+const getUsersForTrain = async (req, res, next) => {
+  let users;
+  try {
+    // Fetch only _id and ratings fields
+    users = await User.find({}, "_id ratings");
+
+    // Convert ObjectId to string and stringify ratings objects
+    users = users.map(user => ({
+      _id: user._id.toString(), // Convert ObjectId to string
+      ratings: user.ratings.map(rating => JSON.stringify(rating)) // Convert each rating object to a string
+    }));
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching users failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  console.log(users);
+  res.json(users); // Send the modified users as the response
+};
+
+
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
 exports.checkExistence = checkExistence;
 exports.toggleLikeProduct = toggleLikeProduct;
 exports.createUsers = createUsers;
+exports.getUsersForTrain = getUsersForTrain;

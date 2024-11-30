@@ -1,4 +1,4 @@
-import { products } from "../data/productData";
+import { products } from "../data/temp";
 import { CartItem } from "../types/cartType";
 
 export const initialCartItems: CartItem[] = products.map((product) => ({

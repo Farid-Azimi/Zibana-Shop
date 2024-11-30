@@ -14,7 +14,7 @@
 // }
 
 export interface Product {
-  id: string; 
+  _id: string; 
   title: string;
   brand: string;
   category: string[]; 

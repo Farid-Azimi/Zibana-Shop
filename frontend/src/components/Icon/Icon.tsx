@@ -1,6 +1,5 @@
 import { IoBagHandleOutline, IoBagHandle } from "react-icons/io5";
 import { VscAccount } from "react-icons/vsc";
-// import { MdOutlineAccountCircle, MdAccountCircle } from "react-icons/md";
 import { AiOutlineEye, AiFillEye } from "react-icons/ai";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi2";
 import {
@@ -11,20 +10,60 @@ import {
   IoIosArrowDown,
   IoIosCheckmarkCircle,
 } from "react-icons/io";
-import { CiSquareRemove } from "react-icons/ci";
-import { FaPlus, FaRegTrashCan, FaTrashCan, FaMinus } from "react-icons/fa6";
-import { MdErrorOutline,  MdPhoneInTalk } from "react-icons/md";
+import { CiSquareRemove, CiSearch } from "react-icons/ci";
+import {
+  FaPlus,
+  FaRegTrashCan,
+  FaTrashCan,
+  FaMinus,
+  FaPercent,
+} from "react-icons/fa6";
+import {
+  MdErrorOutline,
+  MdPhoneInTalk,
+  MdArrowForwardIos,
+  MdOutlineAccountCircle,
+  MdAccountCircle,
+} from "react-icons/md";
 import {
   FaInstagram,
   FaTwitter,
   FaTelegram,
   FaLinkedin,
   FaWhatsapp,
+  FaBars,
+  FaHome,
+  FaListUl,
+  FaBlog,
+  FaPhoneAlt,
+  FaSprayCan,
+  FaPumpSoap,
+  FaMortarPestle,
+  FaPlug,
+  FaStar,
+  FaCaretLeft,
 } from "react-icons/fa";
+import { GiLips } from "react-icons/gi";
+
 
 const list = {
+  FaBars: FaBars,
+  FaHome: FaHome,
+  FaListUl: FaListUl,
+  FaBlog: FaBlog,
+  FaPhoneAlt: FaPhoneAlt,
+  FaSprayCan: FaSprayCan,
+  FaPumpSoap: FaPumpSoap,
+  FaMortarPestle: FaMortarPestle,
+  FaPlug: FaPlug,
+  FaStar: FaStar,
+  GiLips: GiLips,
+  FaPercent: FaPercent,
+  FaCaretLeft: FaCaretLeft,
   IoBagHandleOutline: IoBagHandleOutline,
   IoBagHandle: IoBagHandle,
+  CiSearch: CiSearch,
+  MdArrowForwardIos: MdArrowForwardIos,
   // MdOutlineAccountCircle: MdOutlineAccountCircle,
   // MdAccountCircle: MdAccountCircle,
   VscAccount: VscAccount,
@@ -36,7 +75,7 @@ const list = {
   IoMdHeart: IoMdHeart,
   IoIosArrowBack: IoIosArrowBack,
   IoIosArrowForward: IoIosArrowForward,
-  IoIosArrowDown: IoIosArrowDown, 
+  IoIosArrowDown: IoIosArrowDown,
   CiSquareRemove: CiSquareRemove,
   FaPlus: FaPlus,
   FaRegTrashCan: FaRegTrashCan,
@@ -49,7 +88,7 @@ const list = {
   FaTelegram: FaTelegram,
   FaLinkedin: FaLinkedin,
   FaWhatsapp: FaWhatsapp,
-  MdPhoneInTalk:  MdPhoneInTalk,
+  MdPhoneInTalk: MdPhoneInTalk,
 };
 
 type IconName = keyof typeof list;

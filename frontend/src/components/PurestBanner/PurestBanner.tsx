@@ -7,7 +7,7 @@ import p1 from "../../images/brands/purest/تونر-سالیسیلیک-اسید-
 import p2 from "../../images/brands/purest/سرم-آربوتین-پیورست-min.jpg";
 import p3 from "../../images/brands/purest/سرم-رتینول-پیورست-سولوشن-min.jpg";
 import p4 from "../../images/brands/purest/سرم-نیاسینامید-و-زینک-پیورست-min.jpg";
-import { MdArrowForwardIos } from "react-icons/md";
+import Icon from "../Icon/Icon";
 
 
 export default function PurestBanner() {
@@ -32,7 +32,7 @@ export default function PurestBanner() {
             className="bg-[#a29bfe] text-white text-xl font-bold px-4 py-2 rounded-2xl flex items-center transition-all hover:bg-[#6c5ce7]"
             onClick={() => alert("BrandList Button clicked!")}
           >
-            <MdArrowForwardIos />
+            <Icon name="MdArrowForwardIos" />
             مشاهده و خرید
           </Button>
   

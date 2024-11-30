@@ -14,15 +14,11 @@ const productSchema = new Schema(
     imageSrc: { type: String, required: true },
     inventory: { type: Number, required: true, default: 0 },
     soldCount: { type: Number, required: false, default: 0 },
-    averageRating: { type: Number, default: 0 },
-    views: { type: Number, default: 0 }
   },
   { timestamps: true }
 );
 
-productSchema.index({ title: 1 });
-productSchema.index({ averageRating: -1 });
-productSchema.index({ views: -1 });
+productSchema.index({ title: 'text' });
 
 
 module.exports = mongoose.model("Product", productSchema);

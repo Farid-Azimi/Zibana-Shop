@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { IconType } from "react-icons";
-import { FaCaretLeft } from "react-icons/fa";
-import { Category as CategoryItem } from "../../types/categoryType"
+import { Category as CategoryItem } from "../../types/categoryType";
+import Icon from "../Icon/Icon";
 
 type DropDownData = {
   perfume: CategoryItem[];
@@ -16,14 +15,14 @@ type DropDownData = {
 };
 
 export default function NavbarDropdownItem({
-  icon: Icon,
+  icon,
   title,
   link,
   handleDropDownItem,
   dropDownData,
   data,
 }: {
-  icon: IconType;
+  icon: string;
   title: string;
   link: string;
   handleDropDownItem: React.Dispatch<React.SetStateAction<CategoryItem[]>>;
@@ -42,12 +41,13 @@ export default function NavbarDropdownItem({
         onMouseLeave={() => setIsHover(false)}
         className="flex flex-row gap-3 justify-start transition-colors duration-300 hover:text-purple--primary hover:cursor-pointer text-textGray"
       >
-        <Icon className="w-4 h-4" />
+        <Icon name={icon} className="w-4 h-4" />
         <Link className="text-center text-sm" href={link}>
           {title}
         </Link>
       </li>
-      <FaCaretLeft
+      <Icon
+        name={"FaCaretLeft"}
         className={`absolute text-xl z-50 text-purple--dark h-6 w-6 right-[110%] transition-opacity duration-300 ease-in-out ${
           isHovered ? "opacity-100" : "opacity-0"
         }`}
