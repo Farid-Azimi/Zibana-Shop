@@ -2,11 +2,10 @@ import Image from "next/image";
 import SearchBox from "../SearchBox/SearchBox";
 import Navbar from "../Navbar/Navbar";
 import zibanaLogo from "../../images/Zibana-logo.png";
-import Login from "../Login/Login";
+import Login from "../LoginSignup/LoginSignup";
 import CartDropdown from "../CartDropdown/CartDropdown";
 
 export default function Header() {
-  
   return (
     <>
       <header>
@@ -26,15 +25,6 @@ export default function Header() {
     </>
   );
 }
-// "use client"
-
-// import { useState, useEffect } from "react";
-// import Image from "next/image";
-// import SearchBox from "../SearchBox/SearchBox";
-// import Navbar from "../Navbar/Navbar";
-// import zibanaLogo from "../../images/Zibana-logo.png";
-// import Login from "../Login/Login";
-// import CartDropdown from "../CartDropdown/CartDropdown";
 
 // export default function Header() {
 //   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
@@ -43,7 +33,7 @@ export default function Header() {
 //   const handleScroll = () => {
 //     const currentScrollY = window.scrollY;
 //     if (currentScrollY > lastScrollY && currentScrollY > 100) {
-//       setIsNavbarVisible(false); 
+//       setIsNavbarVisible(false);
 //     } else {
 //       setIsNavbarVisible(true);
 //     }

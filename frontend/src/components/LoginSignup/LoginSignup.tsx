@@ -6,7 +6,7 @@ import LoginSignupModal from "../LoginSignupModal/LoginSignupModal";
 import UserMenuModal from "../UserMenuModal/UserMenuModal";
 import { useUserStore } from "../../stores/useUserStore";
 
-export default function Login() {
+export default function LoginSignup() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const { email, firstName, lastName } = useUserStore();
