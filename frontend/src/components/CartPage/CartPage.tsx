@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import Image from "next/image";
 import { useCartStore } from "../../stores/useCartOperationStore";
 import { calculateCartTotals } from "../../stores/useCartTotalStore";
@@ -14,13 +15,11 @@ export default function CartPage() {
   const { totalPrice, totalDiscount, totalQuantity } =
     calculateCartTotals(cartItems);
   const { setSelectedProduct } = useProductData();
-  // const handleViewProduct = () => {
-  //   setSelectedProduct(item.product);
-  // };
+  const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
+
   return (
     <>
-      <div className="flex flex-col lg:flex-row lg:space-x-8 p-8">
-        {/* لیست محصولات */}
+      <div className="flex flex-col lg:flex-row gap-8 p-8">
         <div className="lg:w-2/3 space-y-2">
           <h2 className="text-xl font-semibold mb-4 mr-2">سبد خرید شما</h2>
           {cartItems.map((item) => (
@@ -30,12 +29,14 @@ export default function CartPage() {
             >
               <div className="flex items-center">
                 <div className="w-16 h-16 relative">
-                  <Image
-                    src={item.product.imageSrc}
-                    alt={item.product.title}
-                    layout="fill"
-                    objectFit="contain"
-                  />
+                   <Image
+                        src={item.product.imageSrc}
+                        alt={item.product.title}
+                        objectFit="contain"
+                        width={500}
+                        height={500}
+                        className="w-full h-auto"
+                      />
                 </div>
                 <div className="ml-4">
                   <Link
@@ -65,21 +66,44 @@ export default function CartPage() {
               </div>
               <div className="flex items-center space-x-2">
                 <Icon
-                  name="FaPlus"
+                  name={"FaPlus"}
                   className="p-1 border rounded hover:cursor-pointer"
+                  size={hoveredIcon === `FaPlus-${item.product._id}` ? 27 : 25}
+                  onMouseEnter={() =>
+                    setHoveredIcon(`FaPlus-${item.product._id}`)
+                  }
+                  onMouseLeave={() => setHoveredIcon(null)}
                   onClick={() => addToCart(item.product)}
                 />
                 <span className="px-2">{item.quantity}</span>
                 {item.quantity > 1 ? (
                   <Icon
-                    name="FaMinus"
+                    name={"FaMinus"}
                     className="p-1 border rounded hover:cursor-pointer"
+                    size={
+                      hoveredIcon === `FaMinus-${item.product._id}` ? 27 : 25
+                    }
+                    onMouseEnter={() =>
+                      setHoveredIcon(`FaMinus-${item.product._id}`)
+                    }
+                    onMouseLeave={() => setHoveredIcon(null)}
                     onClick={() => decreaseQuantity(item.product)}
                   />
                 ) : (
                   <Icon
-                    name="FaTrashCan"
+                    name={
+                      hoveredIcon === `FaTrashCan-${item.product._id}`
+                        ? "FaTrashCan"
+                        : "FaRegTrashCan"
+                    }
                     className="p-1 border rounded hover:cursor-pointer"
+                    size={
+                      hoveredIcon === `FaTrashCan-${item.product._id}` ? 27 : 25
+                    }
+                    onMouseEnter={() =>
+                      setHoveredIcon(`FaTrashCan-${item.product._id}`)
+                    }
+                    onMouseLeave={() => setHoveredIcon(null)}
                     onClick={() => removeFromCart(item.product)}
                   />
                 )}
@@ -88,7 +112,7 @@ export default function CartPage() {
           ))}
         </div>
 
-        <div className="lg:w-1/3 bg-gray-50 p-6 rounded-lg shadow">
+        <div className="lg:w-1/4 lg:h-1/3 bg-gray-50 p-6 rounded-lg shadow mt-11">
           <h2 className="text-lg font-bold mb-4">مبلغ قابل پرداخت</h2>
           <p className="text-gray-700 text-sm">
             جمع سبد خرید: {totalPrice} تومان
@@ -99,9 +123,11 @@ export default function CartPage() {
           <p className="text-lg font-semibold mt-4">
             مبلغ نهایی: {totalPrice - totalDiscount} تومان
           </p>
-          <Button className="w-full mt-4 bg-purple-600 text-white py-2 rounded-lg">
-            تایید و تکمیل سفارش
-          </Button>
+          <div className="flex justify-center">
+            <Button className="w-auto p-2 mt-4 bg-purple-600 text-white py-2 rounded-lg">
+              تایید نهایی سفارش
+            </Button>
+          </div>
         </div>
       </div>
     </>

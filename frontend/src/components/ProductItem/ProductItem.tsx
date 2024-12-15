@@ -131,8 +131,7 @@ import { useCartStore } from "../../stores/useCartOperationStore";
 import { useProductData } from "@/data/productData";
 import { formatTitleForUrl } from "../../utils/formatTitleForUrl";
 import { useUserStore } from "../../stores/useUserStore";
-import useFetchUserWishlist  from "../../hooks/useFetchUserWishlist";
-
+import useFetchUserWishlist from "../../hooks/useFetchUserWishlist";
 
 interface ProductItemProps {
   product: Product;

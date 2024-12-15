@@ -65,8 +65,8 @@ export default function LoginSignupModal({
       );
 
       if (responseData && responseData.user) {
-        const { email, firstName, lastName } = responseData.user;
-        setUser(email, firstName, lastName);
+        const { id, email, firstName, lastName } = responseData.user;
+        setUser(id, email, firstName, lastName);
         setSignedUp(true);
       }
     } catch (error) {
@@ -85,6 +85,7 @@ export default function LoginSignupModal({
       );
       if (responseData) {
         setUser(
+          responseData.id,
           responseData.email,
           responseData.firstName,
           responseData.lastName
