@@ -143,21 +143,21 @@ export default function ProductItem({
   const { addToCart } = useCartStore();
   const { setSelectedProduct } = useProductData();
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const { userId } = useUserStore();
+  const { id } = useUserStore();
   const { toggleWishlistItem } = useFetchUserWishlist();
 
   // بررسی وضعیت علاقه‌مندی هنگام بارگذاری
   useEffect(() => {
     // درخواست بررسی وضعیت علاقه‌مندی به سرور (در صورت نیاز)
     // این بخش اختیاری است و می‌توان وضعیت `isLiked` را بر اساس دیتای موجود در سرور تنظیم کرد.
-  }, [userId, product._id]);
+  }, [id, product._id]);
 
   const handleWishlistToggle = () => {
-    if (!userId) {
+    if (!id) {
       alert("لطفاً ابتدا وارد حساب کاربری خود شوید.");
       return;
     }
-    toggleWishlistItem(userId, product._id, isLiked);
+    toggleWishlistItem(id, product._id, isLiked);
     setIsLiked(!isLiked); // وضعیت محلی را تغییر دهید
   };
 

@@ -17,20 +17,26 @@ const userSchema = new Schema({
         ref: "Product",
         required: true,
       },
-      purchasedAt: { type: Date, required: true },
+      purchasedAt: { type: Date, required: true, default: Date.now },
       quantity: { type: Number, required: true, default: 1 },
     },
   ],
-  ratings: [
+  viewHistory: [
     {
       productId: {
         type: mongoose.Types.ObjectId,
         ref: "Product",
         required: true,
       },
-      rating: { type: Number, required: true, min: 0, max: 5 },
+      viewedAt: { type: Date, required: true, default: Date.now },
     },
-  ]
+  ],
+  likedProducts: [
+    {
+      type: mongoose.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
 });
 
 userSchema.plugin(uniqueValidator);

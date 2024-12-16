@@ -228,34 +228,161 @@ const createUsers = async (req, res, next) => {
   res.status(201).json({ users: createdUsers });
 };
 
-const getUsersForTrain = async (req, res, next) => {
-  let users;
-  try {
-    // Fetch only _id and ratings fields
-    users = await User.find({}, "_id ratings");
+const getUserById = async (req, res, next) => {
+  const userId = req.params.id;
 
-    // Convert ObjectId to string and stringify ratings objects
-    users = users.map(user => ({
-      _id: user._id.toString(), // Convert ObjectId to string
-      ratings: user.ratings.map(rating => JSON.stringify(rating)) // Convert each rating object to a string
-    }));
+  let user;
+  try {
+    user = await User.findById(userId)
+      .populate('purchaseHistory.productId')
+      .populate('viewHistory.productId')
+      .populate('likedProducts');
   } catch (err) {
     const error = new HttpError(
-      "Fetching users failed, please try again later.",
+      "Fetching user failed, please try again later.",
       500
     );
     return next(error);
   }
 
-  console.log(users);
-  res.json(users); // Send the modified users as the response
+  if (!user) {
+    const error = new HttpError("User not found.", 404);
+    return next(error);
+  }
+
+  res.json({ data: user.toObject({ getters: true }) });
 };
 
 
+const updateUser = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError("Invalid inputs passed, please check your data.", 422)
+    );
+  }
+
+  const userId = req.params.id;
+  const {
+    firstName,
+    lastName,
+    password,
+    phoneNumber,
+    address,
+    purchaseHistory,
+    viewHistory,
+    likedProducts,
+  } = req.body;
+
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not update user.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError("User not found.", 404);
+    return next(error);
+  }
+
+  if (firstName !== undefined) user.firstName = firstName;
+  if (lastName !== undefined) user.lastName = lastName;
+  if (phoneNumber !== undefined) user.phoneNumber = phoneNumber;
+  if (address !== undefined) user.address = address;
+  if (purchaseHistory !== undefined) user.purchaseHistory = purchaseHistory;
+  if (viewHistory !== undefined) user.viewHistory = viewHistory;
+  if (likedProducts !== undefined) user.likedProducts = likedProducts;
+
+  if (password) {
+    try {
+      const hashedPassword = await bcrypt.hash(password, 12);
+      user.password = hashedPassword;
+    } catch (err) {
+      const error = new HttpError(
+        "Could not update password, please try again.",
+        500
+      );
+      return next(error);
+    }
+  }
+
+  try {
+    await user.save();
+  } catch (err) {
+    const error = new HttpError(
+      "Something went wrong, could not update user.",
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ user: user.toObject({ getters: true }) });
+};
+
+
+const addViewHistory = async (req, res, next) => {
+  const { userId, productId } = req.body;
+
+  if (!userId || !productId) {
+    return next(
+      new HttpError("User ID and Product ID are required.", 400)
+    );
+  }
+
+  let user;
+  try {
+    user = await User.findById(userId);
+    if (!user) {
+      return next(new HttpError("User not found.", 404));
+    }
+  } catch (err) {
+    return next(
+      new HttpError("Fetching user failed, please try again later.", 500)
+    );
+  }
+
+  let product;
+  try {
+    product = await Product.findById(productId);
+    if (!product) {
+      return next(new HttpError("Product not found.", 404));
+    }
+  } catch (err) {
+    return next(
+      new HttpError("Fetching product failed, please try again later.", 500)
+    );
+  }
+
+  user.viewHistory.push({
+    productId: productId,
+    viewedAt: new Date(),
+  });
+
+  try {
+    await user.save();
+  } catch (err) {
+    return next(
+      new HttpError("Updating view history failed, please try again.", 500)
+    );
+  }
+
+  res.status(200).json({ message: "View history updated successfully." });
+};
+
+
+
+exports.addViewHistory = addViewHistory;
+exports.updateUser = updateUser;
+exports.getUserById = getUserById;
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
 exports.checkExistence = checkExistence;
 exports.toggleLikeProduct = toggleLikeProduct;
 exports.createUsers = createUsers;
-exports.getUsersForTrain = getUsersForTrain;
+

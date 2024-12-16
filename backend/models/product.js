@@ -14,6 +14,12 @@ const productSchema = new Schema(
     imageSrc: { type: String, required: true },
     inventory: { type: Number, required: true, default: 0 },
     soldCount: { type: Number, required: false, default: 0 },
+    likedUsers: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

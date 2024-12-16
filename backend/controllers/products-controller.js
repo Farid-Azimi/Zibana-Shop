@@ -328,19 +328,15 @@ const getDiscountedProducts = async (req, res, next) => {
 };
 
 const search = async (req, res) => {
-  const { q } = req.query; // 'q' is the query parameter for the search term
+  const { q } = req.query;
 
   if (!q) {
     return res.status(400).json({ error: "Search query is required" });
   }
 
   try {
-    // // Using text index search (if you added the text index)
-    // const products = await Product.find({ $text: { $search: q } });
-
-    // If using regex (for partial matches)
     const products = await Product.find({
-      title: { $regex: q, $options: "i" }, // 'i' for case-insensitive search
+      title: { $regex: q, $options: "i" },
     });
 
     res.status(200).json({ data: products });

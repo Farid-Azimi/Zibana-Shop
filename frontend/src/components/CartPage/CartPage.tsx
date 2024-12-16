@@ -29,14 +29,14 @@ export default function CartPage() {
             >
               <div className="flex items-center">
                 <div className="w-16 h-16 relative">
-                   <Image
-                        src={item.product.imageSrc}
-                        alt={item.product.title}
-                        objectFit="contain"
-                        width={500}
-                        height={500}
-                        className="w-full h-auto"
-                      />
+                  <Image
+                    src={item.product.imageSrc}
+                    alt={item.product.title}
+                    objectFit="contain"
+                    width={500}
+                    height={500}
+                    className="w-full h-auto"
+                  />
                 </div>
                 <div className="ml-4">
                   <Link
