@@ -44,9 +44,13 @@ import {
   FaCaretLeft,
 } from "react-icons/fa";
 import { GiLips } from "react-icons/gi";
-
+import { SlDirections } from "react-icons/sl";
+import { IoExitOutline } from "react-icons/io5";
 
 const list = {
+  SlDirections: SlDirections,
+  IoExitOutline: IoExitOutline,
+
   FaBars: FaBars,
   FaHome: FaHome,
   FaListUl: FaListUl,

@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from "react";
 import { useUserStore } from "../../stores/useUserStore";
 import Icon from "../Icon/Icon";
-
+import Button from "../Button/Button";
+import Link from "next/link";
 export default function UserMenuModal({
   handleIsUserModalOpen,
 }: {
@@ -23,23 +24,29 @@ export default function UserMenuModal({
       onMouseLeave={handleMouseLeave}
     >
       <div className="absolute left-0 top-10 mt-2 w-48 bg-white shadow-md z-10">
-        <button className="flex items-center px-4 py-2 space-x-2">
-          <span>{firstName}</span>
-          <Icon name={"IoIosArrowBack"} className={"w-4 h-4"} />
-        </button>
+        <Link href="/account">
+          <Button className="flex items-center px-4 py-2 space-x-2">
+            <span>{firstName}</span>
+            <Icon name={"IoIosArrowBack"} className={"w-4 h-4"} />
+          </Button>
+        </Link>
         <ul className="py-1">
-          <li className="px-4 py-2">پیگیری سفارشات</li>
-          <li className="px-4 py-2">علاقه‌مندی‌های من</li>
+          <li className="px-4 py-2 border-solid">پیگیری سفارشات</li>
+          <li className="px-4 py-2 flex">
+            {" "}
+            <Icon name="IoMdHeartEmpty" size={25} />
+            علاقه‌مندی‌های من
+          </li>
           <li className="px-4 py-2">نقد و بررسی</li>
           <li className="px-4 py-2 border-t">
-            <button
+            <Button
               onClick={() => {
                 resetUser();
                 handleIsUserModalOpen(false);
               }}
             >
               خروج از حساب کاربری
-            </button>
+            </Button>
           </li>
         </ul>
       </div>
