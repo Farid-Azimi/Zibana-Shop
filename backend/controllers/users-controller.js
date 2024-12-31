@@ -374,7 +374,31 @@ const addViewHistory = async (req, res, next) => {
   res.status(200).json({ message: "View history updated successfully." });
 };
 
+const getLikedProducts = async (req, res, next) => {
+  const userId = req.params.userId;
 
+  let userWithLikes;
+  try {
+    userWithLikes = await User.findById(userId)
+      .select("likedProducts")
+      .populate("likedProducts");
+  } catch (err) {
+    const error = new HttpError(
+      "Fetching liked products failed, please try again later.",
+      500
+    );
+    return next(error);
+  }
+
+  if (!userWithLikes) {
+    const error = new HttpError("User not found.", 404);
+    return next(error);
+  }
+
+  res.json({
+    data: userWithLikes.likedProducts,
+  });
+};
 
 exports.addViewHistory = addViewHistory;
 exports.updateUser = updateUser;
@@ -385,4 +409,5 @@ exports.login = login;
 exports.checkExistence = checkExistence;
 exports.toggleLikeProduct = toggleLikeProduct;
 exports.createUsers = createUsers;
+exports.getLikedProducts = getLikedProducts;
 

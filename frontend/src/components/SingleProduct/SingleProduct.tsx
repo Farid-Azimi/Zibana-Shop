@@ -33,8 +33,8 @@ export default function SingleProduct({
     <>
       <div className=" flex flex-col md:flex-row items-center">
         <div className="w-1/4 p-4 relative">
-          {product.discountedPrice && (
-            <div className="absolute top-4 left-4 bg-[#f62b72] text-white text-sm px-3 py-2 rounded-br-lg">
+        {product.discountPercentage !== 0 && (
+            <div className="absolute top-4 left-4 bg-[#f62b72] text-white text-sm px-3 py-2 rounded-br-lg rounded-tl-lg">
               {product.discountPercentage}٪
             </div>
           )}
@@ -52,14 +52,14 @@ export default function SingleProduct({
           <div className="mb-4">
             <span
               className={` ${
-                product.discountedPrice
+                product.discountPercentage
                   ? "text-gray line-through text-sm m-2"
                   : "text-black text-lg font-semibold"
               }`}
             >
               {product.originalPrice} تومان
             </span>
-            {product.discountedPrice && (
+            {product.discountPercentage !== 0 && (
               <>
                 <span className="text-black text-lg font-semibold">
                   {product.discountedPrice} تومان

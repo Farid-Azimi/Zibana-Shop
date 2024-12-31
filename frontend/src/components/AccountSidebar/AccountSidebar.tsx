@@ -1,4 +1,3 @@
-// components/AccountSidebar.tsx
 import { FiLogOut, FiSettings, FiHeart, FiUser } from "react-icons/fi";
 
 export default function AccountSidebar() {

@@ -29,6 +29,8 @@ router.post("/add-view-history", usersController.addViewHistory);
 
 router.post("/create", usersController.createUsers);
 
+router.get("/liked-products/:userId", usersController.getLikedProducts);
+
 router.patch(
   "/:id",
   [
