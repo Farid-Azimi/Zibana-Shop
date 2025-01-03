@@ -1,3 +1,5 @@
+require("dotenv").config();
+const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -8,6 +10,16 @@ const HttpError = require("./models/http-error");
 const path = require('path');
 
 const app = express();
+
+// CORS options
+const corsOptions = {
+  origin: "http://localhost:3000", // Replace with your frontend URL
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+};
+
+// Enable CORS with options
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 

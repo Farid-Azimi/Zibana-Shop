@@ -80,14 +80,10 @@ export default function CartDropdown() {
                 {cartItems.map((item, index) => (
                   <div key={index} className="flex space-x-4 items-center">
                     <div className="w-16 h-16 relative">
-                      {item.product.discountPercentage !== 0 && (
-                        <div className="absolute top-0 right-0 bg-[#f62b72] text-white text-sm px-2 rounded-bl-lg">
-                          ٪
-                        </div>
-                      )}
                       <Image
                         src={item.product.imageSrc}
                         alt={item.product.title}
+                        // layout="fill"
                         objectFit="contain"
                         width={500}
                         height={500}
@@ -103,20 +99,21 @@ export default function CartDropdown() {
                         passHref
                         onClick={() => setSelectedProduct(item.product)}
                       >
+                        {/* <Link href={`/product/${item.product.title}`} passHref> */}
                         <h3 className="text-sm font-medium py-2">
                           {item.product.title}
                         </h3>
                       </Link>
                       <p
                         className={`${
-                          item.product.discountPercentage !== 0
+                          item.product.discountedPrice
                             ? "text-gray line-through text-xs"
                             : "text-[#313131] text-sm font-semibold"
                         }`}
                       >
                         {item.product.originalPrice} تومان
                       </p>
-                      {item.product.discountPercentage !== 0 && (
+                      {item.product.discountedPrice && (
                         <p className="text-[#313131] text-sm font-semibold">
                           {item.product.discountedPrice} تومان
                         </p>

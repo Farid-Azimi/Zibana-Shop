@@ -40,7 +40,7 @@ export default function ProductSlider({
   };
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 440, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: 443, behavior: "smooth" });
     }
   };
 
@@ -62,14 +62,6 @@ export default function ProductSlider({
       }
     };
   }, [checkScrollPosition]);
-
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollLeft = 0;
-      setIsListRightEnd(true);
-      setIsListLeftEnd(false);
-    }
-  }, []);
 
   return (
     <>

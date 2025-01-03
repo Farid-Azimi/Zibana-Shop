@@ -5,6 +5,7 @@ const HttpError = require("../models/http-error");
 const User = require("../models/user");
 const Product = require("../models/product");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const getUsers = async (req, res, next) => {
   let users;
@@ -61,13 +62,19 @@ const signup = async (req, res, next) => {
   });
 
   try {
-    createdUser.save();
+    await createdUser.save();
   } catch (err) {
     const error = new HttpError("Signing up failed, please try again.", 500);
     return next(error);
   }
 
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+  const token = jwt.sign(
+    { userId: createdUser.id, email: createdUser.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "10h" }
+  );
+
+  res.status(201).json({ user: createdUser.toObject({ getters: true }), token: token });
 };
 
 const login = async (req, res, next) => {
@@ -92,11 +99,18 @@ const login = async (req, res, next) => {
     return next(error);
   }
 
+  const token = jwt.sign(
+    { userId: existingUser.id, email: existingUser.email },
+    process.env.JWT_SECRET,
+    { expiresIn: "10h" }
+  );
+
   res.json({
     firstName: existingUser.firstName,
     lastName: existingUser.lastName,
     email: email,
     id: existingUser.id,
+    token: token,
   });
 };
 
@@ -231,6 +245,10 @@ const createUsers = async (req, res, next) => {
 const getUserById = async (req, res, next) => {
   const userId = req.params.id;
 
+  if (userId !== req.userData.userId) {
+    return next(new HttpError("You are not authorized to access this user.", 403));
+  }
+
   let user;
   try {
     user = await User.findById(userId)
@@ -255,6 +273,11 @@ const getUserById = async (req, res, next) => {
 
 
 const updateUser = async (req, res, next) => {
+  const userId = req.params.id;
+  if (userId !== req.userData.userId) {
+    return next(new HttpError("You are not authorized to update this user.", 403));
+  }
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
@@ -262,7 +285,6 @@ const updateUser = async (req, res, next) => {
     );
   }
 
-  const userId = req.params.id;
   const {
     firstName,
     lastName,
@@ -328,6 +350,10 @@ const updateUser = async (req, res, next) => {
 const addViewHistory = async (req, res, next) => {
   const { userId, productId } = req.body;
 
+  if (userId !== req.userData.userId) {
+    return next(new HttpError("You are not authorized to add view history for this user.", 403));
+  }
+
   if (!userId || !productId) {
     return next(
       new HttpError("User ID and Product ID are required.", 400)
@@ -377,6 +403,10 @@ const addViewHistory = async (req, res, next) => {
 const getLikedProducts = async (req, res, next) => {
   const userId = req.params.userId;
 
+  if (userId !== req.userData.userId) {
+    return next(new HttpError("You are not authorized to access this user's liked products.", 403));
+  }
+
   let userWithLikes;
   try {
     userWithLikes = await User.findById(userId)
@@ -400,6 +430,21 @@ const getLikedProducts = async (req, res, next) => {
   });
 };
 
+const authenticate = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ message: "Authentication failed." });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({ message: "Invalid token." });
+    }
+    req.userData = decoded;
+    next();
+  });
+};
+
 exports.addViewHistory = addViewHistory;
 exports.updateUser = updateUser;
 exports.getUserById = getUserById;
@@ -410,4 +455,5 @@ exports.checkExistence = checkExistence;
 exports.toggleLikeProduct = toggleLikeProduct;
 exports.createUsers = createUsers;
 exports.getLikedProducts = getLikedProducts;
+exports.authenticate = authenticate;
 

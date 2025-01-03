@@ -15,9 +15,6 @@ export default function SingleProductPage() {
   const { sendRequest } = useHttpClient();
   const { id } = useUserStore();
 
-  console.log("selectedProduct?._id", selectedProduct?._id);
-  console.log("id", id);
-
   useEffect(() => {
     if (selectedProduct?._id && id) {
       sendRequest(
@@ -27,7 +24,8 @@ export default function SingleProductPage() {
           productId: selectedProduct?._id,
           userId: id,
         }),
-        { "Content-Type": "application/json" }
+        { "Content-Type": "application/json" },
+        true
       );
     }
   }, [selectedProduct]);

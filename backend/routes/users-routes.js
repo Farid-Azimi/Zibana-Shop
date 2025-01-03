@@ -23,11 +23,13 @@ router.post("/login", usersController.login);
 
 router.get("/existence", usersController.checkExistence);
 
+router.post("/create", usersController.createUsers);
+
+router.use(usersController.authenticate);
+
 router.post("/like", usersController.toggleLikeProduct);
 
 router.post("/add-view-history", usersController.addViewHistory);
-
-router.post("/create", usersController.createUsers);
 
 router.get("/liked-products/:userId", usersController.getLikedProducts);
 

@@ -1,5 +1,5 @@
 import { IoBagHandleOutline, IoBagHandle } from "react-icons/io5";
-import { VscAccount, VscSaveAs } from "react-icons/vsc";
+import { VscAccount } from "react-icons/vsc";
 import { AiOutlineEye, AiFillEye } from "react-icons/ai";
 import { HiOutlineShoppingCart, HiShoppingCart } from "react-icons/hi2";
 import {
@@ -44,19 +44,9 @@ import {
   FaCaretLeft,
 } from "react-icons/fa";
 import { GiLips } from "react-icons/gi";
-import { SlDirections } from "react-icons/sl";
-import { IoExitOutline } from "react-icons/io5";
-import { TfiCommentAlt } from "react-icons/tfi";
-import { FiX } from "react-icons/fi";
-import { PiShoppingBagLight } from "react-icons/pi";
+
 
 const list = {
-  FiX: FiX,
-  PiShoppingBagLight: PiShoppingBagLight,
-  SlDirections: SlDirections,
-  IoExitOutline: IoExitOutline,
-  TfiCommentAlt: TfiCommentAlt,
-  VscSaveAs: VscSaveAs,
   FaBars: FaBars,
   FaHome: FaHome,
   FaListUl: FaListUl,

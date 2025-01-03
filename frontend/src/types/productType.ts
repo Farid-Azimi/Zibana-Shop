@@ -1,14 +1,29 @@
+// import { StaticImageData } from "next/image";
+
+// export interface Product {
+//   id: string;
+//   name: string;
+//   brand: string;
+//   category: string;
+//   description: string;
+//   originalPrice: string;
+//   hasDiscount: boolean;
+//   discountedPrice?: string | null;
+//   discountPercentage?: number | null;
+//   imageSrc: StaticImageData;
+// }
 
 export interface Product {
-  _id: string;
+  _id: string; 
   title: string;
   brand: string;
-  category: string[];
+  category: string[]; 
   description: string;
   originalPrice: number;
-  discountedPrice: number | null;
-  discountPercentage: number | null;
+  discountedPrice?: number; 
+  discountPercentage?: number; 
   imageSrc: string;
+  likedUsers: string[]; 
   inventory: number;
-  soldCount: number;
+  soldCount: number; 
 }

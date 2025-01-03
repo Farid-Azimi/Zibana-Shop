@@ -6,11 +6,13 @@ type UserState = {
   firstName: string | null;
   lastName: string | null;
   email: string | null;
+  token: string | null;
   setUser: (
     id: string,
     email: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    token: string
   ) => void;
   resetUser: () => void;
 };
@@ -22,10 +24,11 @@ export const useUserStore = create<UserState>()(
       firstName: null,
       lastName: null,
       email: null,
-      setUser: (id, email, firstName, lastName) =>
-        set({ id, email, firstName, lastName }),
+      token: null,
+      setUser: (id, email, firstName, lastName, token) =>
+        set({ id, email, firstName, lastName, token }),
       resetUser: () =>
-        set({ id: null, firstName: null, lastName: null, email: null }),
+        set({ id: null, firstName: null, lastName: null, email: null, token: null }),
     }),
     {
       name: "user-storage",

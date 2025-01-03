@@ -64,9 +64,10 @@ export default function LoginSignupModal({
         { "Content-Type": "application/json" }
       );
 
-      if (responseData && responseData.user) {
+      if (responseData && responseData.user && responseData.token) {
         const { id, email, firstName, lastName } = responseData.user;
-        setUser(id, email, firstName, lastName);
+        const token = responseData.token;
+        setUser(id, email, firstName, lastName, token);
         setSignedUp(true);
       }
     } catch (error) {
@@ -88,7 +89,8 @@ export default function LoginSignupModal({
           responseData.id,
           responseData.email,
           responseData.firstName,
-          responseData.lastName
+          responseData.lastName,
+          responseData.token
         );
         setLoggedIn(true);
       }
