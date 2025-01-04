@@ -13,9 +13,7 @@ interface ResponseData {
 export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<ErrorType>(null);
-
   const { token } = useUserStore();
-
   const activeHttpRequests = useRef<AbortController[]>([]);
 
   const sendRequest = useCallback(
@@ -30,8 +28,8 @@ export const useHttpClient = () => {
       const httpAbortCtrl = new AbortController();
       activeHttpRequests.current.push(httpAbortCtrl);
 
-      console.log(requiresAuth);
-      console.log(token);
+      console.log("requiresAuth", requiresAuth);
+      console.log("token", token);
 
       if (requiresAuth) {
         headers["Authorization"] = `Bearer ${token}`;
