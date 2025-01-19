@@ -1,14 +1,24 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
-import Icon from "../Icon/Icon"; 
+import Icon from "../Icon/Icon";
+
+type IconName =
+  | "FaBars"
+  | "IoIosArrowDown"
+  | "FaHome"
+  | "FaListUl"
+  | "FaBlog"
+  | "FaPhoneAlt"
+  | "FaPercent";
+  
 
 interface NavbarItemProps {
   title: string;
-  icon: string; 
+  icon: IconName; 
   href?: string;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
-  frontIcon?: string;
+  frontIcon?: IconName; 
 }
 
 export default function NavbarItem({
@@ -31,11 +41,11 @@ export default function NavbarItem({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <Icon name={icon} size={20}/>
+      <Icon name={icon} size={20} />
       <Link href={href} passHref className="text-sm">
         {title}
       </Link>
-      {frontIcon && <Icon name={frontIcon} size={20}/>}
+      {frontIcon && <Icon name={frontIcon} size={20} />}
     </motion.li>
   );
 }

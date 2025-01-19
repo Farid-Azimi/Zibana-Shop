@@ -1,9 +1,12 @@
-import { useState } from "react";
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Icon from "@/components/Icon/Icon";
 import { Product } from "../../types/productType";
-import Button from "../Button/Button";
-import Icon from "../Icon/Icon";
-import { useCartStore } from "../../stores/useCartOperationStore";
+import ProductDetailsCard from "@/components/ProductDetailsCard/ProductDetailsCard";
+import useFetchUserWishlist from "@/hooks/useFetchUserWishlist";
+import { useUserStore } from "@/stores/useUserStore";
 
 interface SingleProductProps {
   product: Product;
@@ -12,32 +15,50 @@ interface SingleProductProps {
 export default function SingleProduct({
   product,
 }: SingleProductProps): JSX.Element {
+  const { toggleWishlistItem, fetchWishlistItems } = useFetchUserWishlist();
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
-  const [quantity, setQuantity] = useState<number>(1);
-  const { cartItems, addToCart, removeFromCart, decreaseQuantity } =
-    useCartStore();
+  const { id } = useUserStore();
 
-  const handleIncrease = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
-  };
+  useEffect(() => {
+    const checkIfLiked = async () => {
+      if (id) {
+        const wishlist = (await fetchWishlistItems(id)) || [];
+        const isProductLiked = wishlist.some(
+          (item: Product) => item._id === product._id
+        );
+        setIsLiked(isProductLiked);
+      }
+    };
 
-  const handleDecrease = () => {
-    if (quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
+    checkIfLiked();
+  }, [id, product._id]);
+
+  const handleWishlistToggle = useCallback(async () => {
+    if (!id) {
+      alert("لطفاً ابتدا وارد حساب کاربری خود شوید.");
+      return;
     }
-  };
-
-  const isInCart = cartItems.some((item) => item.product._id === product._id);
+    await toggleWishlistItem(id, product._id, isLiked);
+    setIsLiked(!isLiked);
+  }, [id, product._id, isLiked, toggleWishlistItem]);
 
   return (
     <>
-      <div className=" flex flex-col md:flex-row items-center">
-        <div className="w-1/4 p-4 relative">
-        {product.discountPercentage !== 0 && (
-            <div className="absolute top-4 left-4 bg-[#f62b72] text-white text-sm px-3 py-2 rounded-br-lg rounded-tl-lg">
-              {product.discountPercentage}٪
-            </div>
-          )}
+      <div className="flex flex-col md:flex-row items-stretch justify-between">
+        <div className="w-1/3 p-4 relative">
+          <Icon
+            name={
+              isLiked || hoveredIcon === "IoMdHeart"
+                ? "IoMdHeart"
+                : "IoMdHeartEmpty"
+            }
+            className="absolute top-6 left-6 hover:cursor-pointer"
+            onMouseEnter={() => setHoveredIcon("IoMdHeart")}
+            onMouseLeave={() => setHoveredIcon(null)}
+            onClick={handleWishlistToggle}
+            size={36}
+          />
           <Image
             src={product.imageSrc}
             alt={product.title}
@@ -46,73 +67,8 @@ export default function SingleProduct({
             className="w-full rounded-lg shadow-lg"
           />
         </div>
-        <div className="w-full md:w-1/2 p-4">
-          <h1 className="text-2xl font-bold mb-2">{product.title}</h1>
-          <p className="text-gray mb-4">{product.description}</p>
-          <div className="mb-4">
-            <span
-              className={` ${
-                product.discountPercentage
-                  ? "text-gray line-through text-sm m-2"
-                  : "text-black text-lg font-semibold"
-              }`}
-            >
-              {product.originalPrice} تومان
-            </span>
-            {product.discountPercentage !== 0 && (
-              <>
-                <span className="text-black text-lg font-semibold">
-                  {product.discountedPrice} تومان
-                </span>
-              </>
-            )}
-          </div>
-          <div className="flex items-center mb-4">
-            <Icon
-              name={"FaMinus"}
-              className="p-1 border rounded hover:cursor-pointer"
-              size={hoveredIcon === "FaMinus" ? 30 : 28}
-              onMouseEnter={() => setHoveredIcon("FaMinus")}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => handleDecrease()}
-            />
-            <input
-              type="text"
-              value={quantity}
-              readOnly
-              className="w-12 text-center border-t border-b border-lightGray"
-            />
-            <Icon
-              name={"FaPlus"}
-              className="p-1 border rounded hover:cursor-pointer"
-              size={hoveredIcon === "FaPlus" ? 30 : 28}
-              onMouseEnter={() => setHoveredIcon("FaPlus")}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => handleIncrease()}
-            />
-          </div>
-          <Button
-            className="w-auto p-2 bg-purple--primary text-white rounded-lg hover:bg-purple--dark hover:shadow-lg transition flex justify-between items-center"
-            onClick={() => {
-              addToCart(product, quantity);
-              setQuantity(1);
-            }}
-          >
-            <Icon name={"HiOutlineShoppingCart"} />
-            <p> افزودن به سبد خرید</p>
-          </Button>
-          {isInCart && (
-            <Button
-              className="w-auto p-2 bg-purple--primary text-white rounded-lg hover:bg-purple--dark hover:shadow-lg transition flex justify-between items-center"
-              onClick={() => {
-                removeFromCart(product);
-                setQuantity(1);
-              }}
-            >
-              <Icon name={"FaRegTrashCan"} />
-              <p> حذف از سبد خرید</p>
-            </Button>
-          )}
+        <div className="w-1/4 p-4">
+          <ProductDetailsCard product={product} />
         </div>
       </div>
     </>

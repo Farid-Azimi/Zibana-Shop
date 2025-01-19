@@ -8,11 +8,29 @@ import Icon from "../Icon/Icon";
 type DropDownData = {
   perfume: CategoryItem[];
   sanitary: CategoryItem[];
-  makeup: CategoryItem[];
+  // makeup: CategoryItem[];
   hair: CategoryItem[];
-  electric: CategoryItem[];
-  mod: CategoryItem[];
+  // electric: CategoryItem[];
+  // mod: CategoryItem[];
 };
+
+type IconName =
+  | "FaSprayCan"
+  | "FaPumpSoap"
+  | "GiLips"
+  | "FaMortarPestle"
+  | "FaPlug"
+  | "FaStar";
+
+interface NavbarDropdownItemProps {
+  icon: IconName;
+  title: string;
+  link: string;
+  handleDropDownItem: React.Dispatch<React.SetStateAction<CategoryItem[]>>;
+  dropDownData: DropDownData;
+  data: keyof DropDownData;
+  onClick?: () => void;
+}
 
 export default function NavbarDropdownItem({
   icon,
@@ -21,19 +39,14 @@ export default function NavbarDropdownItem({
   handleDropDownItem,
   dropDownData,
   data,
-}: {
-  icon: string;
-  title: string;
-  link: string;
-  handleDropDownItem: React.Dispatch<React.SetStateAction<CategoryItem[]>>;
-  dropDownData: DropDownData;
-  data: keyof DropDownData;
-}) {
+  onClick,
+}: NavbarDropdownItemProps) {
   const [isHovered, setIsHover] = useState(false);
 
   return (
     <div className="relative flex">
       <li
+        onClick={onClick}
         onMouseEnter={() => {
           setIsHover(true);
           handleDropDownItem(dropDownData[data]);

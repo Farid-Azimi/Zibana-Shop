@@ -14,7 +14,7 @@ export default function SearchBox() {
     const value = event.target.value;
     setQuery(value);
   };
-
+  
   return (
     <div className="relative flex items-center transition-all duration-300">
       <Button

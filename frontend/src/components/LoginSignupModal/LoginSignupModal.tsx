@@ -150,7 +150,7 @@ export default function LoginSignupModal({
             {isLoading ? (
               <>
                 <div className="flex items-center justify-center w-full h-full">
-                  <LoadingSpinner />
+                  <LoadingSpinner size={64} color="purple-500" speed="spin" />
                 </div>
               </>
             ) : (

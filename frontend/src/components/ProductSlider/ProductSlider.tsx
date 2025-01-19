@@ -87,7 +87,7 @@ export default function ProductSlider({
           className="flex mx-2 px-2 overflow-scroll gap-5 scrollbar-hide"
           ref={scrollRef}
         >
-          <Button
+          {/* <Button
             onClick={scrollLeft}
             className={`absolute left-[-2px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl ${
               isListLeftEnd
@@ -108,7 +108,23 @@ export default function ProductSlider({
             disabled={isListRightEnd}
           >
             <Icon name={"IoIosArrowForward"} size={18} />
-          </Button>
+          </Button> */}
+          {!isListLeftEnd && (
+            <Button
+              onClick={scrollLeft}
+              className={`absolute left-[-2px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl bg-veryLightGray hover:bg-textLightGray`}
+            >
+              <Icon name={"IoIosArrowBack"} size={18} />
+            </Button>
+          )}
+          {!isListRightEnd && (
+            <Button
+              onClick={scrollRight}
+              className={`absolute right-[170px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl bg-veryLightGray hover:bg-textLightGray`}
+            >
+              <Icon name={"IoIosArrowForward"} size={18} />
+            </Button>
+          )}
           {products.map((product, index) => (
             <ProductItem key={index} product={product} />
           ))}

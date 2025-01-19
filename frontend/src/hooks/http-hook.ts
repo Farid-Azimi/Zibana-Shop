@@ -22,14 +22,12 @@ export const useHttpClient = () => {
       method: HttpMethod = "GET",
       body: BodyInit | null = null,
       headers: Headers = {},
-      requiresAuth: boolean = false
+      requiresAuth: boolean = false,
+      signal?: AbortSignal
     ): Promise<ResponseData> => {
       setIsLoading(true);
       const httpAbortCtrl = new AbortController();
       activeHttpRequests.current.push(httpAbortCtrl);
-
-      console.log("requiresAuth", requiresAuth);
-      console.log("token", token);
 
       if (requiresAuth) {
         headers["Authorization"] = `Bearer ${token}`;
@@ -40,7 +38,7 @@ export const useHttpClient = () => {
           method,
           body,
           headers,
-          signal: httpAbortCtrl.signal,
+          signal: signal || httpAbortCtrl.signal,
         });
 
         const responseData: ResponseData = await response.json();

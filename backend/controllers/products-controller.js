@@ -234,8 +234,8 @@ const getProductsByCategory = async (req, res, next) => {
     return next(error);
   }
 
-  res.json({
-    products: products.map((product) => product.toObject({ getters: true })),
+  res.status(200).json({
+    data: products.map((product) => product.toObject({ getters: true })),
   });
 };
 

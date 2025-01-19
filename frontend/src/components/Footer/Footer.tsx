@@ -7,8 +7,15 @@ export default function Footer() {
   return (
     <>
       <footer className="py-4 mt-16 border-solid border-t border-veryLightGray relative">
-        <div className="absolute right-10 transform -translate-y-1/2 top-0">
-          <Image src={zibanaLogo.src} width={150} height={150} alt="Logo" />
+        <div className="absolute right-10 top-0 transform -translate-y-1/2 flex items-center">
+          <hr className="border-t border-veryLightGray w-full" />
+          <Image
+            src={zibanaLogo.src}
+            width={150}
+            height={150}
+            alt="Logo"
+            className="ml-4"
+          />
         </div>
         <div className="max-w-6xl mr-10 mt-4 px-4">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 py-4">

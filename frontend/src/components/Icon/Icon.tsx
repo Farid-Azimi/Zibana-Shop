@@ -48,9 +48,21 @@ import { SlDirections } from "react-icons/sl";
 import { IoExitOutline } from "react-icons/io5";
 import { TfiCommentAlt } from "react-icons/tfi";
 import { FiX } from "react-icons/fi";
-import { PiShoppingBagLight } from "react-icons/pi";
+import { PiShoppingBagLight, PiHeadset, PiSealCheck } from "react-icons/pi";
+import { GoStar } from "react-icons/go";
+import { RiEBike2Line } from "react-icons/ri";
+import { TbShoppingCartCheck, TbShoppingCartX } from "react-icons/tb";
+import { FcApproval } from "react-icons/fc";
 
 const list = {
+  TbShoppingCartCheck: TbShoppingCartCheck,
+  TbShoppingCartX: TbShoppingCartX,
+  FcApproval: FcApproval,
+
+  PiSealCheck: PiSealCheck,
+  PiHeadset: PiHeadset,
+  RiEBike2Line: RiEBike2Line,
+  GoStar: GoStar,
   FiX: FiX,
   PiShoppingBagLight: PiShoppingBagLight,
   SlDirections: SlDirections,

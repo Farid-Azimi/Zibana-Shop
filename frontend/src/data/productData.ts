@@ -6,6 +6,7 @@ interface ProductData {
   selectedProduct: Product | null;
   setSelectedProduct: (product: Product) => void;
   clearProduct: () => void;
+  isLoading: boolean;
 }
 
 export const useProductData = create(
@@ -14,6 +15,7 @@ export const useProductData = create(
       selectedProduct: null,
       setSelectedProduct: (product) => set({ selectedProduct: product }),
       clearProduct: () => set({ selectedProduct: null }),
+      isLoading: false,
     }),
     {
       name: "product-data",

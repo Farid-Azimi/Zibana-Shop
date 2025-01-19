@@ -4,12 +4,4 @@ export interface Category {
     items: string[];
   }
 
-
-//   type DropDownData = {
-//   perfume: CategoryItem[];
-//   sanitary: CategoryItem[];
-//   makeup: CategoryItem[];
-//   hair: CategoryItem[];
-//   electric: CategoryItem[];
-//   mod: CategoryItem[];
-// };
+  

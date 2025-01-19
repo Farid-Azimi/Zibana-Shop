@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect } from "react";
 import WishlistItem from "../../components/WishlistItem/WishlistItem";
 import useFetchUserWishlist from "../../hooks/useFetchUserWishlist";
@@ -9,21 +7,20 @@ export default function WishlistPage() {
   const { wishlistItems, fetchWishlistItems } = useFetchUserWishlist();
   const { id } = useUserStore();
 
-  console.log("id", id);
-
   useEffect(() => {
     if (id) {
       fetchWishlistItems(id);
     }
   }, [id, wishlistItems]);
 
-  console.log("wishlistItems", wishlistItems);
-  
   return (
     <>
       <div className="lg:col-span-3">
         <h1 className="text-xl font-semibold m-6">لیست آخرین علاقه‌مندی‌ها</h1>
         <div className="space-y-4">
+          {/* {isLoading ? (
+            <p>در حال بارگذاری...</p>
+          ) :  */}
           {wishlistItems.length > 0 ? (
             wishlistItems.map((item) => (
               <WishlistItem key={item._id} product={item} />

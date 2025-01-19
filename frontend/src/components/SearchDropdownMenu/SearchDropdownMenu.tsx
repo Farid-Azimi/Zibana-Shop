@@ -20,7 +20,7 @@ export default function SearchDropdownMenu({ query }: SearchDropdownMenuProps) {
     if (query.trim()) {
       fetchProducts();
     }
-  }, [query, fetchProducts]);
+  }, [query]);
 
   return (
     <>
@@ -43,7 +43,6 @@ export default function SearchDropdownMenu({ query }: SearchDropdownMenuProps) {
                       <Image
                         src={product.imageSrc}
                         alt={product.title}
-                        // layout="fill"
                         objectFit="contain"
                         width={500}
                         height={500}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useHttpClient } from "./http-hook";
 import { Product } from "@/types/productType";
 
@@ -9,9 +9,16 @@ export default function useWishlist() {
   const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const requestSent = useRef(false);
 
   const fetchWishlistItems = useCallback(
     async (userId: string) => {
+      if (requestSent.current) return;
+      requestSent.current = true;
+
+      const controller = new AbortController();
+      const { signal } = controller;
+
       try {
         clearError();
         const responseData = await sendRequest(
@@ -19,32 +26,41 @@ export default function useWishlist() {
           "GET",
           null,
           { "Content-Type": "application/json" },
-          true
+          true,
+          signal
         );
         if (responseData && Array.isArray(responseData.data)) {
-          setWishlistItems(
-            responseData.data.map((item) => ({
-              _id: item._id,
-              title: item.title || "نامشخص",
-              brand: item.brand || "",
-              category: item.category || [],
-              description: item.description || "",
-              originalPrice: item.originalPrice || 0,
-              discountedPrice: item.discountedPrice,
-              discountPercentage: item.discountPercentage,
-              imageSrc: item.imageSrc || "/images/default-product.png",
-              inventory: item.inventory || 0,
-              soldCount: item.soldCount || 0,
-            }))
-          );
+          const items = responseData.data.map((item) => ({
+            _id: item._id,
+            title: item.title || "نامشخص",
+            brand: item.brand || "",
+            category: item.category || [],
+            description: item.description || "",
+            originalPrice: item.originalPrice || 0,
+            discountedPrice: item.discountedPrice,
+            discountPercentage: item.discountPercentage,
+            imageSrc: item.imageSrc || "/images/default-product.png",
+            inventory: item.inventory || 0,
+            soldCount: item.soldCount || 0,
+          }));
+          setWishlistItems(items);
+          return items;
         }
+        return [];
       } catch (error: any) {
         if (error.name === "AbortError") {
           console.warn("Request was aborted:", error.message);
-          return;
+          return [];
+        }
+        if (error.message?.includes("token")) {
+          setErrorMessage("لطفاً مجدداً وارد شوید.");
+        } else {
+          setErrorMessage("مشکلی در دریافت لیست علاقه‌مندی‌ها وجود دارد.");
         }
         console.error("Error fetching wishlist items:", error);
-        setErrorMessage("مشکلی در دریافت لیست علاقه‌مندی‌ها وجود دارد.");
+        return [];
+      } finally {
+        requestSent.current = false;
       }
     },
     [sendRequest, clearError]
@@ -91,7 +107,8 @@ export default function useWishlist() {
                 originalPrice: responseData.originalPrice || 0,
                 discountedPrice: responseData.discountedPrice,
                 discountPercentage: responseData.discountPercentage,
-                imageSrc: responseData.imageSrc || "/images/default-product.png",
+                imageSrc:
+                  responseData.imageSrc || "/images/default-product.png",
                 inventory: responseData.inventory || 0,
                 soldCount: responseData.soldCount || 0,
               },
@@ -99,9 +116,13 @@ export default function useWishlist() {
           }
         });
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message?.includes("token")) {
+        setErrorMessage("لطفاً مجدداً وارد شوید.");
+      } else {
+        setErrorMessage("مشکلی در مدیریت لیست علاقه‌مندی‌ها وجود دارد.");
+      }
       console.error("Error toggling wishlist item:", error);
-      setErrorMessage("مشکلی در مدیریت لیست علاقه‌مندی‌ها وجود دارد.");
     }
   };
 

@@ -1,61 +1,68 @@
-import { createPortal } from "react-dom";
+import Icon from "../Icon/Icon";
+import Button from "../Button/Button";
+import Image from "next/image";
+import Link from "next/link";
+import check from "../../../src/images/add-to-cart.png";
+import remove from "../../../src/images/remove-from-cart.png";
 
-interface ModalProps {
-  message: string;
-  isOpen: boolean;
-  onClose: () => void;
+interface ModalProduct {
+  title: string;
+  imageSrc: string;
 }
 
-export default function ModalCartMessage ({ message, isOpen, onClose }: ModalProps) {
+interface ModalCartMessageProps {
+  isOpen: boolean;
+  message: string;
+  onClose: () => void;
+  product: ModalProduct;
+}
+
+export default function ModalCartMessage({
+  message,
+  isOpen,
+  onClose,
+  product,
+}: ModalCartMessageProps) {
   if (!isOpen) return null;
 
-  return createPortal(
+  return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg p-6 w-11/12 max-w-md">
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">پیغام</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-800 focus:outline-none"
-          >
-            ×
-          </button>
-        </div>
-        <p className="mt-4 text-gray-700">{message}</p>
-        <button
+      <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative">
+        <Button
+          className="absolute top-2 left-2 text-gray hover:text-lightGray transition"
           onClick={onClose}
-          className="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg"
         >
-          بستن
-        </button>
+          <Icon name="CiSquareRemove" />
+        </Button>
+
+        <h2 className="flex items-center gap-2 text-lg font-semibold">
+          {message === "added" ? (
+            <>
+              <Image src={check} alt="check" width={30} height={30} />
+              این کالا به سبد خرید اضافه شد
+            </>
+          ) : (
+            <>
+              <Image src={remove} alt="remove" width={30} height={30} />
+              این کالا از سبد خرید حذف شد
+            </>
+          )}
+        </h2>
+        <hr className="border-t border-veryLightGray my-4" />
+        <div className="flex items-center gap-2 my-4">
+          <Image
+            src={product.imageSrc}
+            alt={product.title}
+            width={100}
+            height={100}
+          />
+          <p>{product.title}</p>
+        </div>
+        <hr className="border-t border-veryLightGray my-4" />
+        <div className="w-1/2 bg-[#f62b72] text-white p-3 rounded text-center hover:bg-purple--dark hover:shadow-lg transition mx-auto">
+          <Link href="/cart">برو به سبد خرید</Link>
+        </div>
       </div>
-    </div>,
-    document.body
+    </div>
   );
-};
-
-
-// interface ModalMessageProps {
-//   message: string;
-//   onClose: () => void;
-// }
-
-// const ModalMessage: React.FC<ModalMessageProps> = ({ message, onClose }) => {
-//   return (
-//     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-//       <div className="bg-white p-6 rounded-lg shadow-lg relative w-11/12 max-w-md">
-//         <button
-//           onClick={onClose}
-//           className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-//         >
-//           &times;
-//         </button>
-//         <p className="text-center text-lg font-semibold text-gray-800">
-//           {message}
-//         </p>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ModalMessage;
+}

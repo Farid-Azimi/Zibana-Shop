@@ -1,25 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useHttpClient } from "./http-hook";
 import { Product } from "../types/productType";
 
 interface UseFetchProductsProps {
   endpoint: string;
+  category?: string;
   productLimit?: number;
   searchQuery?: string;
 }
 
 export default function useFetchProducts({
   endpoint,
+  category,
   productLimit,
   searchQuery,
 }: UseFetchProductsProps) {
   const { sendRequest, clearError } = useHttpClient();
   const [products, setProducts] = useState<Product[]>([]);
+  const [paginatedProducts, setPaginatedProducts] = useState<Product[][]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     try {
+      setIsLoading(true);
+      setError(null);
       clearError();
 
       const queryParams = new URLSearchParams();
@@ -30,19 +41,69 @@ export default function useFetchProducts({
         queryParams.append("q", searchQuery);
       }
 
-      const url = `http://localhost:5000/api/products/${endpoint}?${queryParams.toString()}`;
-      const responseData = await sendRequest(url, "GET");
+      let url = `http://localhost:5000/api/products/${endpoint}`;
+      if (category) {
+        url += `/${encodeURIComponent(category)}`;
+      }
+      url += `?${queryParams.toString()}`;
+
+      const responseData = await sendRequest(
+        url,
+        "GET",
+        null,
+        {},
+        false,
+        signal
+      );
+
+      setError(null);
 
       if (responseData && Array.isArray(responseData.data)) {
-        setProducts(responseData.data);
+        const fetchedProducts = responseData.data;
+        setProducts(fetchedProducts);
+
+        const itemsPerPage = 12;
+        const totalPages = Math.ceil(fetchedProducts.length / itemsPerPage);
+        const pages: Product[][] = [];
+
+        for (let i = 0; i < totalPages; i++) {
+          const start = i * itemsPerPage;
+          const end = start + itemsPerPage;
+          pages.push(fetchedProducts.slice(start, end));
+        }
+
+        setPaginatedProducts(pages);
       } else {
         setProducts([]);
+        setPaginatedProducts([]);
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error.name === "AbortError") {
+        console.log("Request was aborted");
+        return;
+      }
+
       console.error("Error fetching product details:", error);
+      setError("Failed to fetch products");
       setProducts([]);
+      setPaginatedProducts([]);
+    } finally {
+      setIsLoading(false);
     }
+  }, [endpoint, category, productLimit, searchQuery]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  return { products, fetchProducts };
+  return {
+    products,
+    paginatedProducts,
+    currentPage,
+    fetchProducts,
+    handlePageChange,
+    isLoading,
+    error,
+  };
 }

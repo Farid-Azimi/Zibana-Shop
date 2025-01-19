@@ -1,6 +1,6 @@
 "use client";
-
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import NavbarItem from "../NavbarItem/NavbarItem";
 import NavbarDropdownItem from "../NavbarDropdownItem/NavbarDropdownItem";
 import NavbarDropdownInnerItem from "../NavbarDropdownInnerItem/NavbarDropDownInnerItem";
@@ -11,6 +11,7 @@ import { Category } from "../../types/categoryType";
 export default function Navbar() {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [dropDownItem, setDropDownItem] = useState<Category[]>([]);
+  const router = useRouter();
 
   const handleMouseEnter = () => {
     setIsDropDownOpen(true);
@@ -21,6 +22,10 @@ export default function Navbar() {
     setDropDownItem([]);
   };
 
+  const handleCategoryClick = (category: string) => {
+    router.push(`/category/${category}`);
+  };
+
   return (
     <div className="shadow-md pb-1">
       <nav className="relative">
@@ -28,16 +33,21 @@ export default function Navbar() {
           <div className="flex">
             <NavbarItem
               title="دسته بندی محصولات"
-              icon="FaBars" 
+              icon="FaBars"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               frontIcon="IoIosArrowDown"
             />
           </div>
-          <NavbarItem title="خانه" icon="FaHome" href={"/"} frontIcon={undefined} />
+          <NavbarItem
+            title="خانه"
+            icon="FaHome"
+            href={"/"}
+            frontIcon={undefined}
+          />
           <NavbarItem
             title="لیست کالا ها"
-            icon="FaListUl" 
+            icon="FaListUl"
             frontIcon={undefined}
           />
           <NavbarItem title="وبلاگ" icon="FaBlog" frontIcon={undefined} />
@@ -66,51 +76,57 @@ export default function Navbar() {
                   <NavbarDropdownItem
                     icon="FaSprayCan"
                     title="عطر"
-                    link="#"
-                    handleDropDownItem={setDropDownItem}
+                    link="/categories/عطر"
                     data={"perfume"}
+                    handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
+                    onClick={() => handleCategoryClick("عطر")}
                   />
                   <NavbarDropdownItem
                     icon="FaPumpSoap"
                     title="بهداشتی"
-                    link="#"
+                    link="/categories/بهداشتی"
                     data={"sanitary"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
+                    onClick={() => handleCategoryClick("بهداشتی")}
                   />
-                  <NavbarDropdownItem
+                  {/* <NavbarDropdownItem
                     icon="GiLips"
                     title="آرایشی"
                     link="#"
                     data={"makeup"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
-                  />
+                    onClick={() => handleCategoryClick("makeup")} 
+                  /> */}
                   <NavbarDropdownItem
                     icon="FaMortarPestle"
                     title="مو"
-                    link="#"
+                    link="/categories/مو"
                     data={"hair"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
+                    onClick={() => handleCategoryClick("مو")}
                   />
-                  <NavbarDropdownItem
+                  {/* <NavbarDropdownItem
                     icon="FaPlug"
                     title="لوازم برقی"
                     link="#"
                     data={"electric"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
-                  />
-                  <NavbarDropdownItem
+                    onClick={() => handleCategoryClick("electric")} 
+                  /> */}
+                  {/* <NavbarDropdownItem
                     icon="FaStar"
                     title="مد و فشن"
                     link="#"
                     data={"mod"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
-                  />
+                    onClick={() => handleCategoryClick("mod")}
+                  /> */}
                 </ul>
               </div>
               <div className="bg-veryLightGray w-full rounded-bl-2xl h-full flex flex-col justify-center">
@@ -119,15 +135,9 @@ export default function Navbar() {
                     <ul className="h-full w-[15rem] text-sm text-textLightGray mx-10 flex flex-col flex-wrap">
                       {dropDownItem.map((item, index) => (
                         <React.Fragment key={index}>
-                          <NavbarDropdownInnerTitle
-                            title={item.title}
-                            key={index}
-                          />
-                          {item.items.map((subItem, index) => (
-                            <NavbarDropdownInnerItem
-                              key={index}
-                              title={subItem}
-                            />
+                          <NavbarDropdownInnerTitle title={item.title} />
+                          {item.items.map((subItem, subIndex) => (
+                            <NavbarDropdownInnerItem key={subIndex} title={subItem} />
                           ))}
                         </React.Fragment>
                       ))}
