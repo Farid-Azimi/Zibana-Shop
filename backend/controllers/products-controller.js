@@ -1,5 +1,6 @@
 const { validationResult } = require("express-validator");
 const mongoose = require("mongoose");
+const axios = require("axios");
 
 const HttpError = require("../models/http-error");
 const Product = require("../models/product");
@@ -345,6 +346,31 @@ const search = async (req, res) => {
   }
 };
 
+const getSuggestedProducts = async (req, res, next) => {
+  const userId = req.params.uid;
+
+  try {
+    const response = await axios.post("http://localhost:8000/suggest-products/", {
+      user_id: userId,
+    });
+
+    const suggestedProductIds = response.data.suggested_products;
+
+    const products = await Product.find({ _id: { $in: suggestedProductIds } });
+
+    if (!products || products.length === 0) {
+      return res.status(404).json({ message: "No products found for the suggested IDs." });
+    }
+
+    res.status(200).json({
+      products: products.map((product) => product.toObject({ getters: true })),
+    });
+  } catch (error) {
+    console.error("Error fetching suggested products:", error);
+    return next(new HttpError("Failed to fetch suggested products.", 500));
+  }
+};
+
 exports.getProductById = getProductById;
 exports.getProductsByUserId = getProductsByUserId;
 exports.createProducts = createProducts;
@@ -357,3 +383,4 @@ exports.getMostLikedProducts = getMostLikedProducts;
 exports.getAllProductIds = getAllProductIds;
 exports.getDiscountedProducts = getDiscountedProducts;
 exports.search = search;
+exports.getSuggestedProducts = getSuggestedProducts;

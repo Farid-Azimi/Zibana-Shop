@@ -23,6 +23,8 @@ router.get("/:pid", productsControllers.getProductById);
 
 router.get("/user/:uid", productsControllers.getProductsByUserId);
 
+router.get("/suggest-products/:uid", productsControllers.getSuggestedProducts);
+
 router.post("/", productsControllers.createProducts);
 
 router.patch(

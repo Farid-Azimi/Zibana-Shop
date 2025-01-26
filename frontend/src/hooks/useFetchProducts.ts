@@ -3,12 +3,14 @@
 import { useState, useCallback } from "react";
 import { useHttpClient } from "./http-hook";
 import { Product } from "../types/productType";
+import { useUserStore } from "@/stores/useUserStore";
 
 interface UseFetchProductsProps {
   endpoint: string;
   category?: string;
   productLimit?: number;
   searchQuery?: string;
+  uid?: string;
 }
 
 export default function useFetchProducts({
@@ -16,6 +18,7 @@ export default function useFetchProducts({
   category,
   productLimit,
   searchQuery,
+  uid,
 }: UseFetchProductsProps) {
   const { sendRequest, clearError } = useHttpClient();
   const [products, setProducts] = useState<Product[]>([]);
@@ -23,6 +26,7 @@ export default function useFetchProducts({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
 
   const fetchProducts = useCallback(async () => {
     const controller = new AbortController();
@@ -32,7 +36,6 @@ export default function useFetchProducts({
       setIsLoading(true);
       setError(null);
       clearError();
-
       const queryParams = new URLSearchParams();
       if (productLimit) {
         queryParams.append("limit", productLimit.toString());
@@ -40,12 +43,18 @@ export default function useFetchProducts({
       if (searchQuery) {
         queryParams.append("q", searchQuery);
       }
-
       let url = `http://localhost:5000/api/products/${endpoint}`;
+
       if (category) {
         url += `/${encodeURIComponent(category)}`;
       }
-      url += `?${queryParams.toString()}`;
+      if (endpoint === "suggest-products") {
+        console.log("id before url");
+        console.log(uid);
+        url += `/${uid}`;
+      } else {
+        url += `?${queryParams.toString()}`;
+      }
 
       const responseData = await sendRequest(
         url,
@@ -90,7 +99,7 @@ export default function useFetchProducts({
     } finally {
       setIsLoading(false);
     }
-  }, [endpoint, category, productLimit, searchQuery]);
+  }, [endpoint, category, productLimit, searchQuery, uid]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
