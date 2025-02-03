@@ -21,19 +21,20 @@ export default function SuggestedProductsSlider() {
             },
           }
         );
-        console.log(response);
+
         if (!response.ok) {
           throw new Error("Failed to fetch suggested products.");
         }
 
         const data = await response.json();
-        setProducts(data.products);
+        setProducts(data.products || []);
       } catch (error) {
         console.error("Error fetching suggested products:", error);
       }
     };
-
-    fetchSuggestedProducts();
+    if (id) {
+      fetchSuggestedProducts();
+    }
   }, [id]);
 
   return (
