@@ -8,10 +8,9 @@ import Icon from "../Icon/Icon";
 type DropDownData = {
   perfume: CategoryItem[];
   sanitary: CategoryItem[];
-  // makeup: CategoryItem[];
   hair: CategoryItem[];
-  // electric: CategoryItem[];
-  // mod: CategoryItem[];
+  teeth: CategoryItem[];
+  nails: CategoryItem[];
 };
 
 type IconName =

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import WishlistItem from "../../components/WishlistItem/WishlistItem";
 import useFetchUserWishlist from "../../hooks/useFetchUserWishlist";

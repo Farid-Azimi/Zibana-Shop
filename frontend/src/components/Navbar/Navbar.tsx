@@ -91,15 +91,7 @@ export default function Navbar() {
                     dropDownData={dropDownItems}
                     onClick={() => handleCategoryClick("بهداشتی")}
                   />
-                  {/* <NavbarDropdownItem
-                    icon="GiLips"
-                    title="آرایشی"
-                    link="#"
-                    data={"makeup"}
-                    handleDropDownItem={setDropDownItem}
-                    dropDownData={dropDownItems}
-                    onClick={() => handleCategoryClick("makeup")} 
-                  /> */}
+
                   <NavbarDropdownItem
                     icon="FaMortarPestle"
                     title="مو"
@@ -109,24 +101,24 @@ export default function Navbar() {
                     dropDownData={dropDownItems}
                     onClick={() => handleCategoryClick("مو")}
                   />
-                  {/* <NavbarDropdownItem
+                  <NavbarDropdownItem
                     icon="FaPlug"
-                    title="لوازم برقی"
-                    link="#"
-                    data={"electric"}
+                    title="دهان و دندان"
+                    link="/categories/دهان و دندان"
+                    data={"teeth"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
-                    onClick={() => handleCategoryClick("electric")} 
-                  /> */}
-                  {/* <NavbarDropdownItem
+                    onClick={() => handleCategoryClick("دهان و دندان")}
+                  />
+                  <NavbarDropdownItem
                     icon="FaStar"
-                    title="مد و فشن"
-                    link="#"
-                    data={"mod"}
+                    title="ناخن"
+                    link="/categories/ناخن"
+                    data={"nails"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
-                    onClick={() => handleCategoryClick("mod")}
-                  /> */}
+                    onClick={() => handleCategoryClick("ناخن")}
+                  />
                 </ul>
               </div>
               <div className="bg-veryLightGray w-full rounded-bl-2xl h-full flex flex-col justify-center">
@@ -137,7 +129,10 @@ export default function Navbar() {
                         <React.Fragment key={index}>
                           <NavbarDropdownInnerTitle title={item.title} />
                           {item.items.map((subItem, subIndex) => (
-                            <NavbarDropdownInnerItem key={subIndex} title={subItem} />
+                            <NavbarDropdownInnerItem
+                              key={subIndex}
+                              title={subItem}
+                            />
                           ))}
                         </React.Fragment>
                       ))}

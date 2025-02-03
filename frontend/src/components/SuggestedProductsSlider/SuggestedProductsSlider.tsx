@@ -1,37 +1,50 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ProductSlider from "../ProductSlider/ProductSlider";
-import popularity from "../../images/popularity.png";
+import recommended from "../../images/recommended.png";
 import { useUserStore } from "@/stores/useUserStore";
-import useFetchProducts from "@/hooks/useFetchProducts";
 
 export default function SuggestedProductsSlider() {
   const { id } = useUserStore();
-  const { products, fetchProducts } = useFetchProducts({
-    endpoint: "suggest-products",
-    uid: id || undefined,
-  });
-
-  console.log(products);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    if (id) {
-      fetchProducts();
-    }
+    const fetchSuggestedProducts = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/api/products/suggest-products/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response);
+        if (!response.ok) {
+          throw new Error("Failed to fetch suggested products.");
+        }
+
+        const data = await response.json();
+        setProducts(data.products);
+      } catch (error) {
+        console.error("Error fetching suggested products:", error);
+      }
+    };
+
+    fetchSuggestedProducts();
   }, [id]);
-
-  useEffect(() => {
-    console.log("Products updated:", products);
-  }, [products]);
 
   return (
     <>
-      <ProductSlider
-        promoImageSrc={popularity.src}
-        bgColor="bg-[#cf6a87]"
-        products={products}
-      />
+      {id && (
+        <ProductSlider
+          promoImageSrc={recommended.src}
+          bgColor="bg-[#a29bfe]"
+          products={products}
+        />
+      )}
     </>
   );
 }

@@ -3,10 +3,8 @@ import UserInfo from "../../components/UserInfo/UserInfo";
 
 export default function Account() {
   return (
-    <>
     <Layout>
         <UserInfo /> 
     </Layout>
-    </>
   );
 }

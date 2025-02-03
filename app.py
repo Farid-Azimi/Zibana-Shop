@@ -8,6 +8,7 @@ from tensorflow.keras.models import load_model
 
 # Load your trained model and encoders
 model = load_model('recommendation_model.h5')  # Update with your model path
+model.compile()  # Add this line to compile the model
 user_encoder = LabelEncoder()
 product_encoder = LabelEncoder()
 
