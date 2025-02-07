@@ -3,32 +3,25 @@ import { Product } from "../../types/productType";
 import Icon from "../Icon/Icon";
 import Button from "../Button/Button";
 import { useCartStore } from "../../stores/useCartOperationStore";
-import ModalCartMessage from "../ModalCartMessage/ModalCartMessage";
+import ModalMessage from "../ModalMessage/ModalMessage";
+import QuantitySelector from "../QuantitySelector/QuantitySelector";
+import { useDeleteConfirmation } from "@/hooks/useDeleteConfirmation";
 
 interface ProductDetailsCardProps {
   product: Product;
 }
 
-export default function ProductDetailsCard({
-  product,
-}: ProductDetailsCardProps) {
-  const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
-  const { cartItems, addToCart, removeFromCart, decreaseQuantity } =
-    useCartStore();
+export default function ProductDetailsCard({ product }: ProductDetailsCardProps) {
+  const { cartItems, addToCart, removeFromCart } = useCartStore();
   const [quantity, setQuantity] = useState<number>(1);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalMessage, setModalMessage] = useState<string>("");
+  const isInCart = cartItems.some((item) => item.product._id === product._id);
 
   const handleIncrease = () => {
-    setQuantity((prevQuantity) =>
-      prevQuantity < 3 ? prevQuantity + 1 : prevQuantity
-    );
+    setQuantity((prev) => (prev < 3 ? prev + 1 : prev));
   };
 
   const handleDecrease = () => {
-    if (quantity > 1) {
-      setQuantity((prevQuantity) => prevQuantity - 1);
-    }
+    setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,21 +31,18 @@ export default function ProductDetailsCard({
     }
   };
 
-  const handleAddToCart = () => {
-    addToCart(product, quantity);
-    setQuantity(1);
-    setModalMessage("added");
-    setIsModalOpen(true);
-  };
-
-  const handleRemoveFromCart = () => {
-    removeFromCart(product);
-    setQuantity(1);
-    setModalMessage("removed");
-    setIsModalOpen(true);
-  };
-
-  const isInCart = cartItems.some((item) => item.product._id === product._id);
+  const {
+    modalOpen,
+    handleDelete,
+    handleConfirmRemove,
+    handleRestore,
+    setModalOpen,
+  } = useDeleteConfirmation({
+    onDelete: () => {
+      removeFromCart(product);
+      setQuantity(1);
+    },
+  });
 
   return (
     <div className="border-solid border-2 border-veryLightGray rounded-lg p-4">
@@ -106,37 +96,18 @@ export default function ProductDetailsCard({
           </div>
         </div>
 
-        <div className="flex items-center mb-2 w-auto p-2 justify-center bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 shadow-xl rounded-full border border-transparent">
-          <Icon
-            name={"FaMinus"}
-            className="p-2 border-2 border-white rounded-full hover:cursor-pointer bg-white hover:text-red-500 transition duration-300 ease-in-out transform hover:scale-110"
-            size={hoveredIcon === "FaMinus" ? 40 : 38}
-            onMouseEnter={() => setHoveredIcon("FaMinus")}
-            onMouseLeave={() => setHoveredIcon(null)}
-            onClick={() => handleDecrease()}
-          />
-          <input
-            type="text"
-            value={quantity}
-            onChange={handleInputChange}
-            maxLength={1}
-            className="w-20 text-center bg-white text-lg mx-2 rounded-full shadow-inner border-none"
-          />
-          <Icon
-            name={"FaPlus"}
-            className="p-2 border-2 border-white rounded-full hover:cursor-pointer bg-white hover:text-green-500 transition duration-300 ease-in-out transform hover:scale-110"
-            size={hoveredIcon === "FaPlus" ? 40 : 38}
-            onMouseEnter={() => setHoveredIcon("FaPlus")}
-            onMouseLeave={() => setHoveredIcon(null)}
-            onClick={() => handleIncrease()}
-          />
-        </div>
+        <QuantitySelector
+          quantity={quantity}
+          onIncrease={handleIncrease}
+          onDecrease={handleDecrease}
+          onChange={handleInputChange}
+        />
       </div>
 
       {isInCart ? (
         <Button
           className="w-full p-2 mt-4 bg-[#f62b72] text-white rounded-lg text-center hover:bg-purple--dark hover:shadow-lg transition flex justify-center items-center gap-2"
-          onClick={handleRemoveFromCart}
+          onClick={handleDelete} 
         >
           <Icon name={"FaRegTrashCan"} />
           <p> حذف از سبد خرید</p>
@@ -144,19 +115,22 @@ export default function ProductDetailsCard({
       ) : (
         <Button
           className="w-full p-2 mt-4 bg-[#f62b72] text-white rounded-lg text-center hover:bg-purple--dark hover:shadow-lg transition flex justify-center items-center gap-2"
-          onClick={handleAddToCart}
+          onClick={() => addToCart(product, quantity)}
         >
           <Icon name={"HiOutlineShoppingCart"} />
           <p> افزودن به سبد خرید</p>
         </Button>
       )}
 
-      <ModalCartMessage
-        isOpen={isModalOpen}
-        message={modalMessage}
-        onClose={() => setIsModalOpen(false)}
-        product={{ title: product.title, imageSrc: product.imageSrc }}
-      />
+      {modalOpen && (
+        <ModalMessage
+          message={isInCart ? "removed" : "added"}
+          onClose={handleConfirmRemove}
+          product={{ title: product.title, imageSrc: product.imageSrc }}
+          type="cart"
+          onRestore={handleRestore}
+        />
+      )}
     </div>
   );
 }
