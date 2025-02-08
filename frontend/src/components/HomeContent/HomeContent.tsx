@@ -14,7 +14,7 @@ export default function HomeContent() {
       <div>
         <Slideshow />
         <DiscountedProductSlider />
-        {/* <PurestBanner /> */}
+        <PurestBanner />
         <LatestProductSlider />
         <BrandsList />
         <CategoryList />

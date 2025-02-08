@@ -52,6 +52,7 @@ export default function WishlistItem({ product }: WishlistItemProps) {
           alt={product.title}
           width={80}
           height={80}
+          loading="lazy"
           className="rounded-md"
         />
         <div className="flex flex-col">

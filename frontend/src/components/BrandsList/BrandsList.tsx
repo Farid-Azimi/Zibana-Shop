@@ -16,6 +16,7 @@ export default function BrandsList() {
               src={balance}
               alt="balance"
               layout="fill"
+              loading="lazy"
               className="rounded-b-2xl"
             />
           </div>
@@ -26,6 +27,7 @@ export default function BrandsList() {
               src={purest}
               alt="purest"
               layout="fill"
+              loading="lazy"
               className="rounded-b-2xl"
             />
           </div>
@@ -36,7 +38,8 @@ export default function BrandsList() {
               src={dermedic}
               alt="dermedic"
               layout="fill"
-             className="rounded-b-2xl"
+              loading="lazy"
+              className="rounded-b-2xl"
             />
           </div>
         </Link>
@@ -46,6 +49,7 @@ export default function BrandsList() {
               src={neutrogena}
               alt="neutrogena"
               layout="fill"
+              loading="lazy"
               className="rounded-b-2xl"
             />
           </div>

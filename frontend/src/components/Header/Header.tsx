@@ -38,7 +38,13 @@ export default function Header() {
         <div className="flex justify-between">
           {/* <div className="flex justify-between px-4 py-2"> */}
           <div className="flex gap-14">
-            <Image src={zibanaLogo.src} width={200} height={200} alt="Logo" />
+            <Image
+              src={zibanaLogo.src}
+              width={200}
+              height={200}
+              alt="Logo"
+              loading="lazy"
+            />
             <SearchBox />
           </div>
 

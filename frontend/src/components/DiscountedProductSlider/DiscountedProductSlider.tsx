@@ -1,19 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import ProductSlider from "../ProductSlider/ProductSlider";
 import promo from "../../images/promo.png";
 import useFetchProducts from "../../hooks/useFetchProducts";
 
-export default function DiscountedProductSlider() {
+const DiscountedProductSlider = memo(() => {
   const { products, fetchProducts } = useFetchProducts({
     endpoint: "discounted",
-    productLimit: 15, 
+    productLimit: 15,
   });
 
-  useEffect(() => {
+  const fetchProductsCallback = useCallback(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    fetchProductsCallback();
+  }, [fetchProductsCallback]);
 
   return (
     <>
@@ -24,4 +28,7 @@ export default function DiscountedProductSlider() {
       />
     </>
   );
-}
+});
+
+DiscountedProductSlider.displayName = "DiscountedProductSlider";
+export default DiscountedProductSlider;

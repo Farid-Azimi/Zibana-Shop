@@ -1,20 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import ProductSlider from "../ProductSlider/ProductSlider";
 import notification from "../../images/notification.png";
 import useFetchProducts from "../../hooks/useFetchProducts";
 
-
-export default function LatestProductSlider() {
+const LatestProductSlider = memo(() => {
   const { products, fetchProducts } = useFetchProducts({
     endpoint: "latest",
     productLimit: 10,
   });
 
-  useEffect(() => {
+  const fetchProductsCallback = useCallback(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    fetchProductsCallback();
+  }, [fetchProductsCallback]);
 
   return (
     <>
@@ -23,19 +26,9 @@ export default function LatestProductSlider() {
         bgColor="bg-[#ea8685]"
         products={products}
       />
-      {/* {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {!isLoading && !error && products.length > 0 && (
-        <ProductList
-          promoImageSrc={notification.src}
-          bgColor="bg-[#ea8685]"
-          filter="latest"
-          products={products}
-        />
-      )}
-      {!isLoading && !error && products.length === 0 && (
-        <p>No products found.</p>
-      )} */}
     </>
   );
-}
+});
+
+LatestProductSlider.displayName = "LatestProductSlider";
+export default LatestProductSlider;

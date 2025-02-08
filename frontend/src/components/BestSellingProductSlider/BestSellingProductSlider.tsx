@@ -1,20 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import winner from "../../images/winner.png";
 import ProductSlider from "../ProductSlider/ProductSlider";
 import useFetchProducts from "../../hooks/useFetchProducts";
 
-
-export default function BestSellingProductSlider() {
+const BestSellingProductSlider = memo(() => {
   const { products, fetchProducts } = useFetchProducts({
     endpoint: "most-sold",
-    productLimit: 8, 
+    productLimit: 8,
   });
 
-  useEffect(() => {
+  const fetchProductsCallback = useCallback(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    fetchProductsCallback();
+  }, [fetchProductsCallback]);
 
   return (
     <>
@@ -25,4 +28,7 @@ export default function BestSellingProductSlider() {
       />
     </>
   );
-}
+});
+
+BestSellingProductSlider.displayName = "BestSellingProductSlider";
+export default BestSellingProductSlider;

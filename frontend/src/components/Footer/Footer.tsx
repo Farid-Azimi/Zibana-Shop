@@ -14,6 +14,7 @@ export default function Footer() {
             width={150}
             height={150}
             alt="Logo"
+            loading="lazy"
             className="ml-4"
           />
         </div>

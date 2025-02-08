@@ -38,7 +38,13 @@ export default function UserMenuModal({
           <Link href="/account">
             <div className="flex items-center justify-between px-4 py-2 rounded-t-xl border-solid border-veryLightGray border-b-2 hover:bg-veryLightGray transition duration-300 ease-in-out">
               <div className="flex items-center gap-2">
-                <Image src={userImage} alt="user" width={30} height={30} />
+                <Image
+                  src={userImage}
+                  alt="user"
+                  width={30}
+                  height={30}
+                  loading="lazy"
+                />
                 <span>{firstName}</span>
               </div>
               <Icon name={"IoIosArrowBack"} className="text-gray" size={20} />

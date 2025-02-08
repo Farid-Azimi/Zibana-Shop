@@ -66,6 +66,7 @@ export default function CategoryList() {
                 objectFit="contain"
                 width={130}
                 height={130}
+                loading="lazy"
               />
               <span className="text-lg">{category.name}</span>
             </Link>

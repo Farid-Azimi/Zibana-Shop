@@ -1,21 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Pagination, A11y, Autoplay, EffectFade } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
-// import makeup from "../../images/slider/makeup.jpg";
-// import skinCare from "../../images/slider/skin-care.jpg";
-// import muothWash from "../../images/slider/mouth&teeth.jpeg";
-// import perfume from "../../images/slider/perfume.jpg";
 import makeup from "../../images/slider/UUs2BCyXpOiByLxbzV0HNiwVitWGcnfCNxzUF8DV.jpg";
 import skinCare from "../../images/slider/VfLo1H9k0ukagNXcGNYxNy6NKAKVPo8WLUkCxzhV.gif";
 import muothWash from "../../images/slider/ZiBTmRShLlHuDbwVjfFEVvn05IqSHwAQscW3N7ea.jpg";
 import perfume from "../../images/slider/IMG_20240622_120008_221-min.jpg";
 
-export default function Slideshow() {
+const Slideshow = () => {
   return (
     <>
       <Swiper
@@ -35,6 +31,7 @@ export default function Slideshow() {
               alt="makeup"
               width={500}
               height={100}
+              loading="lazy"
               className="w-full h-full"
             />
           </Link>
@@ -46,6 +43,7 @@ export default function Slideshow() {
               alt="skinCare"
               width={500}
               height={100}
+              loading="lazy"
               className="w-full h-full"
             />
           </Link>
@@ -57,6 +55,7 @@ export default function Slideshow() {
               alt="muothWash"
               width={500}
               height={100}
+              loading="lazy"
               className="w-full h-full"
             />
           </Link>
@@ -68,6 +67,7 @@ export default function Slideshow() {
               alt="perfume"
               width={500}
               height={100}
+              loading="lazy"
               className="w-full h-full"
             />
           </Link>
@@ -75,4 +75,6 @@ export default function Slideshow() {
       </Swiper>
     </>
   );
-}
+};
+
+export default memo(Slideshow);

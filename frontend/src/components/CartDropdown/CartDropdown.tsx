@@ -91,6 +91,7 @@ export default function CartDropdown() {
                         objectFit="contain"
                         width={500}
                         height={500}
+                        loading="lazy"
                         className="w-full h-auto"
                       />
                     </div>

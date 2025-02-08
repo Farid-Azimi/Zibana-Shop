@@ -46,6 +46,7 @@ export default function SearchDropdownMenu({ query }: SearchDropdownMenuProps) {
                         objectFit="contain"
                         width={500}
                         height={500}
+                        loading="lazy"
                         className="w-full h-full"
                       />
                     </div>

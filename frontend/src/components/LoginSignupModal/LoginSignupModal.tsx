@@ -142,6 +142,7 @@ export default function LoginSignupModal({
               width={150}
               height={150}
               alt="Logo"
+              loading="lazy"
               className="h-18 w-52"
             />
           </div>

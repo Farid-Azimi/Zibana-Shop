@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import { memo, useCallback, useEffect } from "react";
 import ProductSlider from "../ProductSlider/ProductSlider";
 import popularity from "../../images/popularity.png";
 import useFetchProducts from "../../hooks/useFetchProducts";
 
-
-export default function MostPopularProductsSlider() {
-
+const MostPopularProductsSlider = memo(() => {
   const { products, fetchProducts } = useFetchProducts({
     endpoint: "most-liked",
-    productLimit: 15, 
+    productLimit: 15,
   });
-  
+
+  const fetchProductsCallback = useCallback(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    fetchProductsCallback();
+  }, [fetchProductsCallback]);
 
   return (
     <>
@@ -27,4 +28,7 @@ export default function MostPopularProductsSlider() {
       />
     </>
   );
-}
+});
+
+MostPopularProductsSlider.displayName = "MostPopularProductsSlider";
+export default MostPopularProductsSlider;

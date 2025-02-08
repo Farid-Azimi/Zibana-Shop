@@ -47,6 +47,7 @@ export default function CartItem({ product }: CartItemProps) {
           alt={product.title}
           width={80}
           height={80}
+          loading="lazy"
           className="rounded-md"
         />
         <div className="flex flex-col">
