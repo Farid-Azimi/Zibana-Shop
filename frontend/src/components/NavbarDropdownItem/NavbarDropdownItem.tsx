@@ -19,7 +19,8 @@ type IconName =
   | "GiLips"
   | "FaMortarPestle"
   | "FaPlug"
-  | "FaStar";
+  | "FaStar"
+  | "FaToothbrush";
 
 interface NavbarDropdownItemProps {
   icon: IconName;

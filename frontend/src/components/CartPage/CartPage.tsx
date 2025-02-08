@@ -5,12 +5,40 @@ import { calculateCartTotals } from "../../stores/useCartTotalStore";
 import Button from "../Button/Button";
 import { useProductData } from "@/data/productData";
 import CartItem from "../CartItem/CartItem";
+import { useUserStore } from "@/stores/useUserStore";
 
 export default function CartPage() {
-  const { cartItems, addToCart, removeFromCart, decreaseQuantity } =
+  const { cartItems, addToCart, removeFromCart, decreaseQuantity, clearCart } =
     useCartStore();
   const { totalPrice, totalDiscount, totalQuantity } =
     calculateCartTotals(cartItems);
+
+  const { token } = useUserStore();
+
+
+  const confirmOrder = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/users/confirm-order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ cartItems }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Order confirmation failed.");
+      }
+      // Clear the cart after successful order confirmation
+      clearCart();
+      alert(data.message);
+    } catch (error) {
+      console.error("Error confirming order:", error);
+      alert("Error confirming order. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -89,7 +117,10 @@ export default function CartPage() {
             قابل پرداخت: {totalPrice - totalDiscount} تومان
           </p>
           <div className="flex justify-center">
-            <Button className="w-auto p-2 mt-4 bg-purple-600 text-white py-2 rounded-lg">
+            <Button
+              className="w-auto p-2 mt-4 bg-purple-600 text-white py-2 rounded-lg"
+              onClick={confirmOrder}
+            >
               تایید نهایی سفارش
             </Button>
           </div>

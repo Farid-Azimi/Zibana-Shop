@@ -33,6 +33,12 @@ router.post("/add-view-history", usersController.addViewHistory);
 
 router.get("/liked-products/:userId", usersController.getLikedProducts);
 
+router.post("/confirm-order", usersController.confirmOrder);
+
+router.get("/purchase-history/:userId", usersController.getPurchaseHistory);
+
+router.get("/recently-visited/:userId", usersController.getRecentlyVisitedProducts);
+
 router.patch(
   "/:id",
   [

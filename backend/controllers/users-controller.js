@@ -445,6 +445,129 @@ const authenticate = (req, res, next) => {
   });
 };
 
+const confirmOrder = async (req, res, next) => {
+  // Ensure the user is authenticated. The 'authenticate' middleware should add req.userData.
+  const userId = req.userData.userId;
+  const { cartItems } = req.body;
+
+  if (!cartItems || !Array.isArray(cartItems) || cartItems.length === 0) {
+    return next(new HttpError("No cart items provided.", 400));
+  }
+
+  let user;
+  try {
+    user = await User.findById(userId);
+    if (!user) {
+      return next(new HttpError("User not found.", 404));
+    }
+  } catch (err) {
+    return next(new HttpError("Fetching user failed, please try again.", 500));
+  }
+
+  // Loop through the cart items and add them to the user's purchaseHistory.
+  cartItems.forEach((item) => {
+    let productId;
+    // Support different possible shapes of cart item objects.
+    if (item.product && item.product._id) {
+      productId = item.product._id;
+    } else if (item.productId) {
+      productId = item.productId;
+    } else {
+      productId = null;
+    }
+    if (productId) {
+      user.purchaseHistory.push({
+        productId,
+        purchasedAt: new Date(),
+        quantity: item.quantity || 1,
+      });
+    }
+  });
+
+  try {
+    await user.save();
+  } catch (err) {
+    return next(
+      new HttpError("Saving purchase history failed, please try again.", 500)
+    );
+  }
+
+  res
+    .status(200)
+    .json({ message: "Order confirmed successfully and purchase history updated." });
+};
+
+const getPurchaseHistory = async (req, res, next) => {
+  const { userId } = req.params;
+
+  // Ensure the user is authenticated and authorized to access this resource.
+  if (userId !== req.userData.userId) {
+    return next(
+      new HttpError(
+        "You are not authorized to access this user's purchase history.",
+        403
+      )
+    );
+  }
+
+  let user;
+  try {
+    // Find the user and populate purchaseHistory details from the Product model.
+    user = await User.findById(userId)
+      .select("purchaseHistory")
+      .populate("purchaseHistory.productId");
+  } catch (err) {
+    return next(
+      new HttpError("Fetching purchase history failed, please try again later.", 500)
+    );
+  }
+
+  if (!user) {
+    return next(new HttpError("User not found.", 404));
+  }
+
+  res.status(200).json({ purchaseHistory: user.purchaseHistory });
+};
+
+// New controller function to get recently visited products
+const getRecentlyVisitedProducts = async (req, res, next) => {
+  const userId = req.params.userId;
+  
+  // Ensure that only the authenticated user can view their own history
+  if (userId !== req.userData.userId) {
+    return next(new HttpError("You are not authorized to access this user's view history.", 403));
+  }
+
+  let user;
+  try {
+    // Retrieve the user's viewHistory and populate each product's details
+    user = await User.findById(userId)
+      .populate("viewHistory.productId")
+      .select("viewHistory");
+  } catch (err) {
+    return next(
+      new HttpError("Fetching view history failed, please try again later.", 500)
+    );
+  }
+
+  if (!user) {
+    return next(new HttpError("User not found.", 404));
+  }
+
+  // Sort the viewHistory by viewedAt in descending order (most recent first)
+  const sortedViewHistory = user.viewHistory.sort(
+    (a, b) => new Date(b.viewedAt) - new Date(a.viewedAt)
+  );
+  
+  // Limit to the 10 most recent viewed products
+  const recentViews = sortedViewHistory.slice(0, 10);
+
+  res.status(200).json({
+    message: "Recently visited products fetched successfully.",
+    recentlyVisited: recentViews,
+  });
+};
+
 exports.addViewHistory = addViewHistory;
 exports.updateUser = updateUser;
 exports.getUserById = getUserById;
@@ -456,4 +579,7 @@ exports.toggleLikeProduct = toggleLikeProduct;
 exports.createUsers = createUsers;
 exports.getLikedProducts = getLikedProducts;
 exports.authenticate = authenticate;
+exports.confirmOrder = confirmOrder;
+exports.getPurchaseHistory = getPurchaseHistory;
+exports.getRecentlyVisitedProducts = getRecentlyVisitedProducts;
 

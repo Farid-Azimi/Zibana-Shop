@@ -111,6 +111,7 @@ const list = {
   FaLinkedin: FaLinkedin,
   FaWhatsapp: FaWhatsapp,
   MdPhoneInTalk: MdPhoneInTalk,
+  
 };
 
 type IconName = keyof typeof list;

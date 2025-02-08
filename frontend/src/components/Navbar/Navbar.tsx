@@ -102,7 +102,7 @@ export default function Navbar() {
                     onClick={() => handleCategoryClick("مو")}
                   />
                   <NavbarDropdownItem
-                    icon="FaPlug"
+                    icon="FaToothbrush"
                     title="دهان و دندان"
                     link="/categories/دهان و دندان"
                     data={"teeth"}

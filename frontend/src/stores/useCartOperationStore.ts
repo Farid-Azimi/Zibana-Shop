@@ -10,7 +10,9 @@ interface CartStore {
   removeFromCart: (product: Product) => void;
   decreaseQuantity: (product: Product) => void;
   clearSuccessMessage: () => void;
+  clearCart: () => void;
 }
+
 
 export const useCartStore = create<CartStore>()(
   persist(
@@ -72,10 +74,13 @@ export const useCartStore = create<CartStore>()(
           }
         }),
 
+      clearCart: () => set(() => ({ cartItems: [] })),
+
       clearSuccessMessage: () =>
         set(() => ({
           successMessage: null,
         })),
+
     }),
     {
       name: "cart-storage",
