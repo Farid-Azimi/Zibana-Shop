@@ -19,8 +19,8 @@ type IconName =
   | "GiLips"
   | "FaMortarPestle"
   | "FaPlug"
-  | "FaStar"
-  | "FaToothbrush";
+  | "GiFingernail"
+  | "GiToothbrush";
 
 interface NavbarDropdownItemProps {
   icon: IconName;
@@ -54,10 +54,11 @@ export default function NavbarDropdownItem({
         onMouseLeave={() => setIsHover(false)}
         className="flex flex-row gap-3 justify-start transition-colors duration-300 hover:text-purple--primary hover:cursor-pointer text-textGray"
       >
-        <Icon name={icon} className="w-4 h-4" />
+        <Icon name={icon} className="w-4 h-4"/>
         <Link className="text-center text-sm" href={link}>
           {title}
         </Link>
+
       </li>
       <Icon
         name={"FaCaretLeft"}

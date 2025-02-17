@@ -36,7 +36,6 @@ export default function CategoryPage() {
     fetchProducts();
   }, [category]);
 
-  // const currentProducts = paginatedProducts[currentPage - 1] || [];
   const currentProducts = useMemo(
     () => paginatedProducts[currentPage - 1] || [],
     [paginatedProducts, currentPage]
@@ -45,7 +44,7 @@ export default function CategoryPage() {
   const productList = useMemo(() => {
     return currentProducts.map((product) => (
       <div className="w-[calc(25%-16px)]" key={product._id}>
-        <ProductItem product={product} variant="compact"/>
+        <ProductItem product={product} variant="compact" />
       </div>
     ));
   }, [currentProducts]);
@@ -62,7 +61,7 @@ export default function CategoryPage() {
 
         {isLoading ? (
           <div className="flex justify-center items-center min-h-[400px]">
-            <LoadingSpinner size={64} color="purple-500" speed="spin" />
+            <LoadingSpinner size={64} />
           </div>
         ) : decodedCategory && currentProducts.length > 0 ? (
           <>

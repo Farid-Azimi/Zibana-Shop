@@ -1,34 +1,18 @@
 "use client";
 
-import { memo, useCallback, useEffect } from "react";
-import ProductSlider from "../ProductSlider/ProductSlider";
+import ProductSliderContainer from "../ProductSliderContainer/ProductSliderContainer";
 import popularity from "../../images/popularity.png";
-import useFetchProducts from "../../hooks/useFetchProducts";
 
-const MostPopularProductsSlider = memo(() => {
-  const { products, fetchProducts } = useFetchProducts({
-    endpoint: "most-liked",
-    productLimit: 15,
-  });
-
-  const fetchProductsCallback = useCallback(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  useEffect(() => {
-    fetchProductsCallback();
-  }, [fetchProductsCallback]);
-
+const MostPopularProductsSlider = () => {
   return (
-    <>
-      <ProductSlider
-        promoImageSrc={popularity.src}
-        bgColor="bg-[#cf6a87]"
-        products={products}
-      />
-    </>
+    <ProductSliderContainer
+      endpoint="most-liked"
+      promoImageSrc={popularity.src}
+      bgColor="bg-[#cf6a87]" 
+      productLimit={7}
+      title="محبوب ترین ها"
+    />
   );
-});
+};
 
-MostPopularProductsSlider.displayName = "MostPopularProductsSlider";
 export default MostPopularProductsSlider;

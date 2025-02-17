@@ -2,31 +2,56 @@ import { useState, useCallback } from "react";
 
 interface UseDeleteConfirmationProps {
   onDelete: () => Promise<void> | void;
+  onRestore?: () => void;
+  id?: string | null;
 }
 
-export function useDeleteConfirmation({ onDelete }: UseDeleteConfirmationProps) {
+export function useDeleteConfirmation({
+  onDelete,
+  onRestore,
+  id,
+}: UseDeleteConfirmationProps) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [pendingRemove, setPendingRemove] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [lastAction, setLastAction] = useState<() => Promise<void> | void>(
+    () => {}
+  );
 
-  const handleDelete = useCallback(() => {
-    setModalOpen(true);
-    setPendingRemove(true);
+  const handleDelete = useCallback(async () => {
+    if (!id) {
+      setIsErrorModalOpen(true);
+      return;
+    }
+    try {
+      await onDelete();
+      setLastAction(() => onDelete);
+      setModalOpen(true);
+    } catch (error) {
+      console.error("Error in handleDelete:", error);
+    }
+  }, [id, onDelete]);
+
+  const handleConfirmRemove = useCallback(() => {
+    setModalOpen(false);
   }, []);
 
-  const handleConfirmRemove = useCallback(async () => {
-    if (pendingRemove) {
-      await onDelete();
+  const handleRestore = useCallback(async () => {
+    try {
+      if (lastAction) {
+        await lastAction();
+        if (onRestore) {
+          onRestore();
+        }
+      }
+    } catch (error) {
+      console.error("Error in handleRestore:", error);
     }
     setModalOpen(false);
-    setPendingRemove(false);
-  }, [pendingRemove, onDelete]);
-
-  const handleRestore = useCallback(() => {
-    setPendingRemove(false);
-    setModalOpen(false);
-  }, []);
+  }, [lastAction, onRestore]);
 
   return {
+    isErrorModalOpen,
+    setIsErrorModalOpen,
     modalOpen,
     handleDelete,
     handleConfirmRemove,

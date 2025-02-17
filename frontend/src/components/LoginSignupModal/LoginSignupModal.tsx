@@ -124,10 +124,10 @@ export default function LoginSignupModal({
   return (
     <>
       <div
-        className="fixed inset-0 bg-lightGray bg-opacity-70 z-40 backdrop-blur-md"
+        className="fixed inset-0 bg-lightGray bg-opacity-70 z-[100] backdrop-blur-md"
         onClick={closeModal}
       />
-      <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div className="fixed inset-0 flex items-center justify-center z-[101]">
         <div className="bg-white min-w-[45%] min-h-[60%] w-auto h-auto rounded-lg shadow-lg relative flex">
           <Button
             onClick={closeModal}

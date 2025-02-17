@@ -1,5 +1,3 @@
-"use client";
-
 import Layout from "../../components/Layout/Layout";
 import WishlistPage from "../../components/WishlistPage/WishlistPage";
 

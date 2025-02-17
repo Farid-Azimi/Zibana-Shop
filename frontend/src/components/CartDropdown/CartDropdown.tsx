@@ -81,7 +81,7 @@ export default function CartDropdown() {
                   <div key={index} className="flex space-x-4 items-center">
                     <div className="w-16 h-16 relative">
                       {item.product.discountPercentage !== 0 && (
-                        <div className="absolute top-0 right-0 bg-[#f62b72] text-white text-sm px-2 rounded-bl-lg">
+                        <div className="absolute top-0 right-0 bg-[#f62b72] text-white text-sm px-1 rounded-bl-lg">
                           ٪
                         </div>
                       )}
@@ -183,9 +183,11 @@ export default function CartDropdown() {
                     {totalPrice} تومان
                   </span>
                 </p>
-                <p className="text-xs text-[#4cd137] font-semibold m-2">
-                  میزان سود شما از این خرید {totalDiscount} تومان می‌باشد.
-                </p>
+                {totalDiscount !== 0 && (
+                  <p className="text-xs text-[#4cd137] font-semibold m-2">
+                    میزان سود شما از این خرید {totalDiscount} تومان می‌باشد.
+                  </p>
+                )}
                 <Link href="/cart">
                   <Button className="bg-[#f8a5c2] text-white text-semibold p-3 rounded m-4 hover:shadow-md hover:text-textGray">
                     مشاهده و تکمیل سفارش

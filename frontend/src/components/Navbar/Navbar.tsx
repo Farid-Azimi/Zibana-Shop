@@ -66,7 +66,7 @@ export default function Navbar() {
         {isDropDownOpen && (
           <div className="flex justify-center">
             <div
-              className="flex absolute top-full w-[99%] h-[18rem] shadow-lg z-20 bg-white rounded-bl-2xl rounded-br-2xl "
+              className="flex absolute top-full w-[99%] h-[18rem] shadow-lg z-[60] bg-white rounded-bl-2xl rounded-br-2xl "
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               style={{ animation: "fadeIn 0.3s ease-in-out" }}
@@ -76,7 +76,7 @@ export default function Navbar() {
                   <NavbarDropdownItem
                     icon="FaSprayCan"
                     title="عطر"
-                    link="/categories/عطر"
+                    link="/category/عطر"
                     data={"perfume"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
@@ -85,7 +85,7 @@ export default function Navbar() {
                   <NavbarDropdownItem
                     icon="FaPumpSoap"
                     title="بهداشتی"
-                    link="/categories/بهداشتی"
+                    link="/category/بهداشتی"
                     data={"sanitary"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
@@ -95,25 +95,25 @@ export default function Navbar() {
                   <NavbarDropdownItem
                     icon="FaMortarPestle"
                     title="مو"
-                    link="/categories/مو"
+                    link="/category/مو"
                     data={"hair"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
                     onClick={() => handleCategoryClick("مو")}
                   />
                   <NavbarDropdownItem
-                    icon="FaToothbrush"
+                    icon="GiToothbrush"
                     title="دهان و دندان"
-                    link="/categories/دهان و دندان"
+                    link="/category/دهان و دندان"
                     data={"teeth"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
                     onClick={() => handleCategoryClick("دهان و دندان")}
                   />
                   <NavbarDropdownItem
-                    icon="FaStar"
+                    icon="GiFingernail"
                     title="ناخن"
-                    link="/categories/ناخن"
+                    link="/category/ناخن"
                     data={"nails"}
                     handleDropDownItem={setDropDownItem}
                     dropDownData={dropDownItems}
@@ -145,7 +145,7 @@ export default function Navbar() {
         )}
       </nav>
       {isDropDownOpen && (
-        <div className="fixed h-full w-screen bg-lightGray bg-opacity-70 z-10"></div>
+        <div className="fixed h-full w-screen bg-lightGray bg-opacity-70 z-[50]"></div>
       )}
     </div>
   );

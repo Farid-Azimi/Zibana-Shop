@@ -10,7 +10,6 @@ interface UseFetchProductsProps {
   productLimit?: number;
   searchQuery?: string;
 }
-
 export default function useFetchProducts({
   endpoint,
   category,
@@ -23,7 +22,6 @@ export default function useFetchProducts({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
 
   const fetchProducts = useCallback(async () => {
     const controller = new AbortController();
@@ -46,6 +44,11 @@ export default function useFetchProducts({
       if (category) {
         url += `/${encodeURIComponent(category)}`;
       }
+      const queryString = queryParams.toString();
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+
       const responseData = await sendRequest(
         url,
         "GET",

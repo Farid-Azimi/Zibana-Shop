@@ -8,6 +8,10 @@ import useFetchUserWishlist from "../../hooks/useFetchUserWishlist";
 import { useUserStore } from "../../stores/useUserStore";
 import ModalMessage from "../ModalMessage/ModalMessage";
 import React from "react";
+import ErrorModal from "../ErrorModal/ErrorModal";
+import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
+import LoginSignupModal from "../LoginSignupModal/LoginSignupModal";
+import { createPortal } from "react-dom";
 
 interface ProductItemDropdownProps {
   product: Product;
@@ -22,36 +26,44 @@ const ProductItemDropdown: React.FC<ProductItemDropdownProps> = React.memo(
     const { toggleWishlistItem, fetchWishlistItems } = useFetchUserWishlist();
     const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
     const { id } = useUserStore();
-    const [modalOpen, setModalOpen] = useState<boolean>(false);
     const [modalMessage, setModalMessage] = useState<string>("");
     const [modalType, setModalType] = useState<"cart" | "wishlist">("cart");
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     useEffect(() => {
-      const checkIfLiked = async () => {
-        if (id) {
+      if (!id) {
+        setIsLiked(false);
+      } else {
+        const checkIfLiked = async () => {
           const wishlist = (await fetchWishlistItems(id)) || [];
-          const isProductLiked = wishlist.some(
-            (item: Product) => item._id === product._id
+          setIsLiked(
+            wishlist.some((item: Product) => item._id === product._id)
           );
-          setIsLiked(isProductLiked);
-        }
-      };
-
-      checkIfLiked();
+        };
+        checkIfLiked();
+      }
     }, [id, product._id]);
 
-    const handleWishlistToggle = useCallback(async () => {
-      if (!id) {
-        alert("لطفاً ابتدا وارد حساب کاربری خود شوید.");
-        return;
-      }
-      await toggleWishlistItem(id, product._id, isLiked);
-      setIsLiked((prev) => !prev);
-
-      setModalMessage(isLiked ? "removed" : "added");
-      setModalType("wishlist");
-      setModalOpen(true);
-    }, [id, product._id, isLiked, toggleWishlistItem]);
+    const {
+      isErrorModalOpen,
+      setIsErrorModalOpen,
+      modalOpen,
+      handleDelete,
+      handleConfirmRemove,
+      handleRestore,
+      setModalOpen,
+    } = useDeleteConfirmation({
+      onDelete: async () => {
+        if (id) {
+          await toggleWishlistItem(id, product._id, isLiked);
+          setIsLiked(!isLiked);
+          setModalMessage(isLiked ? "removed" : "added");
+          setModalType("wishlist");
+        }
+      },
+      onRestore: () => setIsLiked(true),
+      id,
+    });
 
     const handleAddToCart = useCallback(() => {
       addToCart(product, 1);
@@ -60,22 +72,14 @@ const ProductItemDropdown: React.FC<ProductItemDropdownProps> = React.memo(
       setModalOpen(true);
     }, [addToCart, product]);
 
-    const handleConfirmRemove = useCallback(async () => {
-      if (id) {
-        await toggleWishlistItem(id, product._id, true);
-        setIsLiked(true);
-        setModalOpen(false);
-      }
-    }, [id, product._id, toggleWishlistItem]);
-
     return (
       <>
         <div
           className={`absolute ${
-            variant === "compact" ? "top-0 h-16" : "bottom-0 h-10"
+            variant === "compact" ? "top-0 h-12" : "bottom-0 h-10"
           } left-0 right-0 bg-lightGray text-black p-1 flex justify-around items-center transform ${
             variant === "compact" ? "-translate-y-full" : "translate-y-full"
-          } group-hover:translate-y-0 transition-transform duration-300`}
+          } group-hover:translate-y-0 transition-transform duration-300 z-[40]`}
         >
           <Icon
             name={
@@ -86,7 +90,7 @@ const ProductItemDropdown: React.FC<ProductItemDropdownProps> = React.memo(
             className="hover:cursor-pointer"
             onMouseEnter={() => setHoveredIcon("IoMdHeart")}
             onMouseLeave={() => setHoveredIcon(null)}
-            onClick={handleWishlistToggle}
+            onClick={handleDelete}
             size={variant === "compact" ? 38 : 30}
           />
           <Link
@@ -123,16 +127,28 @@ const ProductItemDropdown: React.FC<ProductItemDropdownProps> = React.memo(
             size={variant === "compact" ? 38 : 30}
           />
         </div>
-
+        <ErrorModal
+          isOpen={isErrorModalOpen}
+          onClose={() => setIsErrorModalOpen(false)}
+          onLoginClick={() => {
+            setIsLoginModalOpen(true);
+            setIsErrorModalOpen(false);
+          }}
+        />
         {modalOpen && (
           <ModalMessage
             message={modalMessage}
-            onClose={() => setModalOpen(false)}
+            onClose={handleConfirmRemove}
             product={{ title: product.title, imageSrc: product.imageSrc }}
             type={modalType}
-            onRestore={handleConfirmRemove}
+            onRestore={handleRestore}
           />
         )}
+        {isLoginModalOpen &&
+          createPortal(
+            <LoginSignupModal handleIsModalOpen={setIsLoginModalOpen} />,
+            document.body
+          )}
       </>
     );
   }

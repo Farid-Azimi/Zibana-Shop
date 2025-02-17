@@ -1,34 +1,18 @@
 "use client";
 
-import { memo, useCallback, useEffect } from "react";
+import ProductSliderContainer from "../ProductSliderContainer/ProductSliderContainer";
 import winner from "../../images/winner.png";
-import ProductSlider from "../ProductSlider/ProductSlider";
-import useFetchProducts from "../../hooks/useFetchProducts";
 
-const BestSellingProductSlider = memo(() => {
-  const { products, fetchProducts } = useFetchProducts({
-    endpoint: "most-sold",
-    productLimit: 8,
-  });
-
-  const fetchProductsCallback = useCallback(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  useEffect(() => {
-    fetchProductsCallback();
-  }, [fetchProductsCallback]);
-
+const BestSellingProductSlider = () => {
   return (
-    <>
-      <ProductSlider
-        promoImageSrc={winner.src}
-        bgColor="bg-[#cd84f1]"
-        products={products}
-      />
-    </>
+    <ProductSliderContainer
+      endpoint="most-sold"
+      promoImageSrc={winner.src}
+      bgColor="bg-[#cd84f1]"
+      productLimit={8}
+      title="پرفروش ترین ها"
+    />
   );
-});
+};
 
-BestSellingProductSlider.displayName = "BestSellingProductSlider";
 export default BestSellingProductSlider;

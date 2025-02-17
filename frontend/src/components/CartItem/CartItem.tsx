@@ -8,14 +8,18 @@ import { useCartStore } from "../../stores/useCartOperationStore";
 import { useProductData } from "@/data/productData";
 import ModalMessage from "../ModalMessage/ModalMessage";
 import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
+import QuantitySelector from "../QuantitySelector/QuantitySelector";
 
 interface CartItemProps {
   product: Product;
 }
 
 export default function CartItem({ product }: CartItemProps) {
-  const { removeFromCart } = useCartStore();
+  const { removeFromCart, decreaseQuantity, addToCart } = useCartStore();
   const { setSelectedProduct } = useProductData();
+  const cartItems = useCartStore((state) => state.cartItems);
+  const item = cartItems.find((item) => item.product._id === product._id);
+  const quantity = item?.quantity || 1;
 
   const {
     modalOpen,
@@ -26,6 +30,31 @@ export default function CartItem({ product }: CartItemProps) {
   } = useDeleteConfirmation({
     onDelete: () => removeFromCart(product),
   });
+
+  const handleIncrease = () => {
+    addToCart(product, 1);
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      decreaseQuantity(product);
+    } else {
+      handleDelete();
+    }
+  };
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuantity = parseInt(e.target.value);
+    if (!isNaN(newQuantity) && newQuantity > 0) {
+      if (newQuantity > quantity) {
+        addToCart(product, newQuantity - quantity);
+      } else if (newQuantity < quantity) {
+        for (let i = 0; i < quantity - newQuantity; i++) {
+          decreaseQuantity(product);
+        }
+      }
+    }
+  };
 
   return (
     <div className="relative p-4 h-60 w-1/2 mx-auto border-solid border-veryLightGray border-2 rounded-lg shadow-sm flex items-center justify-between bg-white">
@@ -79,6 +108,15 @@ export default function CartItem({ product }: CartItemProps) {
           <Icon name="PiShoppingBagLight" size={20} />
           <span>مشاهده محصول</span>
         </Link>
+      </div>
+
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 scale-75">
+        <QuantitySelector
+          quantity={quantity}
+          onIncrease={handleIncrease}
+          onDecrease={handleDecrease}
+          onChange={handleQuantityChange}
+        />
       </div>
 
       {modalOpen && (

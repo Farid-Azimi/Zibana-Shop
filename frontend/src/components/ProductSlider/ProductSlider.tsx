@@ -14,12 +14,14 @@ import { Product } from "../../types/productType";
 
 interface ProductListProps {
   promoImageSrc: string;
+  title: string;
   bgColor?: string;
   products: Product[];
 }
 
 export default React.memo(function ProductSlider({
   promoImageSrc,
+  title,
   bgColor = "bg-[#f8a5c2]",
   products,
 }: ProductListProps) {
@@ -78,7 +80,7 @@ export default React.memo(function ProductSlider({
   }, [isListLeftEnd]);
 
   const buttonRightClass = useMemo(() => {
-    return `absolute right-[170px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl ${
+    return `absolute right-[164px] top-1/2 transform -translate-y-1/2 p-2 z-10 rounded-3xl transition-all shadow-lg hover:shadow-xl ${
       isListRightEnd
         ? "cursor-default"
         : "bg-veryLightGray hover:bg-textLightGray"
@@ -87,19 +89,27 @@ export default React.memo(function ProductSlider({
 
   return (
     <React.Fragment>
+      {/* <h2 className="text-right text-xl font-bold font-sans mt-6 mr-28">
+        {title}
+      </h2> */}
       <div
         className={`${bgColor} rounded-xl m-4 p-4 flex items-center w-[86%] mx-auto relative`}
       >
-        <Image
-          src={promoImageSrc}
-          alt="icon"
-          width={500}
-          height={500}
-          loading="lazy"
-          className="w-32 h-32 m-5"
-        />
+        <div className="flex flex-col items-center w-[165px]">
+          <Image
+            src={promoImageSrc}
+            alt="icon"
+            width={500}
+            height={500}
+            loading="lazy"
+            className="w-32 h-32 m-5"
+          />
+          <h2 className="text-center mt-2 text-lg font-bold font-sans text-gray">
+            {title}
+          </h2>
+        </div>
         <div
-          className="flex mx-2 px-2 overflow-scroll gap-5 scrollbar-hide"
+          className="flex flex-1 mx-2 px-2 overflow-scroll gap-5 scrollbar-hide"
           ref={scrollRef}
           onScroll={checkScrollPosition}
         >

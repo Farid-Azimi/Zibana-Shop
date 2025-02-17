@@ -1,34 +1,18 @@
 "use client";
 
-import { memo, useCallback, useEffect } from "react";
-import ProductSlider from "../ProductSlider/ProductSlider";
+import ProductSliderContainer from "../ProductSliderContainer/ProductSliderContainer";
 import notification from "../../images/notification.png";
-import useFetchProducts from "../../hooks/useFetchProducts";
 
-const LatestProductSlider = memo(() => {
-  const { products, fetchProducts } = useFetchProducts({
-    endpoint: "latest",
-    productLimit: 10,
-  });
-
-  const fetchProductsCallback = useCallback(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  useEffect(() => {
-    fetchProductsCallback();
-  }, [fetchProductsCallback]);
-
+const LatestProductSlider = () => {
   return (
-    <>
-      <ProductSlider
-        promoImageSrc={notification.src}
-        bgColor="bg-[#ea8685]"
-        products={products}
-      />
-    </>
+    <ProductSliderContainer
+      endpoint="latest"
+      promoImageSrc={notification.src}
+      bgColor="bg-[#ea8685]"
+      productLimit={6}
+      title="جدیدترین ها"
+    />
   );
-});
+};
 
-LatestProductSlider.displayName = "LatestProductSlider";
 export default LatestProductSlider;

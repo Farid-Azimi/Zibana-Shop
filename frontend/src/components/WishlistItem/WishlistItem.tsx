@@ -12,9 +12,10 @@ import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
 
 interface WishlistItemProps {
   product: Product;
+  onRemove: (productId: string) => void;
 }
 
-export default function WishlistItem({ product }: WishlistItemProps) {
+export default function WishlistItem({ product, onRemove }: WishlistItemProps) {
   const { id } = useUserStore();
   const { toggleWishlistItem } = useFetchUserWishlist();
   const { setSelectedProduct } = useProductData();
@@ -28,8 +29,10 @@ export default function WishlistItem({ product }: WishlistItemProps) {
     onDelete: async () => {
       if (id) {
         await toggleWishlistItem(id, product._id, true);
+        onRemove(product._id);
       }
     },
+    id,
   });
 
   return (

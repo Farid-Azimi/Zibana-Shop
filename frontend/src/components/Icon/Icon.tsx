@@ -22,8 +22,6 @@ import {
   MdErrorOutline,
   MdPhoneInTalk,
   MdArrowForwardIos,
-  MdOutlineAccountCircle,
-  MdAccountCircle,
 } from "react-icons/md";
 import {
   FaInstagram,
@@ -43,7 +41,7 @@ import {
   FaStar,
   FaCaretLeft,
 } from "react-icons/fa";
-import { GiLips } from "react-icons/gi";
+import { GiLips, GiFingernail, GiToothbrush } from "react-icons/gi";
 import { SlDirections } from "react-icons/sl";
 import { IoExitOutline } from "react-icons/io5";
 import { TfiCommentAlt } from "react-icons/tfi";
@@ -58,7 +56,8 @@ const list = {
   TbShoppingCartCheck: TbShoppingCartCheck,
   TbShoppingCartX: TbShoppingCartX,
   FcApproval: FcApproval,
-
+  GiFingernail: GiFingernail,
+  GiToothbrush: GiToothbrush,
   PiSealCheck: PiSealCheck,
   PiHeadset: PiHeadset,
   RiEBike2Line: RiEBike2Line,
@@ -86,8 +85,6 @@ const list = {
   IoBagHandle: IoBagHandle,
   CiSearch: CiSearch,
   MdArrowForwardIos: MdArrowForwardIos,
-  // MdOutlineAccountCircle: MdOutlineAccountCircle,
-  // MdAccountCircle: MdAccountCircle,
   VscAccount: VscAccount,
   AiOutlineEye: AiOutlineEye,
   AiFillEye: AiFillEye,
@@ -111,7 +108,6 @@ const list = {
   FaLinkedin: FaLinkedin,
   FaWhatsapp: FaWhatsapp,
   MdPhoneInTalk: MdPhoneInTalk,
-  
 };
 
 type IconName = keyof typeof list;
@@ -138,6 +134,11 @@ export default function Icon({
   onClick,
 }: IconProps) {
   const IconComponent = list[name];
+
+  if (!IconComponent) {
+    console.warn(`Icon "${name}" not found`);
+    return null;
+  }
 
   return (
     <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>

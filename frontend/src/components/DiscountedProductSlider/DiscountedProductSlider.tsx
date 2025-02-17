@@ -1,34 +1,18 @@
 "use client";
 
-import { memo, useCallback, useEffect } from "react";
-import ProductSlider from "../ProductSlider/ProductSlider";
+import ProductSliderContainer from "../ProductSliderContainer/ProductSliderContainer";
 import promo from "../../images/promo.png";
-import useFetchProducts from "../../hooks/useFetchProducts";
 
-const DiscountedProductSlider = memo(() => {
-  const { products, fetchProducts } = useFetchProducts({
-    endpoint: "discounted",
-    productLimit: 15,
-  });
-
-  const fetchProductsCallback = useCallback(() => {
-    fetchProducts();
-  }, [fetchProducts]);
-
-  useEffect(() => {
-    fetchProductsCallback();
-  }, [fetchProductsCallback]);
-
+const DiscountedProductSlider = () => {
   return (
-    <>
-      <ProductSlider
-        promoImageSrc={promo.src}
-        bgColor="bg-[#f8a5c2]"
-        products={products}
-      />
-    </>
+    <ProductSliderContainer
+      endpoint="discounted"
+      promoImageSrc={promo.src}
+      bgColor="bg-[#f8a5c2]"
+      productLimit={10}
+      title="پیشنهاد شگفت انگیز زیبانا"
+    />
   );
-});
+};
 
-DiscountedProductSlider.displayName = "DiscountedProductSlider";
 export default DiscountedProductSlider;

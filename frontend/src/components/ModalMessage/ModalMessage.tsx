@@ -7,7 +7,7 @@ import cartCheck from "../../../src/images/add-to-cart.png";
 import cartRemove from "../../../src/images/remove-from-cart.png";
 import wishlistCheck from "../../../src/images/happy_heart.png";
 import wishlistRemove from "../../../src/images/sad_heart.png";
-import React, { useCallback } from 'react';
+import React, { useEffect } from "react";
 
 interface ModalProduct {
   title: string;
@@ -26,26 +26,31 @@ const ModalMessage: React.FC<ModalMessageProps> = React.memo(
   ({ message, onClose, product, type, onRestore }) => {
     const handleRestore = () => {
       onRestore();
+      onClose();
     };
 
-    const handleClose = useCallback(() => {
-      onClose();
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        onClose();
+      }, 3000);
+
+      return () => clearTimeout(timer);
     }, [onClose]);
 
     if (typeof window === "undefined") return null;
 
     return ReactDOM.createPortal(
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 pointer-events-none">
-        <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative pointer-events-auto">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[70] pointer-events-none">
+        <div className="bg-white rounded-lg shadow-lg p-6 w-96 relative pointer-events-auto z-[80]">
           <Button
             className="absolute top-2 left-2 text-gray hover:text-lightGray transition"
-            onClick={handleClose}
+            onClick={onClose}
           >
             <Icon name="CiSquareRemove" />
           </Button>
 
           <h2 className="flex items-center gap-2 text-lg font-semibold">
-            {message === "added" ? (
+            {message === "added" && (
               <>
                 <Image
                   src={type === "cart" ? cartCheck : wishlistCheck}
@@ -58,7 +63,8 @@ const ModalMessage: React.FC<ModalMessageProps> = React.memo(
                   ? "این کالا به سبد خرید اضافه شد"
                   : "این کالا به علاقمندی‌ها اضافه شد"}
               </>
-            ) : (
+            )}
+            {message === "removed" && (
               <>
                 <Image
                   src={type === "cart" ? cartRemove : wishlistRemove}

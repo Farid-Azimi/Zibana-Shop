@@ -5,7 +5,6 @@ import { useProductData } from "@/data/productData";
 import { formatTitleForUrl } from "../../utils/formatTitleForUrl";
 import React, { useCallback, useMemo } from "react";
 
-// بارگذاری تنبل کامپوننت
 const ProductItemDropdown = React.lazy(
   () => import("../ProductItemDropdown/ProductItemDropdown")
 );

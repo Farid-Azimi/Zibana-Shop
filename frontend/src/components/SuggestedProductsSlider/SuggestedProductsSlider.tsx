@@ -13,19 +13,9 @@ const SuggestedProductsSlider = memo(() => {
     if (!id) return;
     try {
       const response = await fetch(
-        `http://localhost:5000/api/products/suggest-products/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        `http://localhost:5000/api/products/suggest-products/${id}`
       );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch suggested products.");
-      }
-
+      if (!response.ok) throw new Error("Failed to fetch suggested products.");
       const data = await response.json();
       setProducts(data.products || []);
     } catch (error) {
@@ -37,17 +27,14 @@ const SuggestedProductsSlider = memo(() => {
     fetchSuggestedProducts();
   }, [fetchSuggestedProducts]);
 
-  return (
-    <>
-      {id && (
-        <ProductSlider
-          promoImageSrc={recommended.src}
-          bgColor="bg-[#a29bfe]"
-          products={products}
-        />
-      )}
-    </>
-  );
+  return id ? (
+    <ProductSlider
+      promoImageSrc={recommended.src}
+      bgColor="bg-[#a29bfe]"
+      products={products}
+      title="پیشنهاد زیبانا برای شما"
+    />
+  ) : null;
 });
 
 SuggestedProductsSlider.displayName = "SuggestedProductsSlider";

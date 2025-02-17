@@ -12,7 +12,7 @@ export default function NavbarDropdownInnerTitle({ title }: { title: string }) {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
         onClick={() => {
-          router.push(`/categories/${title}`);
+          router.push(`/category/${title}`);
         }}
       >
         {title}
