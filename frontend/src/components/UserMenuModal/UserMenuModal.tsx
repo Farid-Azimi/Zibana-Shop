@@ -20,6 +20,7 @@ export default function UserMenuModal({
     resetUser();
     handleIsUserModalOpen(false);
     setIsLoading(false);
+    window.location.reload();
   };
 
   return (
@@ -59,7 +60,6 @@ export default function UserMenuModal({
             </li>
             <li className="p-4 border-solid border-veryLightGray border-t-2 hover:bg-veryLightGray transition duration-300 ease-in-out">
               <Link href="/wishlist">
-
                 <div className="flex items-center gap-3">
                   <Icon name="IoMdHeartEmpty" size={25} />
                   <span>علاقه‌مندی‌های من</span>

@@ -42,7 +42,6 @@ export default function LoginSignupModal({
         "GET"
       );
       const data = responseData as EmailExistenceResponse;
-      console.log("data");
       return data.exists;
     } catch (error) {
       console.error("Error checking email existence:", error);
@@ -93,8 +92,10 @@ export default function LoginSignupModal({
           responseData.token
         );
         setLoggedIn(true);
+        window.location.reload();
       }
     } catch (error) {
+      console.error("Error logging in:", error);
     } finally {
       closeModal();
     }
