@@ -1,33 +1,58 @@
-import { FiLogOut, FiSettings, FiHeart, FiUser } from "react-icons/fi";
+"use client";
 
+import { FiLogOut, FiSettings, FiHeart, FiUser } from "react-icons/fi";
+import { useUserStore } from "@/stores/useUserStore";
 export default function AccountSidebar() {
+  const { firstName } = useUserStore();
   return (
-    <div className="p-4 border rounded-lg shadow-md bg-white">
-      <div className="flex items-center space-x-2 mb-4">
-        <div className="bg-gray-200 w-16 h-16 rounded-full"></div>
+    <aside className="w-64 p-6 bg-white rounded-xl shadow-lg">
+      <header className="flex items-center space-x-4 mb-6">
         <div>
-          <p className="font-semibold">کاربر گرامی</p>
-          <p className="text-sm text-gray-500">حساب کاربری شما</p>
+          <h2 className="text-xl font-bold text-gray-800">
+            {firstName} عزیز، خوش آمدید
+          </h2>
         </div>
-      </div>
-      <ul className="space-y-2">
-        <li className="flex items-center space-x-2">
-          <FiUser />
-          <span>پیشخوان</span>
-        </li>
-        <li className="flex items-center space-x-2">
-          <FiHeart />
-          <span>لیست علاقه‌مندی‌ها</span>
-        </li>
-        <li className="flex items-center space-x-2">
-          <FiSettings />
-          <span>تغییر رمز</span>
-        </li>
-        <li className="flex items-center space-x-2 text-red-500">
-          <FiLogOut />
-          <span>خروج از حساب</span>
-        </li>
-      </ul>
-    </div>
+      </header>
+      <nav>
+        <ul className="space-y-3">
+          <li>
+            <a
+              href="/dashboard"
+              className="flex items-center px-4 py-2 text-gray-700 rounded hover:bg-blue-50 transition duration-200"
+            >
+              <FiUser className="text-lg" />
+              <span className="mr-3">پیشخوان</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/wishlist"
+              className="flex items-center px-4 py-2 text-gray-700 rounded hover:bg-blue-50 transition duration-200"
+            >
+              <FiHeart className="text-lg" />
+              <span className="mr-3">لیست علاقه‌مندی‌ها</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/settings"
+              className="flex items-center px-4 py-2 text-gray-700 rounded hover:bg-blue-50 transition duration-200"
+            >
+              <FiSettings className="text-lg" />
+              <span className="mr-3">تغییر رمز</span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="/logout"
+              className="flex items-center px-4 py-2 text-red-600 rounded hover:bg-red-50 transition duration-200"
+            >
+              <FiLogOut className="text-lg" />
+              <span className="mr-3">خروج از حساب</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
   );
 }

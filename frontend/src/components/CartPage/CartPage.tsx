@@ -104,7 +104,7 @@ export default function CartPage() {
             title: "سفارش شما با موفقیت ثبت شد",
             imageSrc: orderCheck.src,
           }}
-          type="cart"
+          type="order"
           onRestore={() => {}}
         />
       )}

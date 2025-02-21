@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import Icon from "../Icon/Icon";
-
+import { IconType } from "react-icons";
 type IconName =
   | "FaBars"
   | "IoIosArrowDown"
@@ -12,7 +12,7 @@ type IconName =
 
 interface NavbarItemProps {
   title: string;
-  icon: IconName;
+  icon: IconName | IconType;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
   frontIcon?: IconName;
@@ -40,7 +40,7 @@ export default function NavbarItem({
       onMouseLeave={onMouseLeave}
       onClick={onClick}
     >
-      <Icon name={icon} size={20} />
+      <Icon name={icon as IconName} size={20} />
         {title}
       {frontIcon && <Icon name={frontIcon} size={20} />}
     </motion.li>

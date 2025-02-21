@@ -7,10 +7,10 @@ import { useUserStore } from "../../stores/useUserStore";
 import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 export default function WishlistPage() {
+  const [isLoading, setIsLoading] = useState(true);
   const { wishlistItems: initialWishlistItems, fetchWishlistItems } =
     useFetchUserWishlist();
   const [wishlistItems, setWishlistItems] = useState(initialWishlistItems);
-  const [isLoading, setIsLoading] = useState(true);
   const { id } = useUserStore();
 
   useEffect(() => {
@@ -37,19 +37,19 @@ export default function WishlistPage() {
           <LoadingSpinner size={64} />
         </div>
       );
+    } else {
+      return wishlistItems.length > 0 ? (
+        wishlistItems.map((item) => (
+          <WishlistItem
+            key={item._id}
+            product={item}
+            onRemove={handleRemoveItem}
+          />
+        ))
+      ) : (
+        <p>هیچ محصولی در لیست علاقه‌مندی‌ها وجود ندارد.</p>
+      );
     }
-
-    return wishlistItems.length > 0 ? (
-      wishlistItems.map((item) => (
-        <WishlistItem
-          key={item._id}
-          product={item}
-          onRemove={handleRemoveItem}
-        />
-      ))
-    ) : (
-      <p>هیچ محصولی در لیست علاقه‌مندی‌ها وجود ندارد.</p>
-    );
   }, [wishlistItems, isLoading]);
 
   return (

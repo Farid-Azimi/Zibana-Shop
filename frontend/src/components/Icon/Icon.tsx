@@ -124,7 +124,7 @@ interface IconProps {
 }
 
 export default function Icon({
-  name = "AiOutlineEye",
+  name = "AiOutlineEye" as IconName,
   className,
   size = 30,
   color,

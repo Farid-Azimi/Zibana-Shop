@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import React, { Suspense, useEffect, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import Layout from "../../components/Layout/Layout";
 import ProductItem from "../../components/ProductItem/ProductItem";
@@ -10,6 +10,20 @@ import Pagination from "../../components/Pagination/Pagination";
 import useFetchProducts from "../../hooks/useFetchProducts";
 
 export default function SearchResultsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center min-h-[400px]">
+          <LoadingSpinner size={64} color="purple-500" speed="spin" />
+        </div>
+      }
+    >
+      <SearchResultsContent />
+    </Suspense>
+  );
+}
+
+function SearchResultsContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
 
@@ -29,7 +43,7 @@ export default function SearchResultsPage() {
     if (query.trim()) {
       fetchProducts();
     }
-  }, [query]);
+  }, [query, fetchProducts]);
 
   const currentProducts = paginatedProducts[currentPage - 1] || [];
 
@@ -45,7 +59,9 @@ export default function SearchResultsPage() {
     <Layout>
       <div className="p-4">
         <h1 className="text-lg font-bold text-gray mb-4">
-          {query ? `نتیجه جستجو برای "${query}"` : "لطفاً عبارتی برای جستجو وارد کنید"}
+          {query
+            ? `نتیجه جستجو برای "${query}"`
+            : "لطفاً عبارتی برای جستجو وارد کنید"}
         </h1>
 
         {error && <Error message={error} onRetry={fetchProducts} />}

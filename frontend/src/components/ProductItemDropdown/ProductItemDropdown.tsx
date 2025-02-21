@@ -137,7 +137,7 @@ const ProductItemDropdown: React.FC<ProductItemDropdownProps> = React.memo(
         />
         {modalOpen && (
           <ModalMessage
-            message={modalMessage}
+            message={modalMessage as "added" | "removed"}
             onClose={handleConfirmRemove}
             product={{ title: product.title, imageSrc: product.imageSrc }}
             type={modalType}
