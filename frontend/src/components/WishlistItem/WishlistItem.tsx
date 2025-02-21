@@ -7,8 +7,6 @@ import { useUserStore } from "../../stores/useUserStore";
 import { formatTitleForUrl } from "../../utils/formatTitleForUrl";
 import { useProductData } from "@/data/productData";
 import { Product } from "@/types/productType";
-import ModalMessage from "../ModalMessage/ModalMessage";
-import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
 
 interface WishlistItemProps {
   product: Product;
@@ -19,21 +17,13 @@ export default function WishlistItem({ product, onRemove }: WishlistItemProps) {
   const { id } = useUserStore();
   const { toggleWishlistItem } = useFetchUserWishlist();
   const { setSelectedProduct } = useProductData();
-  const {
-    modalOpen,
-    handleDelete,
-    handleConfirmRemove,
-    handleRestore,
-    setModalOpen,
-  } = useDeleteConfirmation({
-    onDelete: async () => {
-      if (id) {
-        await toggleWishlistItem(id, product._id, true);
-        onRemove(product._id);
-      }
-    },
-    id,
-  });
+
+  const handleDelete = async () => {
+    if (id) {
+      await toggleWishlistItem(id, product._id, true);
+      onRemove(product._id);
+    }
+  };
 
   return (
     <div className="relative p-4 h-60 w-1/2 mx-auto border-solid border-veryLightGray border-2 rounded-lg shadow-sm flex items-center justify-between bg-white">
@@ -88,16 +78,6 @@ export default function WishlistItem({ product, onRemove }: WishlistItemProps) {
           <span>مشاهده محصول</span>
         </Link>
       </div>
-
-      {modalOpen && (
-        <ModalMessage
-          message="removed"
-          onClose={handleConfirmRemove}
-          product={{ title: product.title, imageSrc: product.imageSrc }}
-          type="wishlist"
-          onRestore={handleRestore}
-        />
-      )}
     </div>
   );
 }

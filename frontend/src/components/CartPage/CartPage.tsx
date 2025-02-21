@@ -10,6 +10,7 @@ import ErrorModal from "../ErrorModal/ErrorModal";
 import LoginSignupModal from "../LoginSignupModal/LoginSignupModal";
 import { createPortal } from "react-dom";
 import ModalMessage from "../ModalMessage/ModalMessage";
+import orderCheck from "../../../src/images/check.png";
 
 export default function CartPage() {
   const { cartItems, clearCart } = useCartStore();
@@ -59,7 +60,7 @@ export default function CartPage() {
     <>
       <div className="flex flex-col lg:flex-row gap-8 p-8">
         <div className="lg:w-2/3 space-y-2">
-          <h2 className="text-xl font-semibold mb-4 mr-2">سبد خرید شما</h2>
+          <h2 className="text-xl font-semibold mb-4 mr-2 text-center">سبد خرید شما</h2>
           <div className="space-y-4">
             {cartItems.length > 0 ? (
               cartItems.map((item) => (
@@ -101,7 +102,7 @@ export default function CartPage() {
           onClose={() => setIsSuccessModalOpen(false)}
           product={{
             title: "سفارش شما با موفقیت ثبت شد",
-            imageSrc: "/path/to/success-icon.png", // باید آیکون مناسب اضافه شود
+            imageSrc: orderCheck.src,
           }}
           type="cart"
           onRestore={() => {}}

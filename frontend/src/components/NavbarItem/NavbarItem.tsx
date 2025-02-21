@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { motion } from "framer-motion";
 import Icon from "../Icon/Icon";
 
@@ -10,24 +9,23 @@ type IconName =
   | "FaBlog"
   | "FaPhoneAlt"
   | "FaPercent";
-  
 
 interface NavbarItemProps {
   title: string;
-  icon: IconName; 
-  href?: string;
+  icon: IconName;
   onMouseEnter?: (event: React.MouseEvent) => void;
   onMouseLeave?: (event: React.MouseEvent) => void;
-  frontIcon?: IconName; 
+  frontIcon?: IconName;
+  onClick?: () => void;
 }
 
 export default function NavbarItem({
   title,
   icon,
-  href = "/",
   onMouseEnter,
   onMouseLeave,
   frontIcon,
+  onClick,
 }: NavbarItemProps) {
   const variants = {
     initial: { backgroundColor: "#fff" },
@@ -36,15 +34,14 @@ export default function NavbarItem({
 
   return (
     <motion.li
-      className="flex gap-3 p-2 rounded-xl cursor-pointer text-textGray"
+      className="flex gap-3 p-2 rounded-xl cursor-pointer text-textGray text-sm"
       whileHover={variants.hover}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={onClick}
     >
       <Icon name={icon} size={20} />
-      <Link href={href} passHref className="text-sm">
         {title}
-      </Link>
       {frontIcon && <Icon name={frontIcon} size={20} />}
     </motion.li>
   );

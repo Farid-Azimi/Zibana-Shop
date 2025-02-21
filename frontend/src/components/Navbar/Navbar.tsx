@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import NavbarItem from "../NavbarItem/NavbarItem";
 import NavbarDropdownItem from "../NavbarDropdownItem/NavbarDropdownItem";
@@ -26,6 +26,11 @@ export default function Navbar() {
     router.push(`/category/${category}`);
   };
 
+  const handleHomeClick = useCallback(() => {
+    router.push("/");
+    handleMouseLeave();
+  }, [router]);
+
   return (
     <div className="shadow-md pb-1">
       <nav className="relative">
@@ -42,7 +47,7 @@ export default function Navbar() {
           <NavbarItem
             title="خانه"
             icon="FaHome"
-            href={"/"}
+            onClick={handleHomeClick}
             frontIcon={undefined}
           />
           <NavbarItem
@@ -71,7 +76,7 @@ export default function Navbar() {
               onMouseLeave={handleMouseLeave}
               style={{ animation: "fadeIn 0.3s ease-in-out" }}
             >
-              <div className="h-full w-[8rem] p-4">
+              <div className="h-full w-[10rem] p-4">
                 <ul className="flex flex-col align-middle gap-6 text-sm">
                   <NavbarDropdownItem
                     icon="FaSprayCan"

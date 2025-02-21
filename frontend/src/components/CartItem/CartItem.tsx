@@ -6,8 +6,6 @@ import { formatTitleForUrl } from "../../utils/formatTitleForUrl";
 import { Product } from "@/types/productType";
 import { useCartStore } from "../../stores/useCartOperationStore";
 import { useProductData } from "@/data/productData";
-import ModalMessage from "../ModalMessage/ModalMessage";
-import { useDeleteConfirmation } from "../../hooks/useDeleteConfirmation";
 import QuantitySelector from "../QuantitySelector/QuantitySelector";
 
 interface CartItemProps {
@@ -15,52 +13,17 @@ interface CartItemProps {
 }
 
 export default function CartItem({ product }: CartItemProps) {
-  const { removeFromCart, decreaseQuantity, addToCart } = useCartStore();
+  const { removeFromCart, addToCart } = useCartStore();
   const { setSelectedProduct } = useProductData();
   const cartItems = useCartStore((state) => state.cartItems);
   const item = cartItems.find((item) => item.product._id === product._id);
   const quantity = item?.quantity || 1;
 
-  const {
-    modalOpen,
-    handleDelete,
-    handleConfirmRemove,
-    handleRestore,
-    setModalOpen,
-  } = useDeleteConfirmation({
-    onDelete: () => removeFromCart(product),
-  });
-
-  const handleIncrease = () => {
-    addToCart(product, 1);
-  };
-
-  const handleDecrease = () => {
-    if (quantity > 1) {
-      decreaseQuantity(product);
-    } else {
-      handleDelete();
-    }
-  };
-
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newQuantity = parseInt(e.target.value);
-    if (!isNaN(newQuantity) && newQuantity > 0) {
-      if (newQuantity > quantity) {
-        addToCart(product, newQuantity - quantity);
-      } else if (newQuantity < quantity) {
-        for (let i = 0; i < quantity - newQuantity; i++) {
-          decreaseQuantity(product);
-        }
-      }
-    }
-  };
-
   return (
     <div className="relative p-4 h-60 w-1/2 mx-auto border-solid border-veryLightGray border-2 rounded-lg shadow-sm flex items-center justify-between bg-white">
       <Button
         className="absolute top-2 left-2 bg-pink-500 text-white rounded-xl p-2"
-        onClick={handleDelete}
+        onClick={() => removeFromCart(product)}
       >
         <Icon name="FiX" size={20} />
       </Button>
@@ -113,21 +76,14 @@ export default function CartItem({ product }: CartItemProps) {
       <div className="absolute left-4 top-1/2 transform -translate-y-1/2 scale-75">
         <QuantitySelector
           quantity={quantity}
-          onIncrease={handleIncrease}
-          onDecrease={handleDecrease}
-          onChange={handleQuantityChange}
+          product={product}
+          isInCart={true}
+          onQuantityChange={(newQuantity) => {
+            // این تابع فقط برای همگام‌سازی state محلی استفاده می‌شود
+            // عملیات اصلی در خود QuantitySelector انجام می‌شود
+          }}
         />
       </div>
-
-      {modalOpen && (
-        <ModalMessage
-          message="removed"
-          onClose={handleConfirmRemove}
-          product={{ title: product.title, imageSrc: product.imageSrc }}
-          type="cart"
-          onRestore={handleRestore}
-        />
-      )}
     </div>
   );
 }

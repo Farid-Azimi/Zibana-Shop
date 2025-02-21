@@ -8,7 +8,7 @@ import LoadingSpinner from "@/components/LoadingSpinner/LoadingSpinner";
 
 interface Order {
   _id: string;
-  purchasedAt: string; // or Date if applicable
+  purchasedAt: string;
   quantity: number;
   productId?: {
     imageSrc?: string;
@@ -23,9 +23,8 @@ export default function OrdersPage() {
   const [expandedGroups, setExpandedGroups] = useState<{ [key: string]: boolean }>({});
   const { token, id } = useUserStore();
 
-  // Always call all hooks
+ 
   useEffect(() => {
-    // Only fetch if id and token are available.
     if (!id || !token) return;
 
     const fetchPurchaseHistory = async () => {
@@ -53,23 +52,6 @@ export default function OrdersPage() {
     fetchPurchaseHistory();
   }, [id, token]);
 
-  // Now conditionally render the UI after all hooks have been called.
-  if (!id || !token) {
-    return (
-      <Layout>
-        <div className="min-h-screen container mx-auto py-12 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-extrabold text-center mb-12 text-gray-900">
-            لطفاً وارد شوید یا ثبت‌نام کنید
-          </h1>
-          <p className="text-center text-gray-500">
-            برای مشاهده سفارشات خود، ابتدا وارد حساب کاربری خود شوید یا ثبت‌نام کنید.
-          </p>
-        </div>
-      </Layout>
-    );
-  }
-
-  // Group orders by purchase time using full locale string (or change to toLocaleDateString)
   const groupedOrders = purchaseHistory.reduce((groups, order) => {
     const purchaseTime = new Date(order.purchasedAt).toLocaleString();
     if (!groups[purchaseTime]) {
@@ -79,7 +61,6 @@ export default function OrdersPage() {
     return groups;
   }, {} as { [key: string]: Order[] });
 
-  // Toggle the visibility of orders for a given purchase time.
   const toggleGroup = (time: string) => {
     setExpandedGroups((prev) => ({
       ...prev,
@@ -90,7 +71,7 @@ export default function OrdersPage() {
   return (
     <Layout>
       <div className="min-h-screen container mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl font-extrabold text-center mb-12 text-gray-900">
+        <h1 className="text-2xl font-bold text-center mb-12">
           لیست سفارشات شما
         </h1>
         {loading ? (
@@ -107,16 +88,16 @@ export default function OrdersPage() {
                 className="bg-white shadow-xl rounded-lg overflow-hidden"
               >
                 <div className="flex flex-col md:flex-row justify-between items-center bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
-                  <h2 className="text-2xl font-bold text-white">
-                    زمان خرید: {time}
+                  <h2 className="text-xl font-bold text-white font-sans">
+                    زمان ثبت سفارش: {time}
                   </h2>
                   <button
                     onClick={() => toggleGroup(time)}
                     className="mt-4 md:mt-0 bg-white text-indigo-600 px-6 py-2 rounded-full shadow hover:shadow-lg transition transform hover:scale-105"
                   >
                     {expandedGroups[time]
-                      ? "مخفی کردن سفارشات"
-                      : "نمایش سفارشات"}
+                      ? "مخفی کردن محصولات"
+                      : "نمایش محصولات"}
                   </button>
                 </div>
                 <AnimatePresence>
@@ -127,17 +108,17 @@ export default function OrdersPage() {
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ duration: 0.4 }}
                     >
-                      <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                      <div className="p-4 px-0 mr-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {orders.map((item: any, index: number) => (
                           <motion.div
                             key={item._id}
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: index * 0.1 }}
-                            className="bg-gray-50 rounded-lg shadow hover:shadow-2xl transition transform hover:-translate-y-2 p-4 border"
+                            className="bg-veryLightGray w-[260px] rounded-lg shadow hover:shadow-2xl transition transform hover:-translate-y-2 p-4 border"
                           >
                             {item.productId?.imageSrc && (
-                              <div className="relative w-full h-48 mb-4 overflow-hidden rounded-md">
+                              <div className="relative w-full h-48 mb-6 overflow-hidden rounded-md ">
                                 <Image
                                   src={item.productId.imageSrc}
                                   alt={item.productId.title || "Product Image"}
@@ -145,14 +126,10 @@ export default function OrdersPage() {
                                   className="object-cover"
                                 />
                               </div>
-                            )}
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                             )} 
+                            <h3 className="font-semibold text-gray-800 mb-2">
                               {item.productId?.title || "Unknown Product"}
                             </h3>
-                            <p className="text-sm text-gray-500 mb-1">
-                              زمان خرید:{" "}
-                              {new Date(item.purchasedAt).toLocaleString()}
-                            </p>
                             <p className="text-sm text-gray-500 mb-1">
                               قیمت: {item.productId?.discountedPrice}
                             </p>

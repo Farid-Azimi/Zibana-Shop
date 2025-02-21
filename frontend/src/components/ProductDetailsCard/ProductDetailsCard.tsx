@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Product } from "../../types/productType";
 import Icon from "../Icon/Icon";
 import Button from "../Button/Button";
@@ -11,37 +11,44 @@ interface ProductDetailsCardProps {
   product: Product;
 }
 
-export default function ProductDetailsCard({ product }: ProductDetailsCardProps) {
+export default function ProductDetailsCard({
+  product,
+}: ProductDetailsCardProps) {
   const { cartItems, addToCart, removeFromCart } = useCartStore();
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState<number>(0);
   const isInCart = cartItems.some((item) => item.product._id === product._id);
 
-  const handleIncrease = () => {
-    setQuantity((prev) => (prev < 3 ? prev + 1 : prev));
-  };
-
-  const handleDecrease = () => {
-    setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (/^[1-3]?$/.test(value)) {
-      setQuantity(Number(value));
+  useEffect(() => {
+    if (isInCart) {
+      const cartItem = cartItems.find(
+        (item) => item.product._id === product._id
+      );
+      if (cartItem) {
+        setQuantity(cartItem.quantity);
+      }
     }
-  };
+  }, [cartItems, product._id, isInCart]);
 
   const {
     modalOpen,
     handleDelete,
     handleConfirmRemove,
     handleRestore,
-    setModalOpen,
   } = useDeleteConfirmation({
     onDelete: () => {
-      removeFromCart(product);
+      if (isInCart) {
+        removeFromCart(product);
+        setQuantity(0);
+      } else {
+        addToCart(product, 1);
+        setQuantity(1);
+      }
+    },
+    onRestore: () => {
+      addToCart(product, 1);
       setQuantity(1);
     },
+    id: "1",
   });
 
   return (
@@ -98,16 +105,16 @@ export default function ProductDetailsCard({ product }: ProductDetailsCardProps)
 
         <QuantitySelector
           quantity={quantity}
-          onIncrease={handleIncrease}
-          onDecrease={handleDecrease}
-          onChange={handleInputChange}
+          product={product}
+          isInCart={isInCart}
+          onQuantityChange={setQuantity}
         />
       </div>
 
       {isInCart ? (
         <Button
           className="w-full p-2 mt-4 bg-[#f62b72] text-white rounded-lg text-center hover:bg-purple--dark hover:shadow-lg transition flex justify-center items-center gap-2"
-          onClick={handleDelete} 
+          onClick={handleDelete}
         >
           <Icon name={"FaRegTrashCan"} />
           <p> حذف از سبد خرید</p>
@@ -115,18 +122,17 @@ export default function ProductDetailsCard({ product }: ProductDetailsCardProps)
       ) : (
         <Button
           className="w-full p-2 mt-4 bg-[#f62b72] text-white rounded-lg text-center hover:bg-purple--dark hover:shadow-lg transition flex justify-center items-center gap-2"
-          onClick={() => addToCart(product, quantity)}
+          onClick={handleDelete}
         >
           <Icon name={"HiOutlineShoppingCart"} />
           <p> افزودن به سبد خرید</p>
         </Button>
       )}
-
       {modalOpen && (
         <ModalMessage
-          message={isInCart ? "removed" : "added"}
+          message={!isInCart ? "removed" : "added"}
           onClose={handleConfirmRemove}
-          product={{ title: product.title, imageSrc: product.imageSrc }}
+          product={product}
           type="cart"
           onRestore={handleRestore}
         />
