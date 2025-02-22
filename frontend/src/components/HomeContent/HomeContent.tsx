@@ -14,13 +14,13 @@ export default function HomeContent() {
       <div>
         <Slideshow />
         <DiscountedProductSlider />
+        <SuggestedProductsSlider />
         <PurestBanner />
         <LatestProductSlider />
         <BrandsList />
         <CategoryList />
         <BestSellingProductSlider />
         <MostPopularProductsSlider />
-        <SuggestedProductsSlider />
       </div>
     </>
   );
